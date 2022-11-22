@@ -414,7 +414,6 @@ fontWeight: '400'
   
   navMenu: {
   marginVertical:20,
-  
   display: 'flex',
   flexDirection: 'row', 
   justifyContent: 'space-between',

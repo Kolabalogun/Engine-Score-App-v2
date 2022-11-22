@@ -110,6 +110,44 @@ const MatchResult = () => {
 </View>
 
 
+<View style={styles.formationSection}>
+<View style={styles.teams}>
+<View style={styles.team}>
+    <Image
+            source={require("../../../assets/logo-01.png")}
+            resizeMode="contain"
+            style={{ height: 35, width: 35  }}
+          />
+
+          <View style={styles.formation}>
+<Text>Mechanical</Text>
+<Text style={{color: '#aaa'}}>4-3-3</Text>
+</View>
+</View>
+<View style={styles.team}>
+    <Image
+            source={require("../../../assets/logo-02.png")}
+            resizeMode="contain"
+            style={{ height: 35, width: 35  }}
+          />
+
+          <View style={styles.formation}>
+<Text>Computer</Text>
+<Text style={{color: '#aaa'}}>4-3-3</Text>
+</View>
+</View>
+</View>
+
+
+ <Image
+            source={require("../../../assets/line.png")}
+            resizeMode="contain"
+            style={{ marginVertical: 10 }}
+          />
+
+</View>
+
+
      
     </ScrollView>
   );
@@ -235,5 +273,27 @@ color: 'white'
   flexDirection: 'row', 
   justifyContent: 'space-between',
   
+  },
+
+  
+  
+   formationSection: {
+ marginHorizontal: 20,
+
+  },
+
+     teams: {
+ 
+ display: 'flex',
+ flexDirection: 'row',
+ justifyContent: 'space-between'
+  },
+
+  
+     team: {
+ 
+ display: 'flex',
+ flexDirection: 'row',
+ justifyContent: 'space-between'
   },
 });
