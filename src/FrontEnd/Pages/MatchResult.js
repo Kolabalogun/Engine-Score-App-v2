@@ -1,10 +1,13 @@
-import { Image, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Image, ScrollView, StyleSheet, TouchableOpacity, View, Text } from "react-native";
 import React from "react";
 import { useGlobalContext } from "../../Function/Context";
+import { useState } from "react";
 
 
 const MatchResult = () => {
   const { MatchState } = useGlobalContext();
+
+  const [activeMenu, activeMenuF] = useState('lineup')
 
   return (
     <ScrollView style={styles.container}>
@@ -19,7 +22,7 @@ const MatchResult = () => {
           />
         </TouchableOpacity>
         <View style={styles.headerTitleDiv}>
-       {/* <Text style={styles.headerTitle}>Engine <Text style={styles.headerTitleScore} >Scores</Text></Text> */}
+       <Text style={styles.headerTitle}>Engine 4.0</Text>
         </View>
         <View style={styles.profilePic}>
         {/* <Image
@@ -29,11 +32,82 @@ const MatchResult = () => {
           /> */}
         </View>
       </View>
-
+      </View>
 
       
+ <View style={styles.dashboard}>
 
-      </View>
+<View  style={styles.dashboardBox}>
+
+  <Text style={styles.competitionName}>Maracana Field</Text>
+  <Text style={styles.matchDay}>Matchday One</Text>
+  
+
+  <View  style={styles.scoreBoard}>
+      <View  style={styles.teamBoard}>
+
+         <Image
+            source={require("../../../assets/logo-01.png")}
+            resizeMode="contain"
+            style={{ height: 90, width: 90 }}
+          />
+
+              <Text style={styles.teamTxt}>Mechanical</Text>
+    
+  </View> 
+   <View  style={styles.score}>
+    <Text style = {styles.scoreTxt}>0</Text>
+      <Text style = {styles.scoreTxt}>:</Text>
+        <Text style = {styles.scoreTxt}>0</Text>
+  </View>
+    <View  style={styles.teamBoard}>
+        <Image
+            source={require("../../../assets/logo-02.png")}
+            resizeMode="contain"
+            style={{ height: 90, width: 90 }}
+          />
+
+              <Text style={styles.teamTxt}>Computer</Text>
+  </View>
+  </View>
+
+
+</View>
+
+</View>
+
+
+
+<View style={styles.navMenu}>
+
+  <TouchableOpacity onPress={()=> {activeMenuF('lineup')}} style={{ backgroundColor: activeMenu === 'lineup' ? '#ff2782' : '#fff'
+    , 
+    paddingHorizontal:10 ,
+    paddingVertical:10,
+    flex: 1,
+    marginHorizontal: 20,
+    alignItems: 'center',
+    borderRadius: 20}}>
+<Text style={{ color: activeMenu=== 'lineup' ? '#fff' : '#ff2782'
+    , fontWeight:'500',
+    fontSize:15}}>Line Up</Text>
+  </TouchableOpacity>
+
+  
+  <TouchableOpacity onPress={()=> {activeMenuF('timeline')}} style={{ backgroundColor: activeMenu === 'timeline' ? '#ff2782' : '#fff'
+    , 
+    paddingHorizontal:10 ,
+    paddingVertical:10,
+    flex: 1,
+    marginHorizontal: 20,
+    alignItems: 'center',
+    borderRadius: 20}}>
+<Text style={{ color: activeMenu==='timeline' ? '#fff' : '#ff2782'
+    , fontWeight:'500',
+    fontSize:15}}>Summary</Text>
+  </TouchableOpacity>
+  
+</View>
 
 
      
@@ -50,13 +124,6 @@ const styles = StyleSheet.create({
     
   },
 
-    matchTopBar: {
-    backgroundColor: 'purple',
-
-    paddingHorizontal: 10,
-    paddingTop: 10
-  },
-
     homeHeader :{
 display: 'flex',
 flexDirection: 'row',
@@ -65,137 +132,108 @@ alignItems: 'center'
   },
 
   headerTitle :{
-fontSize:26,
-fontWeight: '400'
+fontSize:18,
+fontWeight: '500',
+color: 'white'
 
   },
 
 
+   matchTopBar: {
+    backgroundColor: 'purple',
 
-  titleText: {
-    fontSize: 15,
-    fontWeight: "600",
-    marginBottom: 10,
-    paddingBottom: 5,
-    borderBottomColor: "#aaa",
-    borderBottomWidth: 1,
+    paddingHorizontal: 10,
+    paddingTop: 10,
+
+    height: 230,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+
+      },
+
+
+
+  dashboard: {
+   marginHorizontal:20,
+   marginTop:-150
+  
+  },
+  dashboardTitle: {
+   fontSize: 18,
+  fontWeight: '500'
   },
 
+  
+  dashboardBox: {
+   marginBottom:10,
+   marginTop: 10,
+   backgroundColor:'white',
+   alignItems:'center',
+   borderRadius:10,
+   padding: 15,
+
+    // borderWidth: 3,
+  
+
+    // borderColor: 'rgba(209, 225, 240, 0.782)',
+  
+  },
+  dashboardTitle: {
+   fontSize: 18,
+  fontWeight: '500'
+
+  },
+
+
+  competitionName: {
+  color: 'black',
+   fontSize: 14,
+   marginBottom:5
+  
+  },
+  matchDay: {
+   fontSize: 13,
+  color: '#aaa',
+  },
+
+  
   scoreBoard: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingBottom: 10,
+ 
+   marginTop: 5,
+  flexDirection: 'row',
+  justifyContent:'space-between', 
+  alignItems:'center'
+  
   },
-  score: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  scoreTxt: {
-    fontWeight: "600",
-    fontSize: 45,
-    paddingLeft: 5,
-    paddingRight: 5,
-  },
-  scoreLine: {
-    fontWeight: "600",
-    fontSize: 45,
-    paddingLeft: 5,
-    paddingRight: 5,
+  teamBoard: {
+   fontSize: 18,
+  fontWeight: '500'
+  ,
+  alignItems: 'center'
   },
 
-  logo: {
-    height: "100%",
-    width: "100%",
-  },
-  hh: {
-    height: 80,
-    width: 48,
-    justifyContent: "center",
-    marginTop: 5,
-    // backgroundColor: "#aaa",
-  },
-  firstTeam: {
-    alignItems: "center",
-  },
-  teamName: {
-    fontSize: 14,
-    fontWeight: "500",
-  },
-  matches: {
-    display: "flex",
-    flexDirection: "row",
-    width: "100%",
-    marginTop: 20,
-  },
-  matchesRight: {
-    display: "flex",
-    // alignItems: "flex-end",
-    flexDirection: "row-reverse",
-    width: "100%",
-    marginTop: 20,
-    // backgroundColor: "yellow",
-  },
-  left: {
-    paddingRight: 10,
-  },
-  line: {
-    backgroundColor: "#aaa",
-    width: 1,
-    height: "100%",
-    marginRight: 10,
+   score: {
+   flex:1,
+   flexDirection: 'row',
+   justifyContent: 'space-between',
+   color: 'black'
   },
 
-  teams: {
-    // flex: 1,
-    paddingLeft: 10,
-    paddingRight: 10,
+   teamTxt: {
+  color: 'black',
+  paddingTop: 5
   },
 
-  scoreActions: {
-    backgroundColor: "white",
-
-    borderRadius: 5,
-    padding: 10,
-    // height: 400,
-    flexDirection: "column-reverse",
+   scoreTxt: {
+  color: 'black',
+  fontSize:48
   },
 
-  scoreActionsCon: {
-    backgroundColor: "aliceblue",
-    marginTop: 15,
-    padding: 10,
-    borderRadius: 10,
-  },
-
-  Matchdetails: {
-    marginTop: 10,
-    padding: 10,
-    marginBottom: 30,
-  },
-  MDhead: {
-    textAlign: "center",
-    borderBottomColor: "#aaa",
-    padding: 5,
-    borderBottomWidth: 1,
-  },
-  items: {
-    padding: 5,
-    justifyContent: "space-between",
-    display: "flex",
-    flexDirection: "row",
-  },
-
-  itemsTxt: {
-    fontWeight: "500",
-  },
-
-  leftTextAssist: {
-    color: "#aaa",
-  },
-  leftText: {
-    fontSize: 15,
+   navMenu: {
+  marginVertical:15,
+  display: 'flex',
+  flexDirection: 'row', 
+  justifyContent: 'space-between',
+  
   },
 });

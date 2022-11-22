@@ -19,6 +19,7 @@ import MatchResult from "./MatchResult";
 import { color } from "react-native-reanimated";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useState } from "react";
+import { StatusBar } from "expo-status-bar";
 
 const stack = createNativeStackNavigator();
 
@@ -413,6 +414,7 @@ fontWeight: '400'
   
   navMenu: {
   marginVertical:20,
+  
   display: 'flex',
   flexDirection: 'row', 
   justifyContent: 'space-between',
