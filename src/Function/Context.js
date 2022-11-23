@@ -6,12 +6,14 @@ import { GroupArray } from "../FrontEnd/Components/Group/GroupState";
 import { useNavigation } from "@react-navigation/native";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, db } from "../Utils/Firebase";
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, deleteDoc, doc, onSnapshot } from "firebase/firestore";
 
 
 const AppContext = React.createContext();
 
 const AppProvider = ({ children }) => {
+
+  const [competition, competitionF] = useState(4)
 
 
     const [currentUser, currentUserF] = useState(null);
@@ -80,6 +82,21 @@ const AppProvider = ({ children }) => {
       unsub();
     };
   }, []);
+
+    // to delete Teams
+  const handleDeleteTeam = async (id) => {
+    console.warn('sdhgghds');
+    // if (window.confirm("Are you sure you want to delete this blog?")) {
+      try {
+        loaderF(true);
+        await deleteDoc(doc(db, "Teams", id));
+        loaderF(false);
+        // toast.error("Blog successfully deleted");
+      } catch (error) {
+        console.log(error);
+      }
+    // }
+  };
 
 
 
@@ -258,6 +275,10 @@ currentUser, currentUserF,
 loader, loaderF,
 
 TeamsFromDB, TeamsFromDBF,
+
+competition, competitionF,
+
+handleDeleteTeam,
 
 
 

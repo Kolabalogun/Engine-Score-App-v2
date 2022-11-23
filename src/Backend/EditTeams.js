@@ -1,23 +1,30 @@
-import { Image, KeyboardAvoidingView, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { KeyboardAvoidingView, SafeAreaView, ScrollView, StyleSheet, Text, View, TouchableOpacity, Image, TextInput } from 'react-native'
 import React, { useEffect, useState } from 'react'
-// import { useGlobalContext } from '../../Functions/Context';
-// import { pickImage, uploadImgetoFireStorage } from '../../Utils/DisplayImage';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
-// import { auth, db, storage } from '../../Utils/Firebase';
-import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
-// import Loader from '../../Components/Loader';
 import { useGlobalContext } from '../Function/Context';
-import { pickImage, uploadImgetoFireStorage } from '../Utils/DisplayImage';
-import { db } from '../Utils/Firebase';
-import Loader from '../FrontEnd/Components/Others/Loader';
-import SelectDropdown from 'react-native-select-dropdown';
 import Header from '../FrontEnd/Components/Others/Header';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import SelectDropdown from 'react-native-select-dropdown';
 
-const AddTeams = ({navigation}) => {
+const EditTeams = ({route, navigation}) => {
 
-    const {competition, competitionF, notification, notificationF, currentUser, loader, loaderF, TeamsFromDB, TeamsFromDBF } = useGlobalContext();
-  const [Competition, CompetitionF] = useState('');
+  const {competition, competitionF, notification, notificationF, currentUser, loader, loaderF, TeamsFromDB, TeamsFromDBF } = useGlobalContext();
+
+
+      const { teamId } = route.params;
+
+
+      const [teamInfo, teamInfoF] =useState([])
+
+      useEffect(() => {
+        
+      const data = TeamsFromDB.filter((team, index) => team.id === teamId)
+
+       teamInfoF(data)
+      }, [teamId, TeamsFromDB])
+
+
+
+
+        const [Competition, CompetitionF] = useState('');
 
   const competitionData = ['Engine 4.0', 'Engine 3.0']
   const formationData = ['4-4-2', '4-3-3', '4-2-3-1', '3-4-3', '3-5-2']
@@ -83,67 +90,6 @@ benchs4:'',
 
 
 
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
- 
-
-
-    if (TeamName && TeamManager  && Formation) {
-        // if we adding new team
-        loaderF(true);
-let image = ''
-        if (selectedImage) {
-              
-        const { url } = await uploadImgetoFireStorage(
-          selectedImage,
-          `images/${dateId}`,
-          "profilePicture"
-        );
-
-        image = url
-        }
-
-      
-
-        try {
-            await addDoc(collection(db, "Teams"), {
-                Competition: Competition,
-                TeamName: TeamName,
-                Players: Players,
-                TeamLogo: image,
-                TeamFormation: Formation,
-             
-                TeamManager:TeamManager,
-                timestamp: serverTimestamp(),
-                // author: currentUser.email,
-                // userId: currentUser.uid,
-                dateId: dateId,
-                
-            });
-            loaderF(false);
-            notificationF("Team Successfully Added");
-    TeamNameF('')
-    TeamManagerF('')
-    navigation.navigate("Team List");
-
-        } catch (error) {
-            // console.log(error);
-            notificationF(error);
-        }
-
-      
-    } else {
-        return notificationF("All fields must be filled");
-    }
-    
-    
-
-};
-
-
-
-
   const Imagepicker = async () => {
     let result = await pickImage();
     if (!result.cancelled) {
@@ -154,61 +100,21 @@ let image = ''
   };
 
 
-
-
-
- 
-  function navigateToListofTeam(params) {
-    navigation.navigate('Team List')
+  const handleSubmit = ()=>{
+    
   }
 
-
-
-
-
-  function Headers({functions, imgtype}) {
-    return(
-       <View style={styles.homeHeader}>
-        <TouchableOpacity onPress={() =>{
-          navigation.toggleDrawer();
-        }} style={styles.profilePic}>
-        <Image
-            source={require("../../assets/menu.png")}
-            resizeMode="cover"
-            style={{ height: 20, width: 20,  }}
-          />
-        </TouchableOpacity>
-        <View style={styles.headerTitleDiv}>
-       <Text style={styles.headerTitle}>Engine <Text style={styles.headerTitleScore} >Scores</Text></Text>
-        </View>
-        <TouchableOpacity onPress={functions} style={styles.profilePic}>
-        <Image
-            source={imgtype}
-            resizeMode="cover"
-            style={{ height: 30, width: 30,  }}
-          />
-        </TouchableOpacity>
-      </View>
-      )
-  }
-
-
-
+      
 
 
   return (
-    <>
+    <SafeAreaView style={styles.container}>
+        <Header/>
 
-    {
-      loader ? <Loader/> :
-
-      <SafeAreaView style={styles.container}>
-   <View>
-            <Headers functions = {navigateToListofTeam} imgtype={require("../../assets/list.png")}/>
-
-      <ScrollView showsVerticalScrollIndicator={false}>
+{
+    teamInfo?.map((team, index) =>  <ScrollView key={index} showsVerticalScrollIndicator={false}>
         <View style={styles.topSection}>
-          <Text style={styles.topText}>Add New Team</Text>
+          <Text style={styles.topText}>Edit Team</Text>
           <Text style={styles.capText}>
   Please input the details of the Team.
           </Text>
@@ -273,7 +179,7 @@ let image = ''
 
                <SelectDropdown
 	data={competitionData}
-    
+    // defaultValue={teamInfo.}
 
       defaultButtonText = 'Select Competition'
       buttonStyle={styles.dropdownStyle}
@@ -378,23 +284,15 @@ let image = ''
         </TouchableOpacity>
   
   
-      </ScrollView>
-      </View>
+      </ScrollView> )
+}
 
-    
-
-
+  
     </SafeAreaView>
-      
-    }
-    
-    </>
-
- 
   )
 }
 
-export default AddTeams;
+export default EditTeams
 
 const styles = StyleSheet.create({
     container: {
@@ -406,28 +304,7 @@ const styles = StyleSheet.create({
           paddingTop: 10
       },
 
-      
-  homeHeader :{
-display: 'flex',
-flexDirection: 'row',
-justifyContent: 'space-between',
-alignItems: 'center'
-  },
-
-  headerTitle :{
-fontSize:26,
-fontWeight: '400'
-
-  },
-
-
-  headerTitleScore: {
-    color:'#ff2782'
-    , fontWeight:'500'
-  },
-
-
-    
+         
       topSection: {
         paddingTop: 15,
       },
@@ -503,48 +380,4 @@ fontWeight: '400'
       dropdownStyleTxt: {
  fontSize: 14
       },
-
-        
-  navMenu: {
-  marginVertical:20,
-  display: 'flex',
-  flexDirection: 'row', 
-  justifyContent: 'space-between',
-  
-  },
-
-    eachMatch: {
-   borderRadius: 10,
-   backgroundColor:'white',flexDirection: 'row',
-   justifyContent: 'space-between',
-   alignItems: 'center',
-   paddingHorizontal: 10,
-   paddingVertical:10,
-   marginVertical:5,
-   borderWidth: 3,
-  
-    alignItems: 'center',
-
-    borderColor: 'rgba(209, 225, 240, 0.782)',
-    
-  },
-
-   eachMatchTeam: {
-//    flex:1,
-   flexDirection: 'row',
-   justifyContent: 'space-between',
-   color: 'white',
-   alignItems: 'center'
-  },
-
-   eachMatchTime: {
-  flex:1,
-  alignItems: 'center'
-  },
-
-   eachMatchTeamTxt: {
- fontWeight: '500',
- fontSize: 15
-  },
-
 })

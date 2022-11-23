@@ -9,6 +9,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import TabNavigations from './TabNavigation';
 import Notification from '../Notification/Notification';
 import AddTeams from '../Backend/AddTeams';
+import ListofTeams from '../Backend/ListofTeams';
 
 function HomeScreen({ navigation }) {
   return (
@@ -39,6 +40,7 @@ export default function DrawerNavigation() {
       }} initialRouteName="DrawerHome">
         <Drawer.Screen name="DrawerHome" component={TabNavigations} />
         <Drawer.Screen name="Notifications" component={Notification} />
+        <Drawer.Screen name="Team List" component={ListofTeams} />
         <Drawer.Screen name="Add Teams" component={AddTeams} />
       </Drawer.Navigator>
     // </NavigationContainer>

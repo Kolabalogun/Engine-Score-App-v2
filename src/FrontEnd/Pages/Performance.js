@@ -7,7 +7,7 @@ import Header from "../Components/Others/Header";
 import { useState } from "react";
 
 
-const Performance = () => {
+const Performance = ({navigation}) => {
   const { Group } = useGlobalContext();
 
 
