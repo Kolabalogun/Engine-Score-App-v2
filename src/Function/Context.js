@@ -1,13 +1,91 @@
 import { StyleSheet, Text, View } from "react-native";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 
 import { MatchArray } from "../FrontEnd/Components/Match/MatchArray";
 import { GroupArray } from "../FrontEnd/Components/Group/GroupState";
+import { useNavigation } from "@react-navigation/native";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth, db } from "../Utils/Firebase";
+import { collection, onSnapshot } from "firebase/firestore";
 
 
 const AppContext = React.createContext();
 
 const AppProvider = ({ children }) => {
+
+
+    const [currentUser, currentUserF] = useState(null);
+   const [notification, notificationF] = useState("");
+   const [loader, loaderF] = useState("");
+
+  //   notification
+  useEffect(() => {
+    const timeoutt = setTimeout(() => {
+      notificationF("");
+    }, 3000);
+
+    return () => {
+      clearInterval(timeoutt);
+    };
+  }, [notification]);
+
+  const navigation = useNavigation();
+
+    // check if user is signed In
+    useEffect(() => {
+        onAuthStateChanged(auth, (user) => {
+          if (user) {
+            currentUserF(user);
+          } else {
+            currentUserF(null);
+          }
+        });
+      }, []);
+
+       //   logging out user
+  const handleLogout = () => {
+    signOut(auth).then(() => {
+      currentUserF(null);
+    });
+  };
+
+
+  // get list of teams from firebase 
+
+  
+  const [TeamsFromDB, TeamsFromDBF] = useState([]);
+
+  useEffect(() => {
+    loaderF(true);
+    const unsub = onSnapshot(
+      collection(db, "Teams"),
+
+      (snapshot) => {
+        let list = [];
+
+        snapshot.docs.forEach((doc) => {
+          list.push({ id: doc.id, ...doc.data() });
+        });
+        TeamsFromDBF(list);
+        loaderF(false);
+
+        console.log(TeamsFromDB);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+
+    return () => {
+      unsub();
+    };
+  }, []);
+
+
+
+
+
+
   const [Group, GroupF] = useState(GroupArray);
 
   //   BackEnd Group STage
@@ -173,6 +251,17 @@ const AppProvider = ({ children }) => {
   return (
     <AppContext.Provider
       value={{
+notification, notificationF, navigation,
+
+currentUser, currentUserF,
+
+loader, loaderF,
+
+TeamsFromDB, TeamsFromDBF,
+
+
+
+
         Group,
         inputname,
         inputnameFunction,

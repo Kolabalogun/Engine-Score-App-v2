@@ -11,7 +11,7 @@ const Header = ({navigation}) => {
         <Image
             source={require("../../../../assets/menu.png")}
             resizeMode="cover"
-            style={{ height: 25, width: 25,  }}
+            style={{ height: 20, width: 20,  }}
           />
         </TouchableOpacity>
         <View style={styles.headerTitleDiv}>
