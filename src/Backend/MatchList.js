@@ -73,7 +73,9 @@ const MatchList = ({navigation}) => {
         const Engine40list = MatchsFromDB.map((match, index) =>{
     if (match.Competition === 'Engine 4.0') {
         return (
-         <TouchableOpacity key={index} onPress={() => navigation.navigate('MatchResult')} style={styles.eachMatch}>
+         <TouchableOpacity key={index} onPress={() => navigation.navigate('MatchInfo', {
+                matchId: match.id
+            })} style={styles.eachMatch}>
 <View style={styles.eachMatchTeam}>
 
   <Text style={styles.eachMatchTeamTxt}>{match.HomeTeam}</Text>
@@ -88,8 +90,18 @@ const MatchList = ({navigation}) => {
 </View>
 <View style={styles.eachMatchTime}>
 
- <Text style={styles.eachMatchTeamTime}>{match.Matchtime}</Text>
-  <Text style={styles.eachMatchTeamDate}>{match.MatchDate}</Text>
+    
+
+    {match.MatchActive ?<View style={{flexDirection: 'row', }}>
+        <Text style={styles.eachMatchTeamTimeScore}>{match.HomeTeamScore}</Text> 
+    <Text style={styles.eachMatchTeamDateScore}>-</Text>
+  <Text style={styles.eachMatchTeamTimeScore}>{match.AwayTeamScore}</Text>
+  </View>
+   : <>
+    <Text style={styles.eachMatchTeamTime}>{match.Matchtime}</Text>
+  <Text style={styles.eachMatchTeamDate}>{match.MatchDate}</Text></>}
+
+ 
   </View>
   <View style={styles.eachMatchTeam}>
 
@@ -110,7 +122,9 @@ const MatchList = ({navigation}) => {
         const Engine30list = MatchsFromDB.map((match, index) =>{
     if (match.Competition === 'Engine 3.0') {
         return (
-         <TouchableOpacity key={index} onPress={() => navigation.navigate('MatchResult')} style={styles.eachMatch}>
+         <TouchableOpacity key={index} onPress={() => navigation.navigate('MatchInfo', {
+                matchId: match.id
+            })} style={styles.eachMatch}>
 <View style={styles.eachMatchTeam}>
 
   <Text style={styles.eachMatchTeamTxt}>{match.HomeTeam}</Text>
@@ -225,8 +239,10 @@ fontWeight: '400'
   },
 
    eachMatchTime: {
-  flex:1,
-  alignItems: 'center'
+//   flex:1,
+  alignItems: 'center',
+  alignSelf: 'center',
+//   paddingHorizontal: 10
   },
 
    eachMatchTeamTxt: {
@@ -236,11 +252,26 @@ fontWeight: '400'
      eachMatchTeamTime: {
   color:'red',
   fontWeight:'500',
+
   },
 
        eachMatchTeamDate: {
   color:'#aaa',
   fontWeight:'400',
+
+  },
+
+     eachMatchTeamTimeScore: {
+  color:'red',
+  fontWeight:'500',
+  fontSize: 20
+  },
+
+       eachMatchTeamDateScore: {
+  color:'#aaa',
+  fontWeight:'400',
+  fontSize: 20,
+    paddingHorizontal: 8
   },
           
   navMenu: {

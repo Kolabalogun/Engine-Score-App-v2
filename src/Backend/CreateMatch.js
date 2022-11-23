@@ -91,6 +91,7 @@ TeamDataF(data.map(d => d.TeamName))
                 HomeTeamScore: 0,
                 AwayTeamScore: 0,
                 MatchTimeline:'',
+                MatchActive: false,
              
                 AwayTeam:AwayTeam,
                 Matchtime:Matchtime,

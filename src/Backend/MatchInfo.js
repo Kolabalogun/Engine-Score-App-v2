@@ -9,36 +9,19 @@ import { db } from '../Utils/Firebase';
 
 
 const initialState={
+
     Competition: '',
-    TeamName:'',
-    Players:   {
-goalkepper: '',
-defender1: '',
-defender2: '',
-defender3: '',
-defender4: '',
-defender5: '',
-midfielders1:'',
-midfielders2:'',
-midfielders3:'',
-midfielders4:'',
-midfielders5:'',
-attakers1:'',
-attakers2:'',
-attakers3:'',
-attakers4:'',
-attakers5:'',
-benchs1:'',
-benchs2:'',
-benchs3:'',
-benchs4:'',
 
-    },
-
-    TeamManager: '',
-    TeamFormation: '',
-    selectedImage: null,
-
+HomeTeam: '',
+HomeTeamFormation: '',
+MatchDate: '',
+AwayTeam: '',
+AwayTeamFormation:'',
+Matchtime:'',
+HomeTeamScore: 0,
+                AwayTeamScore: 0,
+                MatchTimeline:'',
+                MatchActive: false,
 
 }
 
@@ -47,31 +30,39 @@ const MatchInfo = ({route, navigation}) => {
   const {competition, competitionF, notification, notificationF, currentUser, loader, loaderF, TeamsFromDB, TeamsFromDBF } = useGlobalContext();
 
 
-      const { teamId } = route.params;
+      const { matchId } = route.params;
 
-      const [teamInfo, teamInfoF] =useState(initialState)
+      const [matchhInfo, matchhInfoF] =useState(initialState)
 
 
       useEffect(() => {
-    teamId && getBlogDetail();
-  }, [teamId]);
+    matchId && getBlogDetail();
+  }, [matchId]);
 
   const getBlogDetail = async () => {
-    const docRef = doc(db, "Teams", teamId);
+    const docRef = doc(db, "Matchs", matchId);
     const snapshot = await getDoc(docRef);
     if (snapshot.exists()) {
-      teamInfoF({ ...snapshot.data() });
+      matchhInfoF({ ...snapshot.data() });
     }
   };
 
 
-  const{   Competition,
-    TeamName,
-    Players,
+  const{      Competition,
 
-    TeamManager,
-    TeamFormation,
-    selectedImage,} = teamInfo
+HomeTeam,
+HomeTeamFormation,
+MatchDate,
+AwayTeam,
+AwayTeamFormation,
+Matchtime,
+HomeTeamScore,
+                AwayTeamScore,
+                MatchTimeline,
+                MatchActive,
+} = matchhInfo
+
+
 
 
 
@@ -111,29 +102,19 @@ const MatchInfo = ({route, navigation}) => {
 
 
 
-  const Imagepicker = async () => {
-    let result = await pickImage();
-    if (!result.cancelled) {
-
-        
-     teamInfoF((prev) => ({ ...prev, selectedImage: result.uri }));
-    
-
-    }
-  };
 
 
   const handleSubmit = async (e) => {
     
       e.preventDefault();
 
-      if (teamInfo) {
+      if (matchhInfo) {
 
         try {
-          await updateDoc(doc(db, "Teams", teamId), {
-            ...teamInfo
+          await updateDoc(doc(db, "Matchs", matchId), {
+            ...matchhInfo
           });
-  navigation.navigate("Team List");
+  navigation.navigate("MatchList");
         } catch (err) {
           console.log(err);
         }
@@ -145,6 +126,14 @@ const MatchInfo = ({route, navigation}) => {
 
   }
 
+
+
+
+
+//   Notification 
+
+//   Notification 
+
       
 
 
@@ -152,53 +141,17 @@ const MatchInfo = ({route, navigation}) => {
     <SafeAreaView style={styles.container}>
         <Header/>
 
- <ScrollView  showsVerticalScrollIndicator={false}>
+  <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.topSection}>
-          <Text style={styles.topText}>Edit Team</Text>
+          <Text style={styles.topText}>Create Match</Text>
           <Text style={styles.capText}>
-  Please input the details of the Team.
+  Please input the Match Details.
           </Text>
         </View>
   
         <KeyboardAvoidingView style={styles.Inputs}>
   
-        <TouchableOpacity
-                  onPress={Imagepicker}
-                  style={{
-                    height: 80,
-                    width: 80,
-  
-                    alignItems: "center",
-                    justifyContent: "center",
-                    alignSelf: "center",
-  marginVertical: 20,
-                    borderRadius: 120,
-                  }}
-                >
-                  {!selectedImage ? (
-                    <View style={{ alignSelf: "center" }}>
-                      <Image
-                        source={require("../../assets/photo.png")}
-                        style={{
-                          height: 100,
-                          width: 100,
-                        }}
-                      />
-                      <Text style={{width: '100%', textAlign: 'center'}}>Add Team Logo</Text>
-                    </View>
-                  ) : (
-                    <Image
-                      source={{ uri: selectedImage }}
-                      style={{
-                        height: "100%",
-                        width: "100%",
-  
-                        borderRadius: 100,
-                      }}
-                    />
-                  )}
-                </TouchableOpacity>
-
+        
 
              
   
@@ -209,110 +162,212 @@ const MatchInfo = ({route, navigation}) => {
             <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
             Competition
             </Text>
+            <TextInput
+              value={Competition}  
+              readonly={true}
+              placeholder="Competition"
+             
+              style={styles.InputTextArea}
+            />
+          </View>
 
-               <SelectDropdown
-	data={competitionData}
-    defaultValue={Competition}
 
-      defaultButtonText = 'Select Competition'
+          <View style={{ marginTop: 10 }}>
+            <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+              Start Match
+            </Text>
+
+    <SelectDropdown
+	data={['Yes']}
+
+
+      defaultButtonText ={ MatchActive? 'Yes' : 'Please select to Start Match'}
       buttonStyle={styles.dropdownStyle}
       buttonTextStyle={styles.dropdownStyleTxt}
 
 	onSelect={(selectedItem, index) => {
-	// CompetitionF(selectedItem)
-
-     teamInfoF((prev) => ({ ...prev, Competition: selectedItem }));
+	matchhInfoF((prev) => ({ ...prev, MatchActive: true }));
 	}}
 	
    
 />
+
+          
           </View>
-  
-          <View style={{ marginTop: 10 }}>
+
+
+
+          <View style={{flexDirection:'row', justifyContent: 'space-between'} }>
+          <View style={{ marginTop: 10, flex: 1 }}>
             <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
-              Team Name
+            Home Team
             </Text>
             <TextInput
-              value={TeamName}
-              onChangeText={(e) => {
+              value={HomeTeam}  
+              readonly={true}
+              placeholder="Home Team"
              
-             teamInfoF({ ...teamInfo, TeamName: e });
-              }}
-              placeholder="Enter the Team Name"
-            
-              style={styles.Input}
+              style={styles.InputTextArea}
             />
           </View>
-  
-          <View style={{ marginTop: 10 }}>
+          <View style={{ marginTop: 10, flex: 1 }}>
             <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
-             Manager
+            Away Team
             </Text>
             <TextInput
-              value={TeamManager}
-              onChangeText={(e) => {
-                 
-             teamInfoF({ ...teamInfo, TeamManager: e });
-              }}
-              placeholder="Enter the Manager of the Team"
-         
-              style={styles.Input}
+              value={AwayTeam}  
+              readonly={true}
+              placeholder="Away Team"
+             
+              style={styles.InputTextArea}
             />
           </View>
-          <View style={{ marginTop: 10 }}>
+</View>
+
+
+  
+  
+
+
+
+
+
+    <View style={{flexDirection:'row', justifyContent: 'space-between'} }>
+         
+          <View style={{ marginTop: 10, flex: 1 }}>
             <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
-             Team Formation
+            Home Team Formation
             </Text>
          
              <SelectDropdown
 	data={formationData}
-    defaultValue={TeamFormation}
+    defaultValue={HomeTeamFormation}
+    
 
-      defaultButtonText = 'Select Team Formation'
+      defaultButtonText = 'Select Home Team Formation'
       buttonStyle={styles.dropdownStyle}
       buttonTextStyle={styles.dropdownStyleTxt}
 
 	onSelect={(selectedItem, index) => {
-	// FormationF(selectedItem)
+	matchhInfoF((prev) => ({ ...prev, HomeTeamFormation: selectedItem }));
+	}}
+	
+   
+/>
+          </View>
+          <View style={{ marginTop: 10, flex: 1 }}>
+            <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+            Away Team Formation
+            </Text>
+         
+             <SelectDropdown
+	data={formationData}
+    defaultValue={AwayTeamFormation}
     
-     teamInfoF((prev) => ({ ...prev, TeamFormation: selectedItem }));
+
+      defaultButtonText = 'Select Away Team Formation'
+      buttonStyle={styles.dropdownStyle}
+      buttonTextStyle={styles.dropdownStyleTxt}
+
+	onSelect={(selectedItem, index) => {
+	matchhInfoF((prev) => ({ ...prev, AwayTeamFormation: selectedItem }));
 	}}
 	
    
 />
           </View>
 
-
-          <View style={{ marginTop: 10 }}>
-            <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
-              Players
-            </Text>
+                 </View>
 
 
+
+
+  <View style={{flexDirection:'row', justifyContent: 'space-between'} }>
+          <View style={{ marginTop: 10, flex: 1 }}>
 
  <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
-              GoalKeeper
+              Home Team Score
             </Text>
 
             <TextInput
-              value={Players.goalkepper}
-              name= 'goalkepper'
-               onChangeText={(e) => {
-                 
-             teamInfoF({ ...teamInfo, Players : {
-                ...Players,
-                goalkepper:e
-             } });
-              }}
-              placeholder="Please enter GoalKeeper's Name"
+              value={HomeTeamScore}
+            
+                      onChangeText={(e) => {
              
+             matchhInfoF({ ...matchhInfo, HomeTeamScore: e });
+              }}
+              placeholder="0"
+             maxLength={2}
+              style={styles.InputTextArea}
+   keyboardType={'decimal-pad'}
+  
+            />
+          </View>
+
+          <View style={{ marginTop: 10, flex: 1 }}>
+
+ <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+              Away Team Score
+            </Text>
+
+            <TextInput
+              value={AwayTeamScore}
+            
+                    onChangeText={(e) => {
+             
+             matchhInfoF({ ...matchhInfo, AwayTeamScore: e });
+              }}
+              placeholder="0"
+             maxLength={2}
+              style={styles.InputTextArea}
+   keyboardType={'decimal-pad'}
+  
+            />
+          </View>
+
+          </View>
+  <View style={{flexDirection:'row', justifyContent: 'space-between'} }>
+          <View style={{ marginTop: 10, flex: 1 }}>
+
+ <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+              Date
+            </Text>
+
+            <TextInput
+              value={MatchDate}
+                     onChangeText={(e) => {
+             
+             matchhInfoF({ ...matchhInfo, MatchDate: e });
+              }}
+              placeholder="Enter Date e.g (20 Jan)"
+             maxLength={6}
               style={styles.InputTextArea}
    
   
             />
+          </View>
 
+          <View style={{ marginTop: 10, flex: 1 }}>
 
-           
+ <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+              Time
+            </Text>
+
+            <TextInput
+              value={Matchtime}
+            
+                   onChangeText={(e) => {
+             
+             matchhInfoF({ ...matchhInfo, Matchtime: e });
+              }}
+              placeholder="Enter Time e.g (03:00)"
+             maxLength={5}
+              style={styles.InputTextArea}
+   
+  
+            />
+          </View>
+
           </View>
   
         </KeyboardAvoidingView>
@@ -324,7 +379,7 @@ const MatchInfo = ({route, navigation}) => {
         </TouchableOpacity>
   
   
-      </ScrollView> 
+      </ScrollView>
 
 
   
@@ -386,7 +441,7 @@ const styles = StyleSheet.create({
         alignItems: 'baseline',
         justifyContent: 'flex-start',
      
-        textAlignVertical: 'top'
+        // textAlignVertical: 'top'
        
       
       },
