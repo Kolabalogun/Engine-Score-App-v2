@@ -5,7 +5,7 @@ import React from "react";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import Home from "../FrontEnd/Pages/Home";
 import Notification from "../Notification/Notification";
-import Index from "../Backend/Index";
+// import Index from "../Group/Index";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import Group from "../FrontEnd/Pages/Group";
 import Match from "../FrontEnd/Pages/Matches";
@@ -33,7 +33,7 @@ const TabNavigations = () => {
             (size = focused ? 23 : 20),
               (color = focused ? "#ff2782" : "#cdd4dc");
           }
-           else if (route.name === "Backend") {
+           else if (route.name === "Group") {
             iconName = "soccer-ball-o";
             (size = focused ? 23 : 20),
               (color = focused ? "#ff2782" : "#cdd4dc");
@@ -57,7 +57,7 @@ const TabNavigations = () => {
     >
       <Tabs.Screen name="Home" component={Home} />
       <Tabs.Screen name="Match" component={Match} />
-      <Tabs.Screen name="Backend" component={Index} />
+      <Tabs.Screen name="Group" component={Group} />
       <Tabs.Screen name="Notification" component={Notification} />
     </Tabs.Navigator>
   );

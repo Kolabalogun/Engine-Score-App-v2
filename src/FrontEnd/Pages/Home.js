@@ -20,6 +20,7 @@ import { color } from "react-native-reanimated";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useState } from "react";
 import { StatusBar } from "expo-status-bar";
+import Header from "../Components/Others/Header";
 
 const stack = createNativeStackNavigator();
 
@@ -98,27 +99,10 @@ const [matchActive, matchActiveF] = useState(false)
     return (
 
         <View style={styles.container}>
+        <View style={styles.main}>
 
-      <View style={styles.homeHeader}>
-        <View style={styles.profilePic}>
-        <Image
-            source={require("../../../assets/pro.jpg")}
-            resizeMode="cover"
-            style={{ height: 40, width: 40, borderRadius: 50 }}
-          />
-        </View>
-        <View style={styles.headerTitleDiv}>
-       <Text style={styles.headerTitle}>Engine <Text style={styles.headerTitleScore} >Scores</Text></Text>
-        </View>
-        <View style={styles.profilePic}>
-        <Image
-            source={require("../../../assets/pro.jpg")}
-            resizeMode="cover"
-            style={{ height: 40, width: 40, borderRadius: 50 }}
-          />
-        </View>
-      </View>
-
+      
+<Header/>
 
 
 <View style={styles.navMenu}>
@@ -363,6 +347,7 @@ const [matchActive, matchActiveF] = useState(false)
 
 
     </View>
+    </View>
    
 
   
@@ -391,26 +376,13 @@ const styles = StyleSheet.create({
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 40,
   },
 
-  homeHeader :{
-display: 'flex',
-flexDirection: 'row',
-justifyContent: 'space-between',
-alignItems: 'center'
-  },
-
-  headerTitle :{
-fontSize:26,
-fontWeight: '400'
+   main: {
+    paddingTop: 15,
 
   },
 
 
-  headerTitleScore: {
-    color:'#ff2782'
-    , fontWeight:'500'
-  }
-
-  ,
+  
   
   navMenu: {
   marginVertical:20,

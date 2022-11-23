@@ -4,7 +4,7 @@ import { useGlobalContext } from "../../Function/Context";
 import { useState } from "react";
 
 
-const MatchResult = () => {
+const MatchResult = ({navigation}) => {
   const { MatchState } = useGlobalContext();
 
   const [activeMenu, activeMenuF] = useState('lineup')
@@ -14,9 +14,9 @@ const MatchResult = () => {
 
       <View style={styles.matchTopBar}>
  <View style={styles.homeHeader}>
-        <TouchableOpacity style={{backgroundColor: 'aliceblue', opacity: 1, borderRadius: 50,}}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={{backgroundColor: 'aliceblue', opacity: 1, borderRadius: 50,}}>
         <Image
-            source={require("../../../assets/back.png")}
+            source={require("../../../assets/ba.png")}
             resizeMode="cover"
             style={{ height: 30, width: 30,   }}
           />
@@ -24,13 +24,13 @@ const MatchResult = () => {
         <View style={styles.headerTitleDiv}>
        <Text style={styles.headerTitle}>Engine 4.0</Text>
         </View>
-        <View style={styles.profilePic}>
-        {/* <Image
-            source={require("../../../assets/pro.jpg")}
+        <TouchableOpacity style={{ borderRadius: 50,}} >
+             <Image
+            source={require("../../../assets/refresh.png")}
             resizeMode="cover"
-            style={{ height: 40, width: 40, borderRadius: 50,  }}
-          /> */}
-        </View>
+            style={{ height: 25, width: 25,   }}
+          />
+        </TouchableOpacity>
       </View>
       </View>
 
@@ -145,6 +145,55 @@ const MatchResult = () => {
             style={{ marginVertical: 10 }}
           />
 
+
+          <Text style={styles.manager}>Manager</Text>
+
+          <View style={styles.managerSplit}>
+              <Text>Manager Name</Text>
+              <Text>Manager Name</Text>
+          </View>
+
+
+          
+          <Text style={styles.manager}>Lineups</Text>
+
+          <View style={styles.lineups}>
+
+            <View>
+  <Text>Player 1</Text>
+  <Text>Player 1</Text>
+  <Text>Player 1</Text>
+  <Text>Player 1</Text>
+  <Text>Player 1</Text>
+  <Text>Player 1</Text>
+  <Text>Player 1</Text>
+  <Text>Player 1</Text>
+  <Text>Player 1</Text>
+  <Text>Player 1</Text>
+  <Text>Player 1</Text>
+
+
+            </View>
+
+            <View>
+  <Text>Player 1</Text>
+  <Text>Player 1</Text>
+  <Text>Player 1</Text>
+  <Text>Player 1</Text>
+  <Text>Player 1</Text>
+  <Text>Player 1</Text>
+  <Text>Player 1</Text>
+  <Text>Player 1</Text>
+  <Text>Player 1</Text>
+  <Text>Player 1</Text>
+  <Text>Player 1</Text>
+            </View>
+
+                    
+                              
+
+          </View>
+
 </View>
 
 
@@ -170,7 +219,7 @@ alignItems: 'center'
   },
 
   headerTitle :{
-fontSize:18,
+fontSize:15,
 fontWeight: '500',
 color: 'white'
 
@@ -295,5 +344,36 @@ color: 'white'
  display: 'flex',
  flexDirection: 'row',
  justifyContent: 'space-between'
+  },
+
+  
+     manager: {
+ 
+ fontWeight: '500',
+ textAlign:'center'
+  },
+
+     managerSplit: {
+ 
+ display: 'flex',
+ flexDirection: 'row',
+ justifyContent: 'space-between',
+ paddingVertical:5
+  },
+
+  
+     lineups: {
+ 
+ display: 'flex',
+ flexDirection: 'row',
+ justifyContent: 'space-between',
+ marginVertical: 10
+  },
+
+  
+     manager: {
+ 
+ fontWeight: '500',
+ textAlign:'center'
   },
 });
