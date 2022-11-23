@@ -1,63 +1,24 @@
 import { ScrollView, StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React from "react";
 import { useGlobalContext } from "../../Function/Context";
-import Grouplist from "../Components/Group/Grouplist";
+// import Performancelist from "../Components/Performance/Performancelist";
 import { StatusBar } from "expo-status-bar";
 import Header from "../Components/Others/Header";
 import { useState } from "react";
 
 
-const Group = ({navigation}) => {
+const Performance = () => {
   const { Group } = useGlobalContext();
 
 
   
   const [competition, competitionF] = useState(4)
 
-  const points = Group;
-  points.sort(function (a, b) {
-    return b.points - a.points;
-  });
-
-  const Group1Elements = points.map((group, index) => {
-    if (group.group === 1) {
-      return (
-        <Grouplist
-          key={index}
-          id={group.id}
-          name={group.name}
-          played={group.played}
-          draw={group.draw}
-          win={group.won}
-          lost={group.lost}
-          gd={group.goalD}
-          point={group.points}
-        />
-      );
-    }
-  });
-  const Group2Elements = points.map((group, index) => {
-    if (group.group === 2) {
-      return (
-        <Grouplist
-          key={index}
-          id={group.id}
-          name={group.name}
-          played={group.played}
-          draw={group.draw}
-          win={group.won}
-          lost={group.lost}
-          gd={group.goalD}
-          point={group.points}
-        />
-      );
-    }
-  });
 
   return (
     <ScrollView style={styles.container}>
       <View style={styles.main}>
-  <Header navigation={navigation}/>
+ <Header navigation={navigation}/>
 
 
     <View style={styles.navMenu}>
@@ -92,45 +53,13 @@ const Group = ({navigation}) => {
 </View>
 
 
-        <View style={styles.group}>
-          <Text style={styles.groupName}>Group One</Text>
-          <View style={styles.table}>
-            <View style={styles.topTable}>
-              {/* <Text style={styles.tableHead}>No</Text> */}
-              <Text style={styles.tableHead}>Teams</Text>
-              <Text style={styles.tableHead}>P</Text>
-              <Text style={styles.tableHead}>W</Text>
-              <Text style={styles.tableHead}>L</Text>
-              <Text style={styles.tableHead}>D</Text>
-              <Text style={styles.tableHead}>GD</Text>
-              <Text style={styles.tableHead}>Pts</Text>
-            </View>
-            {Group1Elements}
-          </View>
-        </View>
-        <View style={styles.group}>
-          <Text style={styles.groupName}>Group Two</Text>
-          <View style={styles.table}>
-            <View style={styles.topTable}>
-              {/* <Text style={styles.tableHead}>No</Text> */}
-              <Text style={styles.tableHead}>Teams</Text>
-              <Text style={styles.tableHead}>P</Text>
-              <Text style={styles.tableHead}>W</Text>
-              <Text style={styles.tableHead}>L</Text>
-              <Text style={styles.tableHead}>D</Text>
-              <Text style={styles.tableHead}>GD</Text>
-              <Text style={styles.tableHead}>Pts</Text>
-            </View>
-            {Group2Elements}
-          </View>
-        </View>
 
       </View>
     </ScrollView>
   );
 };
 
-export default Group;
+export default Performance;
 
 const styles = StyleSheet.create({
   container: {
@@ -155,12 +84,12 @@ const styles = StyleSheet.create({
   },
 
 
-   group: {
+   Performance: {
     padding: 0,
     marginBottom: 30,
   },
 
-  groupName: {
+  PerformanceName: {
     fontSize: 16,
     fontWeight: "500",
     paddingTop: 3,

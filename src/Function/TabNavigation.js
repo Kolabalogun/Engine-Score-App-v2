@@ -9,6 +9,7 @@ import Notification from "../Notification/Notification";
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import Group from "../FrontEnd/Pages/Group";
 import Match from "../FrontEnd/Pages/Matches";
+import Performance from "../FrontEnd/Pages/Performance";
 
 
 
@@ -38,8 +39,8 @@ const TabNavigations = () => {
             (size = focused ? 23 : 20),
               (color = focused ? "#ff2782" : "#cdd4dc");
           }
-           else if (route.name === "Notification") {
-            iconName = "comment";
+           else if (route.name === "Performance") {
+            iconName = "user";
             (size = focused ? 23 : 20),
               (color = focused ? "#ff2782" : "#cdd4dc");
           }
@@ -58,7 +59,7 @@ const TabNavigations = () => {
       <Tabs.Screen name="Home" component={Home} />
       <Tabs.Screen name="Match" component={Match} />
       <Tabs.Screen name="Group" component={Group} />
-      <Tabs.Screen name="Notification" component={Notification} />
+      <Tabs.Screen name="Performance" component={Performance} />
     </Tabs.Navigator>
   );
 };

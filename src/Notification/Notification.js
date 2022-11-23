@@ -11,7 +11,7 @@ Notifications.setNotificationHandler({
   }),
 });
 
-export default function Notification() {
+export default function Notification({navigation}) {
   const [expoPushToken, setExpoPushToken] = useState('');
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
@@ -53,6 +53,7 @@ export default function Notification() {
           await schedulePushNotification();
         }}
       />
+            <Button onPress={() => navigation.goBack()} title="Go back home" />
     </View>
   );
 }

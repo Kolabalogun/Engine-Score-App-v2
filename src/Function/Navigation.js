@@ -1,6 +1,9 @@
 // import { createStackNavigator } from "@react-navigation/stack";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StyleSheet } from "react-native";
+// import Drawerr from "../FrontEnd/Pages/Drawer";
+import DrawerNavigation from "./DrawerNavigation";
+// import Drawer from "../FrontEnd/Pages/Drawer";
 import TabNavigations from "./TabNavigation";
 
 
@@ -13,9 +16,10 @@ const Navigations = () => {
       screenOptions={{
         headerShown: false,
       }}
-      initialRouteName={"Home"}
+      initialRouteName={"DrawerNavigation"}
     >
-      <Stack.Screen name="Tabs" component={TabNavigations} />
+      {/* <Stack.Screen name="Tabs" component={TabNavigations} /> */}
+      <Stack.Screen name="DrawerNavigation" component={DrawerNavigation} />
       
     </Stack.Navigator>
   );

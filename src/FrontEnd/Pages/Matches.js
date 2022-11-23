@@ -101,7 +101,7 @@ const [matchActive, matchActiveF] = useState(false)
         <View style={styles.container}>
         <View style={styles.main}>
 
-    <Header/>
+<Header navigation={navigation}/>
 
 
 

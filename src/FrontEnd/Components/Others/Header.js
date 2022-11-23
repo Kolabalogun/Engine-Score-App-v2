@@ -1,16 +1,19 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React from "react";
+import { TouchableRipple } from "react-native-paper";
 
-const Header = () => {
+const Header = ({navigation}) => {
   return (
    <View style={styles.homeHeader}>
-        <View style={styles.profilePic}>
+        <TouchableOpacity onPress={() =>{
+          navigation.toggleDrawer();
+        }} style={styles.profilePic}>
         <Image
             source={require("../../../../assets/menu.png")}
             resizeMode="cover"
             style={{ height: 25, width: 25,  }}
           />
-        </View>
+        </TouchableOpacity>
         <View style={styles.headerTitleDiv}>
        <Text style={styles.headerTitle}>Engine <Text style={styles.headerTitleScore} >Scores</Text></Text>
         </View>

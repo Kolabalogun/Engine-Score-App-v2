@@ -102,7 +102,7 @@ const [matchActive, matchActiveF] = useState(false)
         <View style={styles.main}>
 
       
-<Header/>
+<Header navigation={navigation}/>
 
 
 <View style={styles.navMenu}>
@@ -136,7 +136,7 @@ const [matchActive, matchActiveF] = useState(false)
   
 </View>
 
-<ScrollView>
+<ScrollView showsVerticalScrollIndicator={false}>
 
 
  <View style={styles.dashboard}>
@@ -221,6 +221,93 @@ const [matchActive, matchActiveF] = useState(false)
 </TouchableOpacity>
 
 
+<TouchableOpacity  onPress={() => navigation.navigate('MatchResult')} style={styles.eachMatch}>
+<View style={styles.eachMatchTeam}>
+
+  <Text style={styles.eachMatchTeamTxt}>Mechanical</Text>
+
+ <Image
+            source={require("../../../assets/logo-01.png")}
+            resizeMode="contain"
+            style={{ height: 45, width: 45,  }}
+          />
+
+
+</View><View style={styles.eachMatchTime}>
+
+ <Text style={styles.eachMatchTeamTime}>03:00</Text>
+  <Text style={styles.eachMatchTeamDate}>20 Jan</Text>
+</View><View style={styles.eachMatchTeam}>
+
+  
+ <Image
+            source={require("../../../assets/logo-02.png")}
+            resizeMode="contain"
+            style={{ height: 45, width: 45,  }}
+          />
+
+  <Text style={styles.eachMatchTeamTxt}>Computer</Text>
+
+</View>
+</TouchableOpacity>
+<TouchableOpacity  onPress={() => navigation.navigate('MatchResult')} style={styles.eachMatch}>
+<View style={styles.eachMatchTeam}>
+
+  <Text style={styles.eachMatchTeamTxt}>Mechanical</Text>
+
+ <Image
+            source={require("../../../assets/logo-01.png")}
+            resizeMode="contain"
+            style={{ height: 45, width: 45,  }}
+          />
+
+
+</View><View style={styles.eachMatchTime}>
+
+ <Text style={styles.eachMatchTeamTime}>03:00</Text>
+  <Text style={styles.eachMatchTeamDate}>20 Jan</Text>
+</View><View style={styles.eachMatchTeam}>
+
+  
+ <Image
+            source={require("../../../assets/logo-02.png")}
+            resizeMode="contain"
+            style={{ height: 45, width: 45,  }}
+          />
+
+  <Text style={styles.eachMatchTeamTxt}>Computer</Text>
+
+</View>
+</TouchableOpacity>
+<TouchableOpacity  onPress={() => navigation.navigate('MatchResult')} style={styles.eachMatch}>
+<View style={styles.eachMatchTeam}>
+
+  <Text style={styles.eachMatchTeamTxt}>Mechanical</Text>
+
+ <Image
+            source={require("../../../assets/logo-01.png")}
+            resizeMode="contain"
+            style={{ height: 45, width: 45,  }}
+          />
+
+
+</View><View style={styles.eachMatchTime}>
+
+ <Text style={styles.eachMatchTeamTime}>03:00</Text>
+  <Text style={styles.eachMatchTeamDate}>20 Jan</Text>
+</View><View style={styles.eachMatchTeam}>
+
+  
+ <Image
+            source={require("../../../assets/logo-02.png")}
+            resizeMode="contain"
+            style={{ height: 45, width: 45,  }}
+          />
+
+  <Text style={styles.eachMatchTeamTxt}>Computer</Text>
+
+</View>
+</TouchableOpacity>
 <TouchableOpacity  onPress={() => navigation.navigate('MatchResult')} style={styles.eachMatch}>
 <View style={styles.eachMatchTeam}>
 
