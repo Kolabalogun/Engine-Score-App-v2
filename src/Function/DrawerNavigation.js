@@ -10,6 +10,8 @@ import TabNavigations from './TabNavigation';
 import Notification from '../Notification/Notification';
 import AddTeams from '../Backend/AddTeams';
 import ListofTeams from '../Backend/ListofTeams';
+import CreateMatch from '../Backend/CreateMatch';
+import MatchList from '../Backend/MatchList';
 
 function HomeScreen({ navigation }) {
   return (
@@ -41,7 +43,7 @@ export default function DrawerNavigation() {
         <Drawer.Screen name="DrawerHome" component={TabNavigations} />
         <Drawer.Screen name="Notifications" component={Notification} />
         <Drawer.Screen name="Team List" component={ListofTeams} />
-        <Drawer.Screen name="Add Teams" component={AddTeams} />
+        <Drawer.Screen name="MatchList" component={MatchList} />
       </Drawer.Navigator>
     // </NavigationContainer>
   );

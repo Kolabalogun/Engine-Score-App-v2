@@ -98,6 +98,52 @@ const AppProvider = ({ children }) => {
     // }
   };
 
+  // get list of teams from firebase 
+
+  
+  const [MatchsFromDB, MatchsFromDBF] = useState([]);
+
+  useEffect(() => {
+    loaderF(true);
+    const unsub = onSnapshot(
+      collection(db, "Matchs"),
+
+      (snapshot) => {
+        let list = [];
+
+        snapshot.docs.forEach((doc) => {
+          list.push({ id: doc.id, ...doc.data() });
+        });
+        MatchsFromDBF(list);
+        loaderF(false);
+
+        console.log(MatchsFromDB);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+
+    return () => {
+      unsub();
+    };
+  }, []);
+
+    // to delete Matchs
+  const handleDeleteMatch = async (id) => {
+    console.warn('sdhgghds');
+    // if (window.confirm("Are you sure you want to delete this blog?")) {
+      try {
+        loaderF(true);
+        await deleteDoc(doc(db, "Matchs", id));
+        loaderF(false);
+        // toast.error("Blog successfully deleted");
+      } catch (error) {
+        console.log(error);
+      }
+    // }
+  };
+
 
 
 
@@ -280,6 +326,10 @@ competition, competitionF,
 
 handleDeleteTeam,
 
+MatchsFromDB, MatchsFromDBF,
+
+
+handleDeleteMatch,
 
 
 

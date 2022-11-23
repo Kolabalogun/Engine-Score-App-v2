@@ -42,7 +42,7 @@ benchs4:'',
 
 }
 
-const EditTeams = ({route, navigation}) => {
+const MatchInfo = ({route, navigation}) => {
 
   const {competition, competitionF, notification, notificationF, currentUser, loader, loaderF, TeamsFromDB, TeamsFromDBF } = useGlobalContext();
 
@@ -332,7 +332,7 @@ const EditTeams = ({route, navigation}) => {
   )
 }
 
-export default EditTeams
+export default MatchInfo
 
 const styles = StyleSheet.create({
     container: {

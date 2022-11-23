@@ -1,6 +1,8 @@
 // import { createStackNavigator } from "@react-navigation/stack";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StyleSheet } from "react-native";
+import AddTeams from "../Backend/AddTeams";
+import CreateMatch from "../Backend/CreateMatch";
 import EditTeams from "../Backend/EditTeams";
 // import Drawerr from "../FrontEnd/Pages/Drawer";
 import DrawerNavigation from "./DrawerNavigation";
@@ -22,6 +24,8 @@ const Navigations = () => {
       {/* <Stack.Screen name="Tabs" component={TabNavigations} /> */}
       <Stack.Screen name="DrawerNavigation" component={DrawerNavigation} />
       <Stack.Screen name="EditTeams" component={EditTeams} />
+      <Stack.Screen name="Add Teams" component={AddTeams} />
+      <Stack.Screen name="Create Match" component={CreateMatch} />
       
     </Stack.Navigator>
   );
