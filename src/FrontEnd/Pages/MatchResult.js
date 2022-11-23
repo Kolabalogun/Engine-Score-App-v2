@@ -1,11 +1,89 @@
 import { Image, ScrollView, StyleSheet, TouchableOpacity, View, Text } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { useGlobalContext } from "../../Function/Context";
 import { useState } from "react";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../../Utils/Firebase";
+import Home from "./Home";
 
 
-const MatchResult = ({navigation}) => {
-  const { MatchState } = useGlobalContext();
+
+const initialState={
+
+    Competition: '',
+
+HomeTeam: '',
+HomeTeamFormation: '',
+MatchDate: '',
+AwayTeam: '',
+AwayTeamFormation:'',
+Matchtime:'',
+HomeTeamScore: 0,
+                AwayTeamScore: 0,
+                MatchTimeline:'',
+                MatchActive: false,
+
+}
+const MatchResult = ({route, navigation}) => {
+  const { TeamsFromDB } = useGlobalContext();
+
+  const { matchId } = route.params;
+
+           const [matchhInfo, matchhInfoF] =useState(initialState)
+
+
+      useEffect(() => {
+    matchId && getBlogDetail();
+  }, [matchId]);
+
+  const getBlogDetail = async () => {
+    const docRef = doc(db, "Matchs", matchId);
+    const snapshot = await getDoc(docRef);
+    if (snapshot.exists()) {
+      matchhInfoF({ ...snapshot.data() });
+    }
+  };
+
+
+  
+  const{      Competition,
+
+HomeTeam,
+HomeTeamFormation,
+MatchDate,
+AwayTeam,
+AwayTeamFormation,
+Matchtime,
+HomeTeamScore,
+                AwayTeamScore,
+                MatchTimeline,
+                MatchActive,
+} = matchhInfo
+
+
+
+const [HomeTeamData, HomeTeamDataF] = useState([]);
+const [AwayTeamData, AwayTeamDataF] = useState([]);
+
+    useEffect(() => {
+      const data = TeamsFromDB.filter((team, index) => team.Competition === Competition && team.TeamName === HomeTeam)
+
+HomeTeamDataF(data)
+
+    }, [Competition, TeamsFromDB])
+    useEffect(() => {
+     const data = TeamsFromDB.filter((team, index) => team.Competition === Competition && team.TeamName === AwayTeam)
+AwayTeamDataF(data)
+
+    }, [Competition, TeamsFromDB])
+
+
+
+   
+
+
+
+
 
   const [activeMenu, activeMenuF] = useState('lineup')
 
@@ -22,7 +100,7 @@ const MatchResult = ({navigation}) => {
           />
         </TouchableOpacity>
         <View style={styles.headerTitleDiv}>
-       <Text style={styles.headerTitle}>Engine 4.0</Text>
+       <Text style={styles.headerTitle}>{Competition}</Text>
         </View>
         <TouchableOpacity style={{ borderRadius: 50,}} >
              <Image
@@ -52,13 +130,23 @@ const MatchResult = ({navigation}) => {
             style={{ height: 90, width: 90 }}
           />
 
-              <Text style={styles.teamTxt}>Mechanical</Text>
+              <Text style={styles.teamTxt}>{HomeTeam}</Text>
     
   </View> 
    <View  style={styles.score}>
-    <Text style = {styles.scoreTxt}>0</Text>
+    {
+      MatchActive ? <>
+      <Text style = {styles.scoreTxt}>{HomeTeamScore}</Text>
       <Text style = {styles.scoreTxt}>:</Text>
-        <Text style = {styles.scoreTxt}>0</Text>
+        <Text style = {styles.scoreTxt}>{AwayTeamScore}</Text>
+        </> :
+        <>
+         <Text style={styles.eachMatchTeamTime}>{Matchtime}</Text>
+         <Text style={styles.eachMatchTeamTime}>{'vs'}</Text>
+  <Text style={styles.eachMatchTeamDate}>{MatchDate}</Text>
+
+        </>
+    }
   </View>
     <View  style={styles.teamBoard}>
         <Image
@@ -67,7 +155,7 @@ const MatchResult = ({navigation}) => {
             style={{ height: 90, width: 90 }}
           />
 
-              <Text style={styles.teamTxt}>Computer</Text>
+              <Text style={styles.teamTxt}>{AwayTeam}</Text>
   </View>
   </View>
 
@@ -120,8 +208,8 @@ const MatchResult = ({navigation}) => {
           />
 
           <View style={styles.formation}>
-<Text>Mechanical</Text>
-<Text style={{color: '#aaa'}}>4-3-3</Text>
+<Text>{HomeTeam}</Text>
+<Text style={{color: '#aaa'}}>{HomeTeamFormation}</Text>
 </View>
 </View>
 <View style={styles.team}>
@@ -132,8 +220,8 @@ const MatchResult = ({navigation}) => {
           />
 
           <View style={styles.formation}>
-<Text>Computer</Text>
-<Text style={{color: '#aaa'}}>4-3-3</Text>
+<Text>{AwayTeam}</Text>
+<Text style={{color: '#aaa'}}>{AwayTeamFormation}</Text>
 </View>
 </View>
 </View>
@@ -149,8 +237,11 @@ const MatchResult = ({navigation}) => {
           <Text style={styles.manager}>Manager</Text>
 
           <View style={styles.managerSplit}>
-              <Text>Manager Name</Text>
-              <Text>Manager Name</Text>
+
+            {HomeTeamData.map(team => <Text>{team.TeamManager}</Text> )}
+            {AwayTeamData.map(team => <Text>{team.TeamManager}</Text> )}
+              
+          
           </View>
 
 
@@ -159,34 +250,63 @@ const MatchResult = ({navigation}) => {
 
           <View style={styles.lineups}>
 
+{HomeTeamData.map(team=> <View> 
+   <Text>{team.Players.goalkepper}</Text>
+
+  <Text>{team.Players.defender1}</Text>
+  <Text>{team.Players.defender2}</Text>
+  <Text>{team.Players.defender3}</Text>
+  <Text>{team.Players.defender4}</Text>
+  <Text>{team.Players.defender5}</Text>
+
+  <Text>{team.Players.midfielder1}</Text>
+  <Text>{team.Players.midfielder2}</Text>
+  <Text>{team.Players.midfielder3}</Text>
+  <Text>{team.Players.midfielder4}</Text>
+  <Text>{team.Players.midfielder5}</Text>
+  <Text>{team.Players.attacker1}</Text>
+  <Text>{team.Players.attacker2}</Text>
+  <Text>{team.Players.attacker3}</Text>
+  <Text>{team.Players.attacker4}</Text>
+  <Text>{team.Players.attacker5}</Text>
+  <Text>{team.Players.benchs1}</Text>
+  <Text>{team.Players.benchs2}</Text>
+  <Text>{team.Players.benchs3}</Text>
+  <Text>{team.Players.benchs4}</Text>
+  
+   </View> )}
             <View>
-  <Text>Player 1</Text>
-  <Text>Player 1</Text>
-  <Text>Player 1</Text>
-  <Text>Player 1</Text>
-  <Text>Player 1</Text>
-  <Text>Player 1</Text>
-  <Text>Player 1</Text>
-  <Text>Player 1</Text>
-  <Text>Player 1</Text>
-  <Text>Player 1</Text>
-  <Text>Player 1</Text>
+ 
 
 
             </View>
 
             <View>
-  <Text>Player 1</Text>
-  <Text>Player 1</Text>
-  <Text>Player 1</Text>
-  <Text>Player 1</Text>
-  <Text>Player 1</Text>
-  <Text>Player 1</Text>
-  <Text>Player 1</Text>
-  <Text>Player 1</Text>
-  <Text>Player 1</Text>
-  <Text>Player 1</Text>
-  <Text>Player 1</Text>
+{AwayTeamData.map(team=> <View> 
+   <Text>{team.Players.goalkepper}</Text>
+
+  <Text>{team.Players.defender1}</Text>
+  <Text>{team.Players.defender2}</Text>
+  <Text>{team.Players.defender3}</Text>
+  <Text>{team.Players.defender4}</Text>
+  <Text>{team.Players.defender5}</Text>
+
+  <Text>{team.Players.midfielder1}</Text>
+  <Text>{team.Players.midfielder2}</Text>
+  <Text>{team.Players.midfielder3}</Text>
+  <Text>{team.Players.midfielder4}</Text>
+  <Text>{team.Players.midfielder5}</Text>
+  <Text>{team.Players.attacker1}</Text>
+  <Text>{team.Players.attacker2}</Text>
+  <Text>{team.Players.attacker3}</Text>
+  <Text>{team.Players.attacker4}</Text>
+  <Text>{team.Players.attacker5}</Text>
+  <Text>{team.Players.benchs1}</Text>
+  <Text>{team.Players.benchs2}</Text>
+  <Text>{team.Players.benchs3}</Text>
+  <Text>{team.Players.benchs4}</Text>
+  
+   </View> )}
             </View>
 
                     
@@ -308,7 +428,8 @@ color: 'white'
 
    teamTxt: {
   color: 'black',
-  paddingTop: 5
+  paddingTop: 5,
+  fontWeight: '500'
   },
 
    scoreTxt: {
@@ -375,5 +496,18 @@ color: 'white'
  
  fontWeight: '500',
  textAlign:'center'
+  },
+
+  
+     eachMatchTeamTime: {
+  color:'red',
+  fontWeight:'500',
+
+  },
+
+       eachMatchTeamDate: {
+  color:'#aaa',
+  fontWeight:'400',
+
   },
 });

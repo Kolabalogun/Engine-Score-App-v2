@@ -1,10 +1,11 @@
 import { KeyboardAvoidingView, SafeAreaView, ScrollView, StyleSheet, Text, View, TouchableOpacity, Image, TextInput } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useGlobalContext } from '../Function/Context';
 import Header from '../FrontEnd/Components/Others/Header';
 import SelectDropdown from 'react-native-select-dropdown';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../Utils/Firebase';
+import * as Notifications from 'expo-notifications';
 
 
 
@@ -25,9 +26,42 @@ HomeTeamScore: 0,
 
 }
 
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+  }),
+});
+
 const MatchInfo = ({route, navigation}) => {
 
-  const {competition, competitionF, notification, notificationF, currentUser, loader, loaderF, TeamsFromDB, TeamsFromDBF } = useGlobalContext();
+
+    // Notifications
+      const [expoPushToken, setExpoPushToken] = useState('');
+  const [notificationn, setNotification] = useState(false);
+  const notificationListener = useRef();
+  const responseListener = useRef();
+
+  useEffect(() => {
+    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+
+    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+      setNotification(notification);
+    });
+
+    responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
+      console.log(response);
+    });
+
+    return () => {
+      Notifications.removeNotificationSubscription(notificationListener.current);
+      Notifications.removeNotificationSubscription(responseListener.current);
+    };
+  }, []);
+    // Notifications
+
+  const {competition, competitionF, notification, notificationF, currentUser, loader, loaderF, TeamsFromDB } = useGlobalContext();
 
 
       const { matchId } = route.params;
@@ -65,8 +99,10 @@ HomeTeamScore,
 
 
 
+const [notificationBody, notificationBodyF] = useState(null)
+const [notificationNote, notificationNoteF] = useState('')
 
-
+const notes = ['Match Starts in Few Minutes. Who will win?', 'Match Started',`Goal ${HomeTeam} ${HomeTeamScore} - ${AwayTeamScore} ${AwayTeam}`, `Halftime ${HomeTeamScore} - ${AwayTeamScore}`, `Full Time ${HomeTeamScore} - ${AwayTeamScore}`]
 
 
 
@@ -114,6 +150,12 @@ HomeTeamScore,
           await updateDoc(doc(db, "Matchs", matchId), {
             ...matchhInfo
           });
+
+          if (notificationBody) {
+             await schedulePushNotification();
+          }
+
+            
   navigation.navigate("MatchList");
         } catch (err) {
           console.log(err);
@@ -125,6 +167,61 @@ HomeTeamScore,
  
 
   }
+
+  
+
+
+// Notifications
+
+
+
+async function schedulePushNotification() {
+  await Notifications.scheduleNotificationAsync({
+    content: {
+      title: `${HomeTeam} vs ${AwayTeam}`  ,
+      body: `${notificationBody} [${notificationNote}]`,
+    //   data: { data: 'goes here' },
+    },
+    trigger: { seconds: 2 },
+  });
+}
+
+
+
+async function registerForPushNotificationsAsync() {
+  let token;
+
+  if (Platform.OS === 'android') {
+    await Notifications.setNotificationChannelAsync('default', {
+      name: 'default',
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: '#FF231F7C',
+    });
+  }
+
+  if (Device.isDevice) {
+    const { status: existingStatus } = await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+    if (existingStatus !== 'granted') {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+    if (finalStatus !== 'granted') {
+      alert('Failed to get push token for push notification!');
+      return;
+    }
+    token = (await Notifications.getExpoPushTokenAsync()).data;
+    console.log(token);
+  } else {
+    alert('Must use physical device for Push Notifications');
+  }
+
+  return token;
+}
+
+
+// Notifications
 
 
 
@@ -143,7 +240,7 @@ HomeTeamScore,
 
   <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.topSection}>
-          <Text style={styles.topText}>Create Match</Text>
+          <Text style={styles.topText}>Edit Match</Text>
           <Text style={styles.capText}>
   Please input the Match Details.
           </Text>
@@ -197,6 +294,8 @@ HomeTeamScore,
 
 
 
+
+
           <View style={{flexDirection:'row', justifyContent: 'space-between'} }>
           <View style={{ marginTop: 10, flex: 1 }}>
             <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
@@ -204,7 +303,10 @@ HomeTeamScore,
             </Text>
             <TextInput
               value={HomeTeam}  
-              readonly={true}
+                   onChangeText={(e) => {
+             
+             matchhInfoF({ ...matchhInfo, HomeTeam: e });
+              }}
               placeholder="Home Team"
              
               style={styles.InputTextArea}
@@ -216,7 +318,10 @@ HomeTeamScore,
             </Text>
             <TextInput
               value={AwayTeam}  
-              readonly={true}
+                    onChangeText={(e) => {
+             
+             matchhInfoF({ ...matchhInfo, AwayTeam: e });
+              }}
               placeholder="Away Team"
              
               style={styles.InputTextArea}
@@ -282,7 +387,9 @@ HomeTeamScore,
 
 
 
-  <View style={{flexDirection:'row', justifyContent: 'space-between'} }>
+{
+
+    MatchActive ?    <View style={{flexDirection:'row', justifyContent: 'space-between'} }>
           <View style={{ marginTop: 10, flex: 1 }}>
 
  <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
@@ -325,7 +432,7 @@ HomeTeamScore,
             />
           </View>
 
-          </View>
+          </View> :
   <View style={{flexDirection:'row', justifyContent: 'space-between'} }>
           <View style={{ marginTop: 10, flex: 1 }}>
 
@@ -369,6 +476,55 @@ HomeTeamScore,
           </View>
 
           </View>
+}
+
+
+
+
+
+           
+    <View style={{ marginTop: 10 }}>
+            <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+              Notification
+            </Text>
+
+    <SelectDropdown
+	data={notes}
+
+
+      defaultButtonText ={ 'Notification'}
+      buttonStyle={styles.dropdownStyle}
+      buttonTextStyle={styles.dropdownStyleTxt}
+
+	onSelect={(selectedItem, index) => {
+	notificationBodyF(selectedItem);
+	}}
+	
+   
+/>
+
+  <View style={{ marginTop: 10, flex: 1 }}>
+
+ <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+              Notification Note
+            </Text>
+
+            <TextInput
+              value={notificationNote}
+                     onChangeText={(e) => {
+             
+             notificationNoteF(e);
+              }}
+              placeholder="Add Goal Scorer's Name"
+             maxLength={6}
+              style={styles.InputTextArea}
+   
+  
+            />
+          </View>
+
+          
+          </View>
   
         </KeyboardAvoidingView>
         <Text style={{ color: "red", alignSelf: "center", padding: 3 }}>
@@ -388,6 +544,7 @@ HomeTeamScore,
 }
 
 export default MatchInfo
+
 
 const styles = StyleSheet.create({
     container: {

@@ -55,7 +55,13 @@ const AppProvider = ({ children }) => {
   // get list of teams from firebase 
 
   
-  const [TeamsFromDB, TeamsFromDBF] = useState([]);
+  const [TeamsFromDBi, TeamsFromDBiF] = useState([]);
+
+
+  const TeamsFromDB = TeamsFromDBi;
+  TeamsFromDB.sort(function (a, b) {
+    return a.dateId - b.dateId;
+  });
 
   useEffect(() => {
     loaderF(true);
@@ -68,10 +74,10 @@ const AppProvider = ({ children }) => {
         snapshot.docs.forEach((doc) => {
           list.push({ id: doc.id, ...doc.data() });
         });
-        TeamsFromDBF(list);
+        TeamsFromDBiF(list);
         loaderF(false);
 
-        console.log(TeamsFromDB);
+        
       },
       (error) => {
         console.log(error);
@@ -101,7 +107,12 @@ const AppProvider = ({ children }) => {
   // get list of teams from firebase 
 
   
-  const [MatchsFromDB, MatchsFromDBF] = useState([]);
+  const [MatchsFromDBi, MatchsFromDBiF] = useState([]);
+
+   const MatchsFromDB = MatchsFromDBi;
+  MatchsFromDB.sort(function (a, b) {
+    return a.dateId - b.dateId;
+  });
 
   useEffect(() => {
     loaderF(true);
@@ -114,10 +125,10 @@ const AppProvider = ({ children }) => {
         snapshot.docs.forEach((doc) => {
           list.push({ id: doc.id, ...doc.data() });
         });
-        MatchsFromDBF(list);
+        MatchsFromDBiF(list);
         loaderF(false);
 
-        console.log(MatchsFromDB);
+     
       },
       (error) => {
         console.log(error);
@@ -320,13 +331,13 @@ currentUser, currentUserF,
 
 loader, loaderF,
 
-TeamsFromDB, TeamsFromDBF,
+TeamsFromDB,
 
 competition, competitionF,
 
 handleDeleteTeam,
 
-MatchsFromDB, MatchsFromDBF,
+MatchsFromDB, 
 
 
 handleDeleteMatch,

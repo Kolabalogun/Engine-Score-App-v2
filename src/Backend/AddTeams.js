@@ -16,7 +16,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 const AddTeams = ({navigation}) => {
 
-    const {competition, competitionF, notification, notificationF, currentUser, loader, loaderF, TeamsFromDB, TeamsFromDBF } = useGlobalContext();
+    const {competition, competitionF, notification, notificationF, currentUser, loader, loaderF, TeamsFromDB } = useGlobalContext();
   const [Competition, CompetitionF] = useState('');
 
   const competitionData = ['Engine 4.0', 'Engine 3.0']

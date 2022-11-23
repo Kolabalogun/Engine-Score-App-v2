@@ -25,75 +25,105 @@ import Header from "../Components/Others/Header";
 const stack = createNativeStackNavigator();
 
 const Home = ({ navigation }) => {
-  const { MatchState } = useGlobalContext();
+     const {MatchsFromDB, competitionF, competition}= useGlobalContext()
 
 
 
+          const Engine40list = MatchsFromDB.map((match, index) =>{
+    if (match.Competition === 'Engine 4.0') {
+        return (
+         <TouchableOpacity key={index} onPress={() => navigation.navigate('MatchResult', {
+                matchId: match.id
+            })} style={styles.eachMatch}>
+<View style={styles.eachMatchTeam}>
 
-  const [competition, competitionF] = useState(4)
+  <Text style={styles.eachMatchTeamTxt}>{match.HomeTeam}</Text>
+
+ <Image
+            source={require("../../../assets/logo-01.png")}
+            resizeMode="contain"
+            style={{ height: 45, width: 45,  }}
+          />
 
 
-const [matchActive, matchActiveF] = useState(false)
+</View>
+<View style={styles.eachMatchTime}>
+
+    
+
+    {match.MatchActive ?<View style={{flexDirection: 'row', }}>
+        <Text style={styles.eachMatchTeamTimeScore}>{match.HomeTeamScore}</Text> 
+    <Text style={styles.eachMatchTeamDateScore}>-</Text>
+  <Text style={styles.eachMatchTeamTimeScore}>{match.AwayTeamScore}</Text>
+  </View>
+   : <>
+    <Text style={styles.eachMatchTeamTime}>{match.Matchtime}</Text>
+  <Text style={styles.eachMatchTeamDate}>{match.MatchDate}</Text></>}
+
+ 
+  </View>
+  <View style={styles.eachMatchTeam}>
+
+  
+ <Image
+            source={require("../../../assets/logo-02.png")}
+            resizeMode="contain"
+            style={{ height: 45, width: 45,  }}
+          />
+
+  <Text style={styles.eachMatchTeamTxt}>{match.AwayTeam}</Text>
+
+</View>
+</TouchableOpacity>
+        )
+    }
+  } )
+        const Engine30list = MatchsFromDB.map((match, index) =>{
+    if (match.Competition === 'Engine 3.0') {
+        return (
+         <TouchableOpacity key={index} onPress={() => navigation.navigate('MatchResult', {
+                matchId: match.id
+            })} style={styles.eachMatch}>
+<View style={styles.eachMatchTeam}>
+
+  <Text style={styles.eachMatchTeamTxt}>{match.HomeTeam}</Text>
+
+ <Image
+            source={require("../../../assets/logo-01.png")}
+            resizeMode="contain"
+            style={{ height: 45, width: 45,  }}
+          />
+
+
+</View>
+<View style={styles.eachMatchTime}>
+
+ <Text style={styles.eachMatchTeamTime}>{match.Matchtime}</Text>
+  <Text style={styles.eachMatchTeamDate}>{match.MatchDate}</Text>
+  </View>
+  <View style={styles.eachMatchTeam}>
+
+  
+ <Image
+            source={require("../../../assets/logo-02.png")}
+            resizeMode="contain"
+            style={{ height: 45, width: 45,  }}
+          />
+
+  <Text style={styles.eachMatchTeamTxt}>{match.AwayTeam}</Text>
+
+</View>
+</TouchableOpacity>
+        )
+    }
+  } )
 
 
   function onMatchClick(params) {
     navigation.navigate("MatchResult");
   }
 
-  const MatchDayOneElements = MatchState.map((match, index) => {
-    if (match.matchDay === 1) {
-      return (
-        <Pressable key={index} onPress={onMatchClick}>
-          <MatchList
-            //   id={match.id}
-            matchDay={match.matchDay}
-            firstteam={match.firstteam}
-            secondteam={match.secondteam}
-            firstteamScore={match.firstteamScore}
-            secondteamScore={match.secondteamScore}
-            time={match.time}
-            gamestate={match.gamestate}
-          />
-        </Pressable>
-      );
-    }
-  });
-  const MatchDayTwoElements = MatchState.map((match, index) => {
-    if (match.matchDay === 2) {
-      return (
-        <Pressable key={index} onPress={() => onMatchClick(match.id)}>
-          <MatchList
-            //   id={match.id}
-            matchDay={match.matchDay}
-            firstteam={match.firstteam}
-            secondteam={match.secondteam}
-            firstteamScore={match.firstteamScore}
-            secondteamScore={match.secondteamScore}
-            time={match.time}
-            gamestate={match.gamestate}
-          />
-        </Pressable>
-      );
-    }
-  });
-  const MatchDayThreeElements = MatchState.map((match, index) => {
-    if (match.matchDay === 3) {
-      return (
-        <Pressable key={index} onPress={() => onMatchClick(match.id)}>
-          <MatchList
-            id={match.id}
-            matchDay={match.matchDay}
-            firstteam={match.firstteam}
-            secondteam={match.secondteam}
-            firstteamScore={match.firstteamScore}
-            secondteamScore={match.secondteamScore}
-            time={match.time}
-            gamestate={match.gamestate}
-          />
-        </Pressable>
-      );
-    }
-  });
+
 
   function Screen_A() {
     return (
@@ -190,241 +220,11 @@ const [matchActive, matchActiveF] = useState(false)
   Match
 </Text>
 
-<TouchableOpacity  onPress={() => navigation.navigate('MatchResult')} style={styles.eachMatch}>
-<View style={styles.eachMatchTeam}>
-
-  <Text style={styles.eachMatchTeamTxt}>Mechanical</Text>
-
- <Image
-            source={require("../../../assets/logo-01.png")}
-            resizeMode="contain"
-            style={{ height: 45, width: 45,  }}
-          />
-
-
-</View><View style={styles.eachMatchTime}>
-
- <Text style={styles.eachMatchTeamTime}>03:00</Text>
-  <Text style={styles.eachMatchTeamDate}>20 Jan</Text>
-</View><View style={styles.eachMatchTeam}>
-
-  
- <Image
-            source={require("../../../assets/logo-02.png")}
-            resizeMode="contain"
-            style={{ height: 45, width: 45,  }}
-          />
-
-  <Text style={styles.eachMatchTeamTxt}>Computer</Text>
-
-</View>
-</TouchableOpacity>
-
-
-<TouchableOpacity  onPress={() => navigation.navigate('MatchResult')} style={styles.eachMatch}>
-<View style={styles.eachMatchTeam}>
-
-  <Text style={styles.eachMatchTeamTxt}>Mechanical</Text>
-
- <Image
-            source={require("../../../assets/logo-01.png")}
-            resizeMode="contain"
-            style={{ height: 45, width: 45,  }}
-          />
-
-
-</View><View style={styles.eachMatchTime}>
-
- <Text style={styles.eachMatchTeamTime}>03:00</Text>
-  <Text style={styles.eachMatchTeamDate}>20 Jan</Text>
-</View><View style={styles.eachMatchTeam}>
-
-  
- <Image
-            source={require("../../../assets/logo-02.png")}
-            resizeMode="contain"
-            style={{ height: 45, width: 45,  }}
-          />
-
-  <Text style={styles.eachMatchTeamTxt}>Computer</Text>
-
-</View>
-</TouchableOpacity>
-<TouchableOpacity  onPress={() => navigation.navigate('MatchResult')} style={styles.eachMatch}>
-<View style={styles.eachMatchTeam}>
-
-  <Text style={styles.eachMatchTeamTxt}>Mechanical</Text>
-
- <Image
-            source={require("../../../assets/logo-01.png")}
-            resizeMode="contain"
-            style={{ height: 45, width: 45,  }}
-          />
-
-
-</View><View style={styles.eachMatchTime}>
-
- <Text style={styles.eachMatchTeamTime}>03:00</Text>
-  <Text style={styles.eachMatchTeamDate}>20 Jan</Text>
-</View><View style={styles.eachMatchTeam}>
-
-  
- <Image
-            source={require("../../../assets/logo-02.png")}
-            resizeMode="contain"
-            style={{ height: 45, width: 45,  }}
-          />
-
-  <Text style={styles.eachMatchTeamTxt}>Computer</Text>
-
-</View>
-</TouchableOpacity>
-<TouchableOpacity  onPress={() => navigation.navigate('MatchResult')} style={styles.eachMatch}>
-<View style={styles.eachMatchTeam}>
-
-  <Text style={styles.eachMatchTeamTxt}>Mechanical</Text>
-
- <Image
-            source={require("../../../assets/logo-01.png")}
-            resizeMode="contain"
-            style={{ height: 45, width: 45,  }}
-          />
-
-
-</View><View style={styles.eachMatchTime}>
-
- <Text style={styles.eachMatchTeamTime}>03:00</Text>
-  <Text style={styles.eachMatchTeamDate}>20 Jan</Text>
-</View><View style={styles.eachMatchTeam}>
-
-  
- <Image
-            source={require("../../../assets/logo-02.png")}
-            resizeMode="contain"
-            style={{ height: 45, width: 45,  }}
-          />
-
-  <Text style={styles.eachMatchTeamTxt}>Computer</Text>
-
-</View>
-</TouchableOpacity>
-<TouchableOpacity  onPress={() => navigation.navigate('MatchResult')} style={styles.eachMatch}>
-<View style={styles.eachMatchTeam}>
-
-  <Text style={styles.eachMatchTeamTxt}>Mechanical</Text>
-
- <Image
-            source={require("../../../assets/logo-01.png")}
-            resizeMode="contain"
-            style={{ height: 45, width: 45,  }}
-          />
-
-
-</View><View style={styles.eachMatchTime}>
-
- <Text style={styles.eachMatchTeamTime}>03:00</Text>
-  <Text style={styles.eachMatchTeamDate}>20 Jan</Text>
-</View><View style={styles.eachMatchTeam}>
-
-  
- <Image
-            source={require("../../../assets/logo-02.png")}
-            resizeMode="contain"
-            style={{ height: 45, width: 45,  }}
-          />
-
-  <Text style={styles.eachMatchTeamTxt}>Computer</Text>
-
-</View>
-</TouchableOpacity>
-<TouchableOpacity  onPress={() => navigation.navigate('MatchResult')} style={styles.eachMatch}>
-<View style={styles.eachMatchTeam}>
-
-  <Text style={styles.eachMatchTeamTxt}>Mechanical</Text>
-
- <Image
-            source={require("../../../assets/logo-01.png")}
-            resizeMode="contain"
-            style={{ height: 45, width: 45,  }}
-          />
-
-
-</View><View style={styles.eachMatchTime}>
-
- <Text style={styles.eachMatchTeamTime}>03:00</Text>
-  <Text style={styles.eachMatchTeamDate}>20 Jan</Text>
-</View><View style={styles.eachMatchTeam}>
-
-  
- <Image
-            source={require("../../../assets/logo-02.png")}
-            resizeMode="contain"
-            style={{ height: 45, width: 45,  }}
-          />
-
-  <Text style={styles.eachMatchTeamTxt}>Computer</Text>
-
-</View>
-</TouchableOpacity>
-<TouchableOpacity  onPress={() => navigation.navigate('MatchResult')} style={styles.eachMatch}>
-<View style={styles.eachMatchTeam}>
-
-  <Text style={styles.eachMatchTeamTxt}>Mechanical</Text>
-
- <Image
-            source={require("../../../assets/logo-01.png")}
-            resizeMode="contain"
-            style={{ height: 45, width: 45,  }}
-          />
-
-
-</View><View style={styles.eachMatchTime}>
-
- <Text style={styles.eachMatchTeamTime}>03:00</Text>
-  <Text style={styles.eachMatchTeamDate}>20 Jan</Text>
-</View><View style={styles.eachMatchTeam}>
-
-  
- <Image
-            source={require("../../../assets/logo-02.png")}
-            resizeMode="contain"
-            style={{ height: 45, width: 45,  }}
-          />
-
-  <Text style={styles.eachMatchTeamTxt}>Computer</Text>
-
-</View>
-</TouchableOpacity>
-<TouchableOpacity  onPress={() => navigation.navigate('MatchResult')} style={styles.eachMatch}>
-<View style={styles.eachMatchTeam}>
-
-  <Text style={styles.eachMatchTeamTxt}>Mechanical</Text>
-
- <Image
-            source={require("../../../assets/logo-01.png")}
-            resizeMode="contain"
-            style={{ height: 45, width: 45,  }}
-          />
-
-
-</View><View style={styles.eachMatchTime}>
-
- <Text style={styles.eachMatchTeamTime}>03:00</Text>
-  <Text style={styles.eachMatchTeamDate}>20 Jan</Text>
-</View><View style={styles.eachMatchTeam}>
-
-  
- <Image
-            source={require("../../../assets/logo-02.png")}
-            resizeMode="contain"
-            style={{ height: 45, width: 45,  }}
-          />
-
-  <Text style={styles.eachMatchTeamTxt}>Computer</Text>
-
-</View>
-</TouchableOpacity>
-
+{competition===4 ? Engine40list
+ 
+ :
+
+Engine30list}
   
   </View> 
 
@@ -591,6 +391,20 @@ const styles = StyleSheet.create({
        eachMatchTeamDate: {
   color:'#aaa',
   fontWeight:'400',
+  },
+
+  
+     eachMatchTeamTimeScore: {
+  color:'red',
+  fontWeight:'500',
+  fontSize: 20
+  },
+
+       eachMatchTeamDateScore: {
+  color:'#aaa',
+  fontWeight:'400',
+  fontSize: 20,
+    paddingHorizontal: 8
   },
 
 });

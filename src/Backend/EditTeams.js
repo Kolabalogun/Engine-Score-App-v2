@@ -44,7 +44,7 @@ benchs4:'',
 
 const EditTeams = ({route, navigation}) => {
 
-  const {competition, competitionF, notification, notificationF, currentUser, loader, loaderF, TeamsFromDB, TeamsFromDBF } = useGlobalContext();
+  const {competition, competitionF, notification, notificationF, currentUser, loader, loaderF, TeamsFromDB } = useGlobalContext();
 
 
       const { teamId } = route.params;
