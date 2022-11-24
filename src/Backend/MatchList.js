@@ -24,7 +24,7 @@ const MatchList = ({navigation}) => {
         </View>
         <TouchableOpacity onPress={() => navigation.navigate('Create Match')} style={styles.profilePic}>
         <Image
-           source={require("../../assets/add.png")}
+           source={require("../../assets/ft.png")}
             resizeMode="cover"
             style={{ height: 30, width: 30,  }}
           />
@@ -93,6 +93,7 @@ const MatchList = ({navigation}) => {
     
 
     {match.MatchActive ?<View style={{flexDirection: 'row', }}>
+        <Text style={styles.eachMatchTeamTimeScore}>{match.HomeTeamScore}</Text> 
         <Text style={styles.eachMatchTeamTimeScore}>{match.HomeTeamScore}</Text> 
     <Text style={styles.eachMatchTeamDateScore}>-</Text>
   <Text style={styles.eachMatchTeamTimeScore}>{match.AwayTeamScore}</Text>
@@ -189,7 +190,7 @@ const styles = StyleSheet.create({
     
         backgroundColor: "aliceblue",
         // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-          paddingHorizontal: 20,
+          paddingHorizontal: 10,
           paddingTop: 10
       },
 
@@ -264,7 +265,7 @@ fontWeight: '400'
      eachMatchTeamTimeScore: {
   color:'red',
   fontWeight:'500',
-  fontSize: 20
+  fontSize: 17
   },
 
        eachMatchTeamDateScore: {

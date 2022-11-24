@@ -140,12 +140,14 @@ AwayTeamDataF(data)
       <Text style = {styles.scoreTxt}>:</Text>
         <Text style = {styles.scoreTxt}>{AwayTeamScore}</Text>
         </> :
-        <>
+        <View style={{flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flex: 1}}>
          <Text style={styles.eachMatchTeamTime}>{Matchtime}</Text>
-         <Text style={styles.eachMatchTeamTime}>{'vs'}</Text>
+         <Text style={{  color:'black',
+  fontWeight:'500',
+  fontSize: 15}}>{'vs'}</Text>
   <Text style={styles.eachMatchTeamDate}>{MatchDate}</Text>
 
-        </>
+        </View>
     }
   </View>
     <View  style={styles.teamBoard}>
@@ -198,7 +200,12 @@ AwayTeamDataF(data)
 </View>
 
 
-<View style={styles.formationSection}>
+
+{
+  activeMenu === 'lineup'
+  
+  ?
+  <View style={styles.formationSection}>
 <View style={styles.teams}>
 <View style={styles.team}>
     <Image
@@ -315,6 +322,37 @@ AwayTeamDataF(data)
           </View>
 
 </View>
+  : <View style={styles.formationSection}>
+    
+    {MatchTimeline.slice(0).reverse().map((details,index)=> 
+
+ <View style={styles.eachSummary}  key={index}>
+
+
+
+<View >
+      <Text style={{borderBottomWidth: 1, borderBottomColor: '#aaa'}}>{details.MatchBody}</Text>
+      <Text style={{fontSize:17, fontWeight: '500', paddingTop: 10 }}>{details.MatchNote}</Text>
+
+      </View>
+
+
+      <View>
+
+      <Image
+source={details.MatchBody === 'Yellow Card' ? require('../../../assets/red.png') : details.MatchBody === 'Goal' ? require('../../../assets/ball.png') : details.MatchBody === 'Red Card' ? require('../../../assets/yellow.png') : require('../../../assets/ft.png')}
+resizeMode= 'contain'
+
+style={{height: 35,}}
+/>
+</View>
+    </View>
+    )}
+  </View>
+}
+
+
+
 
 
      
@@ -502,12 +540,24 @@ color: 'white'
      eachMatchTeamTime: {
   color:'red',
   fontWeight:'500',
+  fontSize: 15
 
   },
 
        eachMatchTeamDate: {
   color:'#aaa',
   fontWeight:'400',
-
+fontSize: 15
   },
+
+    eachSummary:{
+padding: 10,
+backgroundColor: 'white',
+borderRadius: 10,
+marginVertical: 5,
+flexDirection: 'row',
+justifyContent: 'space-between',
+alignItems: 'center'
+
+  }
 });

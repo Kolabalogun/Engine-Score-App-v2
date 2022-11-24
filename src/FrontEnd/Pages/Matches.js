@@ -375,7 +375,7 @@ fontWeight: '400'
      eachMatchTeamTimeScore: {
   color:'red',
   fontWeight:'500',
-  fontSize: 20
+  fontSize: 17
   },
 
        eachMatchTeamDateScore: {

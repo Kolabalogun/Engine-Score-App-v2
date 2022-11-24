@@ -6,6 +6,7 @@ import SelectDropdown from 'react-native-select-dropdown';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../Utils/Firebase';
 import * as Notifications from 'expo-notifications';
+import * as Device from 'expo-device';
 
 
 
@@ -19,9 +20,9 @@ MatchDate: '',
 AwayTeam: '',
 AwayTeamFormation:'',
 Matchtime:'',
-HomeTeamScore: 0,
-                AwayTeamScore: 0,
-                MatchTimeline:'',
+HomeTeamScore: '',
+                AwayTeamScore: '',
+                MatchTimeline:[],
                 MatchActive: false,
 
 }
@@ -73,6 +74,10 @@ const MatchInfo = ({route, navigation}) => {
     matchId && getBlogDetail();
   }, [matchId]);
 
+      useEffect(() => {
+   MatchNoteF(`${HomeTeamScore} - ${AwayTeamScore}`)
+  }, [matchhInfo]);
+
   const getBlogDetail = async () => {
     const docRef = doc(db, "Matchs", matchId);
     const snapshot = await getDoc(docRef);
@@ -102,13 +107,14 @@ HomeTeamScore,
 const [notificationBody, notificationBodyF] = useState(null)
 const [notificationNote, notificationNoteF] = useState('')
 
+const [MatchBody, MatchBodyF] = useState(null)
+
+const [MatchNote, MatchNoteF] = useState(`${HomeTeamScore} - ${AwayTeamScore}`)
+
 const notes = ['Match Starts in Few Minutes. Who will win?', 'Match Started',`Goal ${HomeTeam} ${HomeTeamScore} - ${AwayTeamScore} ${AwayTeam}`, `Halftime ${HomeTeamScore} - ${AwayTeamScore}`, `Full Time ${HomeTeamScore} - ${AwayTeamScore}`]
+const Matchnotes = ['Match Started', 'Goal',  'Yellow Card', 'Substitution',`Red Card`, 'Half Time', `Full Time`]
 
 
-
-
-
-  const competitionData = ['Engine 4.0', 'Engine 3.0']
   const formationData = ['4-4-2', '4-3-3', '4-2-3-1', '3-4-3', '3-5-2']
 
 
@@ -125,11 +131,6 @@ const notes = ['Match Starts in Few Minutes. Who will win?', 'Match Started',`Go
     // to set timeId
     useEffect(() => {
         const dateId = new Date().getTime();
-        const realTime = new Date().toLocaleTimeString()
-        const realDate = new Date().toDateString()
-
-        // TeamNameF(`${realDate} ${realTime}`);
-
         
         setdateId(dateId);
     }, []);
@@ -148,7 +149,12 @@ const notes = ['Match Starts in Few Minutes. Who will win?', 'Match Started',`Go
 
         try {
           await updateDoc(doc(db, "Matchs", matchId), {
-            ...matchhInfo
+            ...matchhInfo,
+            MatchTimeline: [
+                ...MatchTimeline,
+                {MatchBody, MatchNote}
+            ]
+
           });
 
           if (notificationBody) {
@@ -220,6 +226,33 @@ async function registerForPushNotificationsAsync() {
   return token;
 }
 
+// async function registerForPushNotificationsAsync(userId) {
+// 	let token;
+	
+// 	if (Constants.isDevice) {
+// 		const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);		
+// 		let finalStatus = existingStatus;
+// 		if (existingStatus !== "granted") {
+// 			const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+// 			finalStatus = status;
+// 		}
+// 		if (finalStatus !== "granted") {
+// 			alert("Failed to get push token for push notification!");
+// 			return;
+// 		}
+// 		try {
+// 			token = await Notifications.getExpoPushTokenAsync();
+// 		}catch(err){
+// 			alert(`failed to get token error ${err}`);
+// 		}
+//                 token = token.data
+// 	} else {
+// 		alert("Must use physical device for Push Notifications");
+// 	}
+
+// 	return token;
+// }
+
 
 // Notifications
 
@@ -233,10 +266,13 @@ async function registerForPushNotificationsAsync() {
 
       
 
+  function functions(params) {
+          navigation.goBack();
+  }
 
   return (
     <SafeAreaView style={styles.container}>
-        <Header/>
+           <Header functions={functions} imgtype={require("../../assets/ba.png")}/>
 
   <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.topSection}>
@@ -502,6 +538,8 @@ async function registerForPushNotificationsAsync() {
 	
    
 />
+  </View>
+
 
   <View style={{ marginTop: 10, flex: 1 }}>
 
@@ -518,13 +556,56 @@ async function registerForPushNotificationsAsync() {
               placeholder="Add Goal Scorer's Name"
              maxLength={6}
               style={styles.InputTextArea}
-   
   
             />
           </View>
 
+ 
+
+   <View style={{ marginTop: 10 }}>
+            <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+              Match Summary
+            </Text>
+
+    <SelectDropdown
+	data={Matchnotes}
+
+
+      defaultButtonText ={ 'Match Summary'}
+      buttonStyle={styles.dropdownStyle}
+      buttonTextStyle={styles.dropdownStyleTxt}
+
+	onSelect={(selectedItem, index) => {
+	MatchBodyF(selectedItem);
+	}}
+	
+   
+/>
+  </View>
+
+ { MatchBody  && <View style={{ marginTop: 10, flex: 1 }}>
+
+ <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+              Match Note
+            </Text>
+
+            <TextInput
+              value={MatchNote}
+                   onChangeText={(e) => {
+             MatchNoteF(e)
+           
+              }}
+              placeholder="Enter Match Summary"
+          multiline
+
+              style={styles.InputTextArea}
+   
+  
+            />
+          </View>}
+
           
-          </View>
+        
   
         </KeyboardAvoidingView>
         <Text style={{ color: "red", alignSelf: "center", padding: 3 }}>

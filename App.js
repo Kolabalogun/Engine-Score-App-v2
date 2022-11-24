@@ -12,14 +12,6 @@ import Group from "./src/FrontEnd/Pages/Group";
 import Match from "./src/FrontEnd/Pages/Home";
 import { AppProvider } from "./src/Function/Context";
 import Navigations from "./src/Function/Navigation";
-import Notification from "./src/Notification/Notification";
-
-// import { GestureHandlerRootView } from 'react-native-gesture-handler';
-/* ... */
-// Wrap your app with the new GestureHandler
-{/* <GestureHandlerRootView style={{ flex: 1 }}> */}
-  /* your app */
-{/* </GestureHandlerRootView> */}
 
 
 

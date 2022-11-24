@@ -41,7 +41,7 @@ TeamDataF(data.map(d => d.TeamName))
   const [HomeTeam, HomeTeamF] = useState('');
   const [HomeTeamFormation, HomeTeamFormationF] = useState('');
  
-  const [MatchDate, MatchDateF] = useState();
+  const [MatchDate, MatchDateF] = useState('');
 
   
   const [AwayTeam, AwayTeamF] = useState("");
@@ -90,7 +90,7 @@ TeamDataF(data.map(d => d.TeamName))
                 AwayTeamFormation: AwayTeamFormation,
                 HomeTeamScore: 0,
                 AwayTeamScore: 0,
-                MatchTimeline:'',
+                MatchTimeline:[],
                 MatchActive: false,
              
                 AwayTeam:AwayTeam,
@@ -140,10 +140,10 @@ TeamDataF(data.map(d => d.TeamName))
     return(
        <View style={styles.homeHeader}>
         <TouchableOpacity onPress={() =>{
-          navigation.toggleDrawer();
+          navigation.goBack();
         }} style={styles.profilePic}>
         <Image
-            source={require("../../assets/menu.png")}
+            source={require("../../assets/ba.png")}
             resizeMode="cover"
             style={{ height: 20, width: 20,  }}
           />
@@ -515,5 +515,7 @@ fontWeight: '400'
  fontWeight: '500',
  fontSize: 15
   },
+
+
 
 })

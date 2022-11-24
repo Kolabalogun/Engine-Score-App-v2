@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "ESA",
+    "name": "Engine Scores",
     "slug": "ESA",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -21,25 +21,43 @@
       "supportsTablet": true
     },
     "android": {
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.ibrahimdevv.ESA"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
-
-    ,
-
-  "plugins": [
+    },
+    "plugins": [
       [
         "expo-image-picker",
         {
           "photosPermission": "The app accesses your photos to let you share them with your friends."
         }
+      ],
+      [
+        "expo-notifications",
+         {
+          "icon": "./local/assets/notification-icon.png",
+          "color": "#ffffff",
+          "sounds": [
+            "./local/assets/notification-sound.wav",
+            "./local/assets/notification-sound-other.wav"
+          ]
+        }
+       
       ]
-    ]
-    
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "e9ce2d52-3d8b-44ee-bc15-df2978ec7cf9"
+      }
+    }
   }
 }

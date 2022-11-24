@@ -9,7 +9,7 @@ import {
   View,
 } from "react-native";
 // import { createStackNavigator } from "@react-navigation/stack";
-import React from "react";
+import React, { useEffect } from "react";
 import MatchList from "../Components/Match/MatchList";
 // import { useGlobalContext } from "../../Backend/Context";
 import { NavigationContainer } from "@react-navigation/native";
@@ -21,11 +21,12 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import Header from "../Components/Others/Header";
+import InternetChecker from "../Components/Others/InternetChecker";
 
 const stack = createNativeStackNavigator();
 
 const Home = ({ navigation }) => {
-     const {MatchsFromDB, competitionF, competition}= useGlobalContext()
+     const {MatchsFromDB, competitionF, competition, online, }= useGlobalContext()
 
 
 
@@ -130,6 +131,8 @@ const Home = ({ navigation }) => {
 
         <View style={styles.container}>
         <View style={styles.main}>
+
+          {/* {!online && <InternetChecker/>} */}
 
       
 <Header navigation={navigation}/>
@@ -397,7 +400,7 @@ const styles = StyleSheet.create({
      eachMatchTeamTimeScore: {
   color:'red',
   fontWeight:'500',
-  fontSize: 20
+  fontSize: 17
   },
 
        eachMatchTeamDateScore: {

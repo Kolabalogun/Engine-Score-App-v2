@@ -2,14 +2,14 @@ import { Image, StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React from "react";
 import { TouchableRipple } from "react-native-paper";
 
-const Header = ({navigation}) => {
+const Header = ({navigation, functions, imgtype}) => {
   return (
    <View style={styles.homeHeader}>
-        <TouchableOpacity onPress={() =>{
+        <TouchableOpacity onPress={functions ? functions :() =>{
           navigation.toggleDrawer();
         }} style={styles.profilePic}>
         <Image
-            source={require("../../../../assets/menu.png")}
+            source={imgtype ?  imgtype:  require("../../../../assets/menu.png")}
             resizeMode="cover"
             style={{ height: 20, width: 20,  }}
           />

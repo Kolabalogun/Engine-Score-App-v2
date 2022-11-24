@@ -17,6 +17,7 @@ const AppProvider = ({ children }) => {
 
 
     const [currentUser, currentUserF] = useState(null);
+    
    const [notification, notificationF] = useState("");
    const [loader, loaderF] = useState("");
 
@@ -154,6 +155,16 @@ const AppProvider = ({ children }) => {
       }
     // }
   };
+
+
+
+  const [online, onlineF]  = useState(true)
+
+  // check if there is internet connecttion 
+
+
+
+
 
 
 
@@ -341,6 +352,8 @@ MatchsFromDB,
 
 
 handleDeleteMatch,
+
+online, 
 
 
 

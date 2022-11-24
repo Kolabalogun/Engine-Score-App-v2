@@ -12,6 +12,7 @@ import AddTeams from '../Backend/AddTeams';
 import ListofTeams from '../Backend/ListofTeams';
 import CreateMatch from '../Backend/CreateMatch';
 import MatchList from '../Backend/MatchList';
+import TopPick from '../Backend/TopPick';
 
 function HomeScreen({ navigation }) {
   return (
@@ -41,7 +42,7 @@ export default function DrawerNavigation() {
         headerShown: false,
       }} initialRouteName="DrawerHome">
         <Drawer.Screen name="DrawerHome" component={TabNavigations} />
-        <Drawer.Screen name="Notifications" component={Notification} />
+        <Drawer.Screen name="Top Pick" component={TopPick} />
         <Drawer.Screen name="Team List" component={ListofTeams} />
         <Drawer.Screen name="MatchList" component={MatchList} />
       </Drawer.Navigator>
