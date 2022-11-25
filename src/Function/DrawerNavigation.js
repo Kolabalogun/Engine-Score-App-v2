@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import TabNavigations from './TabNavigation';
-import ListofTeams from '../Backend/ListofTeams';
-import MatchList from '../Backend/MatchList';
-import TopPick from '../Backend/TopPick';
-import Players from '../Backend/Players';
+import ListofTeams from '../Backend/Team/ListofTeams';
+import MatchList from '../Backend/Match/MatchList';
+import TopPick from '../Backend/Top Pick/TopPick';
+import Players from '../Backend/Player/Players';
 
 
 

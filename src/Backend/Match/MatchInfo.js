@@ -1,10 +1,10 @@
 import { KeyboardAvoidingView, SafeAreaView, ScrollView, StyleSheet, Text, View, TouchableOpacity, Image, TextInput } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
-import { useGlobalContext } from '../Function/Context';
-import Header from '../FrontEnd/Components/Others/Header';
+import { useGlobalContext } from '../../Function/Context';
+import Header from '../../FrontEnd/Components/Others/Header';
 import SelectDropdown from 'react-native-select-dropdown';
 import { addDoc, arrayUnion, collection, doc, getDoc, updateDoc } from 'firebase/firestore';
-import { db } from '../Utils/Firebase';
+import { db } from '../../Utils/Firebase';
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
 

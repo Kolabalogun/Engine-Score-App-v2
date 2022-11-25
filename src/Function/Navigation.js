@@ -1,12 +1,12 @@
-// import { createStackNavigator } from "@react-navigation/stack";
+
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StyleSheet } from "react-native";
 import UserSignInPage from "../Authentication/UserSignInPage";
-import AddTeams from "../Backend/AddTeams";
-import CreateMatch from "../Backend/CreateMatch";
-import EditTeams from "../Backend/EditTeams";
-import MatchInfo from "../Backend/MatchInfo";
-import TeamStart from "../Backend/TeamStart";
+import AddTeams from "../Backend/Team/AddTeams";
+import CreateMatch from "../Backend/Match/CreateMatch";
+import EditTeams from "../Backend/Team/EditTeams";
+import MatchInfo from "../Backend/Match/MatchInfo";
+import TeamStart from "../Backend/Team/TeamStart";
 import MatchResult from "../FrontEnd/Pages/MatchResult";
 import { useGlobalContext } from "./Context";
 // import Drawerr from "../FrontEnd/Pages/Drawer";

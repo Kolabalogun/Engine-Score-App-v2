@@ -1,6 +1,6 @@
 import { Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
-import { useGlobalContext } from '../Function/Context';
+import { useGlobalContext } from '../../Function/Context';
 
 const ListofTeams = ({navigation}) => {
 
@@ -22,7 +22,7 @@ const ListofTeams = ({navigation}) => {
   <Text style={styles.eachMatchTeamTxt}>{teams.TeamName}</Text>
 
  {/* <Image
-            source={require("../../../assets/logo-01.png")}
+            source={require("../../../../assets/logo-01.png")}
             resizeMode="contain"
             style={{ height: 45, width: 45,  }}
           /> */}
@@ -51,7 +51,7 @@ const ListofTeams = ({navigation}) => {
   <Text style={styles.eachMatchTeamTxt}>{teams.TeamName}</Text>
 
  {/* <Image
-            source={require("../../../assets/logo-01.png")}
+            source={require("../../../../assets/logo-01.png")}
             resizeMode="contain"
             style={{ height: 45, width: 45,  }}
           /> */}
@@ -79,7 +79,7 @@ const ListofTeams = ({navigation}) => {
           navigation.toggleDrawer();
         }} style={styles.profilePic}>
         <Image
-            source={require("../../assets/menu.png")}
+            source={require("../../../assets/menu.png")}
             resizeMode="cover"
             style={{ height: 20, width: 20,  }}
           />
@@ -101,7 +101,7 @@ const ListofTeams = ({navigation}) => {
 
   return (
        <SafeAreaView style={styles.container}>
-        <Headers functions = {navigateToAddNewTeam} imgtype={require("../../assets/add.png")}/>
+        <Headers functions = {navigateToAddNewTeam} imgtype={require("../../../assets/add.png")}/>
   <View style={styles.navMenu}>
 
   <TouchableOpacity onPress={()=> {competitionF(4)}} style={{ backgroundColor: competition === 4 ? '#ff2782' : '#fff'

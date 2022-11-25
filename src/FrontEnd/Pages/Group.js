@@ -1,21 +1,28 @@
-import { ScrollView, StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  RefreshControl,
+} from "react-native";
 import React from "react";
 import { useGlobalContext } from "../../Function/Context";
 import Grouplist from "../Components/Group/Grouplist";
 import { StatusBar } from "expo-status-bar";
 import Header from "../Components/Others/Header";
-import { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
+import Nav from "../Components/Others/Nav";
 
 
 const Group = ({navigation}) => {
-  const { TeamsFromDB } = useGlobalContext();
+  const {
+    TeamsFromDB,
+   getTeamsFromDB,
+    competitionType,
+   
+  } = useGlobalContext();
 
 
-   const [competitionType, competitionTypeF] = useState('Engine 4.0')
-
-  
-  const [competition, competitionF] = useState(4)
 
   const points = TeamsFromDB;
   points.sort(function (a, b) {
@@ -57,85 +64,68 @@ const Group = ({navigation}) => {
     }
   });
 
+   const wait = (timeout) => {
+     return new Promise((resolve) => setTimeout(resolve, timeout));
+   };
+
+   const [refreshing, setRefreshing] = React.useState(false);
+
+   const onRefresh = React.useCallback(() => {
+     setRefreshing(true);
+     getTeamsFromDB()
+     wait(2000).then(() => setRefreshing(false));
+   }, []);
+
+
   return (
     <SafeAreaView style={styles.container}>
-
       <View style={styles.main}>
-  <Header navigation={navigation}/>
+        <Header navigation={navigation} />
 
+      <Nav/>
 
-    <View style={styles.navMenu}>
-
-  <TouchableOpacity onPress={()=> {competitionF(4)
-competitionTypeF('Engine 4.0')  
-}} style={{ backgroundColor: competition === 4 ? '#ff2782' : '#fff'
-    , 
-    paddingHorizontal:10 ,
-    paddingVertical:15,
-    flex: 1,
-    marginHorizontal: 5,
-    alignItems: 'center',
-    borderRadius: 20}}>
-<Text style={{ color: competition===4 ? '#fff' : '#ff2782'
-    , fontWeight:'500',
-    fontSize:15}}>Engine 4.0</Text>
-  </TouchableOpacity>
-
-  
-  <TouchableOpacity onPress={()=> {competitionF(3)
-competitionTypeF('Engine 3.0')  
-}} style={{ backgroundColor: competition === 3 ? '#ff2782' : '#fff'
-    , 
-    paddingHorizontal:10 ,
-    paddingVertical:15,
-    flex: 1,
-    marginHorizontal: 5,
-    alignItems: 'center',
-    borderRadius: 20}}>
-<Text style={{ color: competition===3 ? '#fff' : '#ff2782'
-    , fontWeight:'500',
-    fontSize:15}}>Engine 3.0</Text>
-  </TouchableOpacity>
-  
-</View>
-
-    <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.group}>
-          <Text style={styles.groupName}>Group One</Text>
-          <View style={styles.table}>
-            <View style={styles.topTable}>
-              {/* <Text style={styles.tableHead}>No</Text> */}
-              <Text style={styles.tableHeadOne}>Teams</Text>
-              <Text style={styles.tableHead}>P</Text>
-              <Text style={styles.tableHead}>W</Text>
-              <Text style={styles.tableHead}>L</Text>
-              <Text style={styles.tableHead}>D</Text>
-              <Text style={styles.tableHead}>GD</Text>
-              <Text style={styles.tableHead}>Pts</Text>
+        <ScrollView
+          s
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+          showsVerticalScrollIndicator={false}
+        >
+          
+          <View style={styles.group}>
+            <Text style={styles.groupName}>Group One</Text>
+            <View style={styles.table}>
+              <View style={styles.topTable}>
+                {/* <Text style={styles.tableHead}>No</Text> */}
+                <Text style={styles.tableHeadOne}>Teams</Text>
+                <Text style={styles.tableHead}>P</Text>
+                <Text style={styles.tableHead}>W</Text>
+                <Text style={styles.tableHead}>L</Text>
+                <Text style={styles.tableHead}>D</Text>
+                <Text style={styles.tableHead}>GD</Text>
+                <Text style={styles.tableHead}>Pts</Text>
+              </View>
+              {Group1Elements}
             </View>
-            {Group1Elements}
           </View>
-        </View>
-        <View style={styles.group}>
-          <Text style={styles.groupName}>Group Two</Text>
-          <View style={styles.table}>
-            <View style={styles.topTable}>
-              {/* <Text style={styles.tableHead}>No</Text> */}
-              <Text style={styles.tableHeadOne}>Teams</Text>
-              <Text style={styles.tableHead}>P</Text>
-              <Text style={styles.tableHead}>W</Text>
-              <Text style={styles.tableHead}>L</Text>
-              <Text style={styles.tableHead}>D</Text>
-              <Text style={styles.tableHead}>GD</Text>
-              <Text style={styles.tableHead}>Pts</Text>
+          <View style={styles.group}>
+            <Text style={styles.groupName}>Group Two</Text>
+            <View style={styles.table}>
+              <View style={styles.topTable}>
+                {/* <Text style={styles.tableHead}>No</Text> */}
+                <Text style={styles.tableHeadOne}>Teams</Text>
+                <Text style={styles.tableHead}>P</Text>
+                <Text style={styles.tableHead}>W</Text>
+                <Text style={styles.tableHead}>L</Text>
+                <Text style={styles.tableHead}>D</Text>
+                <Text style={styles.tableHead}>GD</Text>
+                <Text style={styles.tableHead}>Pts</Text>
+              </View>
+              {Group2Elements}
             </View>
-            {Group2Elements}
           </View>
-        </View>
-  </ScrollView>
+        </ScrollView>
       </View>
-  
-
     </SafeAreaView>
   );
 };

@@ -6,106 +6,176 @@ import {
   Image,
   TouchableOpacity,
   SafeAreaView,
+  RefreshControl,
 } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { useGlobalContext } from "../../Function/Context";
-// import Performancelist from "../Components/Performance/Performancelist";
 import { StatusBar } from "expo-status-bar";
 import Header from "../Components/Others/Header";
 import { useState } from "react";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../../Utils/Firebase";
 
 const Performance = ({ navigation }) => {
-  const { Group } = useGlobalContext();
+  const { competitionType, competitionTypeF, competition, competitionF } =
+    useGlobalContext();
 
-  const [competition, competitionF] = useState(4);
+  const [PlayerDataFromDB, PlayerDataFromDBF] = useState([]);
+
+  useEffect(() => {
+    getBlogDetail();
+  }, []);
+
+  const getBlogDetail = async () => {
+    const docRef = doc(db, "Player Data", "WmVhSufxYzBSkL8HsqkF");
+    const snapshot = await getDoc(docRef);
+    if (snapshot.exists()) {
+      PlayerDataFromDBF([...snapshot.data().playerDatas]);
+    }
+  };
+
+  const goalsRanking = PlayerDataFromDB;
+  goalsRanking.sort(function (a, b) {
+    return b.Goals - a.Goals;
+  });
+
+  const GoalsGroup = goalsRanking.slice(0, 5).map((goal, index) => {
+    if (goal.Competition === competitionType) {
+      return (
+        <TouchableOpacity key={index} style={styles.eachMatch}>
+          <View style={styles.eachMatchTeam}>
+            <Image
+              source={require("../../../assets/logo-01.png")}
+              resizeMode="contain"
+              style={{ height: 45, width: 45 }}
+            />
+            <View>
+              <Text style={styles.eachMatchTeamTxt}>{goal.PlayerName}</Text>
+              <Text style={{ color: "#aaa" }}>{goal.TeamNameSelect}</Text>
+            </View>
+          </View>
+
+          <View style={styles.eachMatchTeam}>
+            <Text style={styles.eachMatchTeamTxt}>{goal.Goals}</Text>
+          </View>
+        </TouchableOpacity>
+      );
+    }
+  });
+
+  const AssistsRanking = PlayerDataFromDB;
+  AssistsRanking.sort(function (a, b) {
+    return b.Assists - a.Assists;
+  });
+
+  const AssistsGroup = AssistsRanking.slice(0, 5).map((goal, index) => {
+    if (goal.Competition === competitionType) {
+      return (
+        <TouchableOpacity key={index} style={styles.eachMatch}>
+          <View style={styles.eachMatchTeam}>
+            <Image
+              source={require("../../../assets/logo-01.png")}
+              resizeMode="contain"
+              style={{ height: 45, width: 45 }}
+            />
+            <View style={{}}>
+              <Text style={styles.eachMatchTeamTxt}>{goal.PlayerName}</Text>
+              <Text style={{ color: "#aaa" }}>{goal.TeamNameSelect}</Text>
+            </View>
+          </View>
+
+          <View style={styles.eachMatchTeam}>
+            <Text style={styles.eachMatchTeamTxt}>{goal.Assists}</Text>
+          </View>
+        </TouchableOpacity>
+      );
+    }
+  });
+
+  const wait = (timeout) => {
+    return new Promise((resolve) => setTimeout(resolve, timeout));
+  };
+
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    getBlogDetail();
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.main}>
         <Header navigation={navigation} />
 
-        <View style={styles.navMenu}>
-          <TouchableOpacity
-            onPress={() => {
-              competitionF(4);
-            }}
-            style={{
-              backgroundColor: competition === 4 ? "#ff2782" : "#fff",
-              paddingHorizontal: 10,
-              paddingVertical: 15,
-              flex: 1,
-              marginHorizontal: 5,
-              alignItems: "center",
-              borderRadius: 20,
-            }}
-          >
-            <Text
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
+          <View style={styles.navMenu}>
+            <TouchableOpacity
+              onPress={() => {
+                competitionF(4);
+                competitionTypeF("Engine 4.0");
+              }}
               style={{
-                color: competition === 4 ? "#fff" : "#ff2782",
-                fontWeight: "500",
-                fontSize: 15,
+                backgroundColor: competition === 4 ? "#ff2782" : "#fff",
+                paddingHorizontal: 10,
+                paddingVertical: 15,
+                flex: 1,
+                marginHorizontal: 5,
+                alignItems: "center",
+                borderRadius: 20,
               }}
             >
-              Engine 4.0
-            </Text>
-          </TouchableOpacity>
+              <Text
+                style={{
+                  color: competition === 4 ? "#fff" : "#ff2782",
+                  fontWeight: "500",
+                  fontSize: 15,
+                }}
+              >
+                Engine 4.0
+              </Text>
+            </TouchableOpacity>
 
-          <TouchableOpacity
-            onPress={() => {
-              competitionF(3);
-            }}
-            style={{
-              backgroundColor: competition === 3 ? "#ff2782" : "#fff",
-              paddingHorizontal: 10,
-              paddingVertical: 15,
-              flex: 1,
-              marginHorizontal: 5,
-              alignItems: "center",
-              borderRadius: 20,
-            }}
-          >
-            <Text
+            <TouchableOpacity
+              onPress={() => {
+                competitionF(3);
+                competitionTypeF("Engine 3.0");
+              }}
               style={{
-                color: competition === 3 ? "#fff" : "#ff2782",
-                fontWeight: "500",
-                fontSize: 15,
+                backgroundColor: competition === 3 ? "#ff2782" : "#fff",
+                paddingHorizontal: 10,
+                paddingVertical: 15,
+                flex: 1,
+                marginHorizontal: 5,
+                alignItems: "center",
+                borderRadius: 20,
               }}
             >
-              Engine 3.0
-            </Text>
-          </TouchableOpacity>
-        </View>
+              <Text
+                style={{
+                  color: competition === 3 ? "#fff" : "#ff2782",
+                  fontWeight: "500",
+                  fontSize: 15,
+                }}
+              >
+                Engine 3.0
+              </Text>
+            </TouchableOpacity>
+          </View>
 
-        <ScrollView showsVerticalScrollIndicator={false}>
           <View style={styles.group}>
             <Text style={styles.groupName}>Goals</Text>
-            <View style={styles.table}>
-              <View style={styles.topTable}>
-                <TouchableOpacity style={styles.eachMatch}>
-                  <View style={styles.eachMatchTeam}>
-                    <Image
-                      source={require("../../../assets/logo-01.png")}
-                      resizeMode="contain"
-                      style={{ height: 45, width: 45 }}
-                    />
-
-                    <Text style={styles.eachMatchTeamTxt}>Player 1</Text>
-                  </View>
-
-                  <View style={styles.eachMatchTeam}>
-                    <Text style={styles.eachMatchTeamTxt}>5</Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-              {/* {Group1Elements} */}
-            </View>
+            <View style={styles.table}>{GoalsGroup}</View>
           </View>
           <View style={styles.group}>
             <Text style={styles.groupName}>Assists</Text>
-            <View style={styles.table}>
-              <View style={styles.topTable}></View>
-              {/* {Group2Elements} */}
-            </View>
+            <View style={styles.table}>{AssistsGroup}</View>
           </View>
         </ScrollView>
       </View>
@@ -152,26 +222,6 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
 
-  table: {
-    display: "flex",
-    flexDirection: "column",
-    color: "#aaa",
-    paddingTop: 10,
-    alignItems: "center",
-  },
-  topTable: {
-    width: "100%",
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 10,
-    alignItems: "center",
-  },
-
-  tableHead: {
-    color: "black",
-    fontWeight: "500",
-  },
   titleText: {
     fontSize: 15,
     fontWeight: "600",
@@ -202,15 +252,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     color: "#aaa",
     paddingTop: 10,
-    alignItems: "center",
-  },
-  topTable: {
-    width: "100%",
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 10,
-    alignItems: "center",
   },
 
   tableHead: {
@@ -225,7 +266,6 @@ const styles = StyleSheet.create({
   titleText: {
     fontSize: 15,
     fontWeight: "600",
-    // marginBottom: 10,
   },
 
   eachMatch: {
@@ -242,11 +282,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
 
     borderColor: "rgba(209, 225, 240, 0.782)",
-    flex: 1,
   },
 
   eachMatchTeam: {
-    //  flex:1,
     flexDirection: "row",
     //  justifyContent: 'space-between',
     color: "white",
@@ -260,6 +298,7 @@ const styles = StyleSheet.create({
 
   eachMatchTeamTxt: {
     fontWeight: "500",
+    fontSize: 16,
   },
 
   eachMatchTeamTime: {

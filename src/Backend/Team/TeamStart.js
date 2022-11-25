@@ -1,7 +1,7 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View, TextInput } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { doc } from 'firebase/firestore';
-import { db } from '../Utils/Firebase';
+import { db } from '../../Utils/Firebase';
 
 
 const initialState={

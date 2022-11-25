@@ -1,32 +1,17 @@
-import { Image, KeyboardAvoidingView, SafeAreaView, ScrollView, StatusBar, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { KeyboardAvoidingView, SafeAreaView, ScrollView, StyleSheet, Text, View, TouchableOpacity, Image, TextInput } from 'react-native'
 import React, { useEffect, useState } from 'react'
-// import { useGlobalContext } from '../../Functions/Context';
-// import { pickImage, uploadImgetoFireStorage } from '../../Utils/DisplayImage';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
-// import { auth, db, storage } from '../../Utils/Firebase';
-import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
-// import Loader from '../../Components/Loader';
-import { useGlobalContext } from '../Function/Context';
-import { pickImage, uploadImgetoFireStorage } from '../Utils/DisplayImage';
-import { db } from '../Utils/Firebase';
-import Loader from '../FrontEnd/Components/Others/Loader';
+import { useGlobalContext } from '../../Function/Context';
+import Header from '../../FrontEnd/Components/Others/Header';
 import SelectDropdown from 'react-native-select-dropdown';
-import Header from '../FrontEnd/Components/Others/Header';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { db } from '../../Utils/Firebase';
 
-const AddTeams = ({navigation}) => {
 
-    const {competition, competitionF, notification, notificationF, currentUser, loader, loaderF, TeamsFromDB } = useGlobalContext();
-  const [Competition, CompetitionF] = useState('');
 
-  const competitionData = ['Engine 4.0', 'Engine 3.0']
-  const GroupData = [1, 2]
-  const formationData = ['4-4-2', '4-3-3', '4-2-3-1', '3-4-3', '3-5-2']
-
-  const [TeamName, TeamNameF] = useState('');
- 
-  const [Players, PlayersF] = useState(
-    {
+const initialState={
+    Competition: '',
+    TeamName:'',
+    Players:   {
 goalkepper: '',
 defender1: '',
 defender2: '',
@@ -48,22 +33,74 @@ benchs2:'',
 benchs3:'',
 benchs4:'',
 
-    });
+    },
+
+    TeamGroup: '',
+    TeamManager: '',
+    TeamFormation: '',
+    selectedImage: null,
+
+        stat: {
+      wins: '',
+      loss: '',
+      draw: '',
+      matchplayed:'',
+      gd:'',
+      points: '',
+      
+    },
+id:''
+
+}
+
+const EditTeams = ({route, navigation}) => {
+
+  const {competition, competitionF, notification, notificationF, currentUser, loader, loaderF, TeamsFromDB } = useGlobalContext();
+
+
+      const { teamId } = route.params;
+
+      const [teamInfo, teamInfoF] =useState(initialState)
+
+
+      useEffect(() => {
+    teamId && getBlogDetail();
+  }, [teamId]);
+
+  const getBlogDetail = async () => {
+    const docRef = doc(db, "Teams", teamId);
+    const snapshot = await getDoc(docRef);
+    if (snapshot.exists()) {
+      teamInfoF({ ...snapshot.data() });
+    }
+  };
+
+
+  const{   Competition,
+    TeamName, stat,
+    Players,
+  TeamGroup,
+    TeamManager,
+    TeamFormation,
+    selectedImage,} = teamInfo
+
+
+
+
+
+
+
+
+
+  const competitionData = ['Engine 4.0', 'Engine 3.0']
+  const formationData = ['4-4-2', '4-3-3', '4-2-3-1', '3-4-3', '3-5-2']
+
+
+ 
+ 
 
    
 
-    
-  
-
-    
-
-    
-    
-
-  const [TeamGroup, TeamGroupF] = useState("");
-  const [TeamManager, TeamManagerF] = useState("");
-  const [Formation, FormationF] = useState("");
-  const [selectedImage, selectedImageF] = useState(null);
 
 
 
@@ -85,101 +122,48 @@ benchs4:'',
 
 
 
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
- 
-
-
-    if (TeamName && TeamManager  && Formation) {
-        // if we adding new team
-        loaderF(true);
-let image = ''
-        if (selectedImage) {
-              
-        const { url } = await uploadImgetoFireStorage(
-          selectedImage,
-          `images/${dateId}`,
-          "profilePicture"
-        );
-
-        image = url
-        }
-
-      
-
-        try {
-            await addDoc(collection(db, "Teams"), {
-                Competition: Competition,
-                TeamName: TeamName,
-                Players: Players,
-                TeamLogo: image,
-                TeamFormation: Formation,
-                TeamGroup: TeamGroup,
-             
-                TeamManager:TeamManager,
-                timestamp: serverTimestamp(),
-             stat: {
-              mp: '0',
-      wins: '0',
-      loss: '0',
-      draw: '0',
-      matchplayed:'0',
-      gd:'0',
-      points: '0'
-    },
-                dateId: dateId,
-                
-            });
-            loaderF(false);
-            notificationF("Team Successfully Added");
-    TeamNameF('')
-    TeamManagerF('')
-    navigation.navigate("Team List");
-
-        } catch (error) {
-            // console.log(error);
-            notificationF(error);
-        }
-
-      
-    } else {
-        return notificationF("All fields must be filled");
-    }
-    
-    
-
-};
-
-
-
-
   const Imagepicker = async () => {
     let result = await pickImage();
     if (!result.cancelled) {
+
+        
+     teamInfoF((prev) => ({ ...prev, selectedImage: result.uri }));
     
 
-      selectedImageF(result.uri);
     }
   };
 
 
+  const handleSubmit = async (e) => {
+    
+      e.preventDefault();
 
+      if (teamInfo) {
 
+        try {
+          await updateDoc(doc(db, "Teams", teamId), {
+            ...teamInfo
+          });
+  navigation.navigate("Team List");
+        } catch (err) {
+          console.log(err);
+        }
+      } else {
+        return notificationF("field must be filled");
+      }
+    
+ 
+
+  }
 
  
-  function navigateToListofTeam(params) {
-    navigation.navigate('Team List')
-  }
-
-
   function functions(params) {
-          navigation.goBack();
+          navigation.navigate("TeamStat", {
+             teamId: teamInfo.id
+          });
   }
 
-
-
-  function Headers({functions, imgtype}) {
+    function Headers({functions, imgtype}) {
     return(
        <View style={styles.homeHeader}>
         <TouchableOpacity onPress={() =>{
@@ -195,33 +179,24 @@ let image = ''
        <Text style={styles.headerTitle}>Engine <Text style={styles.headerTitleScore} >Scores</Text></Text>
         </View>
         <TouchableOpacity onPress={functions} style={styles.profilePic}>
-        <Image
+        {/* <Image
             source={imgtype}
             resizeMode="cover"
             style={{ height: 30, width: 30,  }}
-          />
+          /> */}
         </TouchableOpacity>
       </View>
       )
   }
 
 
-
-
-
   return (
-    <>
+    <SafeAreaView style={styles.container}>
+        <Headers functions={functions} imgtype={require("../../assets/s.png")}/>
 
-    {
-      loader ? <Loader/> :
-
-      <SafeAreaView style={styles.container}>
-   <View>
-            <Headers functions = {navigateToListofTeam} imgtype={require("../../assets/list.png")}/>
-
-      <ScrollView showsVerticalScrollIndicator={false}>
+ <ScrollView  showsVerticalScrollIndicator={false}>
         <View style={styles.topSection}>
-          <Text style={styles.topText}>Add New Team</Text>
+          <Text style={styles.topText}>Edit Team</Text>
           <Text style={styles.capText}>
   Please input the details of the Team.
           </Text>
@@ -276,24 +251,19 @@ let image = ''
             <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
             Competition
             </Text>
-            {/* <TextInput
-              value={Competition}
-              onChangeText={(e) => CompetitionF(e)}
-              placeholder="Enter the Team Name"
-            
-              style={styles.Input}
-            /> */}
 
                <SelectDropdown
 	data={competitionData}
-    
+    defaultValue={Competition}
 
       defaultButtonText = 'Select Competition'
       buttonStyle={styles.dropdownStyle}
       buttonTextStyle={styles.dropdownStyleTxt}
 
 	onSelect={(selectedItem, index) => {
-	CompetitionF(selectedItem)
+	// CompetitionF(selectedItem)
+
+     teamInfoF((prev) => ({ ...prev, Competition: selectedItem }));
 	}}
 	
    
@@ -306,7 +276,10 @@ let image = ''
             </Text>
             <TextInput
               value={TeamName}
-              onChangeText={(e) => TeamNameF(e)}
+              onChangeText={(e) => {
+             
+             teamInfoF({ ...teamInfo, TeamName: e });
+              }}
               placeholder="Enter the Team Name"
             
               style={styles.Input}
@@ -319,7 +292,10 @@ let image = ''
             </Text>
             <TextInput
               value={TeamManager}
-              onChangeText={(e) => TeamManagerF(e)}
+              onChangeText={(e) => {
+                 
+             teamInfoF({ ...teamInfo, TeamManager: e });
+              }}
               placeholder="Enter the Manager of the Team"
          
               style={styles.Input}
@@ -329,45 +305,152 @@ let image = ''
             <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
              Team Formation
             </Text>
-          
+         
              <SelectDropdown
 	data={formationData}
-    
+    defaultValue={TeamFormation}
 
       defaultButtonText = 'Select Team Formation'
       buttonStyle={styles.dropdownStyle}
       buttonTextStyle={styles.dropdownStyleTxt}
 
 	onSelect={(selectedItem, index) => {
-	FormationF(selectedItem)
-	}}
-	
-   
-/> 
- 
-
-          </View>
-
-             <View style={{ marginTop: 10 }}>
-            <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
-             Team Group
-            </Text>
-          
-             <SelectDropdown
-	data={GroupData}
+	// FormationF(selectedItem)
     
-
-      defaultButtonText = 'Select Team Group'
-      buttonStyle={styles.dropdownStyle}
-      buttonTextStyle={styles.dropdownStyleTxt}
-
-	onSelect={(selectedItem, index) => {
-	TeamGroupF(selectedItem)
+     teamInfoF((prev) => ({ ...prev, TeamFormation: selectedItem }));
 	}}
 	
    
-/> 
- 
+/>
+
+
+
+
+<View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+   <View style={{ marginTop: 10, flex: 1 }}>
+            <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+              Wins
+            </Text>
+            <TextInput
+             maxLength = {1}
+             keyboardType = 'decimal-pad'
+             value={stat.wins}
+              onChangeText={(e) => {
+             
+             teamInfoF({ ...teamInfo, stat: {
+              ...stat,
+              wins: e
+             } });
+              }}
+              placeholder="Match Won"
+            
+              style={styles.Input}
+            />
+          </View> 
+          <View style={{ marginTop: 10, flex: 1 }}>
+            <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+              Draw
+            </Text>
+            <TextInput
+             maxLength = {1}
+             keyboardType = 'decimal-pad'
+             value={stat.draw}
+              onChangeText={(e) => {
+             
+             teamInfoF({ ...teamInfo, stat: {
+              ...stat,
+              draw: e
+             } });
+              }}
+              placeholder="Match Draws"
+            
+              style={styles.Input}
+            />
+          </View>
+           <View style={{ marginTop: 10, flex: 1 }}>
+            <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+              Loss
+            </Text>
+            <TextInput
+           maxLength = {1}
+             keyboardType = 'decimal-pad'
+           value={stat.loss}
+            onChangeText={(e) => {
+             
+             teamInfoF({ ...teamInfo, stat: {
+              ...stat,
+              loss: e
+             } });
+              }}
+              placeholder="Match Lost"
+            
+              style={styles.Input}
+            />
+          </View>
+</View>
+<View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+   <View style={{ marginTop: 10, flex: 1 }}>
+            <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+             Match Played
+            </Text>
+            <TextInput
+             maxLength = {1}
+             keyboardType = 'decimal-pad'
+             value={stat.matchplayed}
+              onChangeText={(e) => {
+             
+             teamInfoF({ ...teamInfo, stat: {
+              ...stat,
+              matchplayed: e
+             } });
+              }}
+              placeholder="Match Played"
+            
+              style={styles.Input}
+            />
+          </View> 
+   <View style={{ marginTop: 10, flex: 1 }}>
+            <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+              Goal Difference
+            </Text>
+            <TextInput
+             maxLength = {2}
+             keyboardType = 'decimal-pad'
+             value={stat.gd}
+              onChangeText={(e) => {
+             
+             teamInfoF({ ...teamInfo, stat: {
+              ...stat,
+              gd: e
+             } });
+              }}
+              placeholder="Goal Difference"
+            
+              style={styles.Input}
+            />
+          </View> 
+          <View style={{ marginTop: 10, flex: 1 }}>
+            <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+              Points
+            </Text>
+            <TextInput
+             maxLength = {2}
+             keyboardType = 'decimal-pad'
+             value={stat.points}
+              onChangeText={(e) => {
+             
+             teamInfoF({ ...teamInfo, stat: {
+              ...stat,
+              points: e
+             } });
+              }}
+              placeholder="Match Points"
+            
+              style={styles.Input}
+            />
+          </View>
+        
+</View>
 
           </View>
 
@@ -386,17 +469,22 @@ let image = ''
             <TextInput
               value={Players.goalkepper}
               name= 'goalkepper'
-              onChangeText={(e) => PlayersF((prev) => {
-                return{...prev, goalkepper :e};
-               
-              })}
+               onChangeText={(e) => {
+                 
+             teamInfoF({ ...teamInfo, Players : {
+                ...Players,
+                goalkepper:e
+             } });
+              }}
               placeholder="Please enter GoalKeeper's Name"
              
               style={styles.InputTextArea}
    
   
             />
-            
+
+
+
  <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
               Defender
             </Text>
@@ -836,11 +924,13 @@ let image = ''
             />
 
 
+
+
            
           </View>
   
         </KeyboardAvoidingView>
-        <Text style={{ color: "red", alignSelf: "center", padding: 3,  }}>
+        <Text style={{ color: "red", alignSelf: "center", padding: 3 }}>
           {notification}
         </Text>
         <TouchableOpacity style={styles.btn} onPress={handleSubmit}>
@@ -848,23 +938,15 @@ let image = ''
         </TouchableOpacity>
   
   
-      </ScrollView>
-      </View>
-
-    
+      </ScrollView> 
 
 
+  
     </SafeAreaView>
-      
-    }
-    
-    </>
-
- 
   )
 }
 
-export default AddTeams;
+export default EditTeams
 
 const styles = StyleSheet.create({
     container: {
@@ -895,9 +977,7 @@ fontWeight: '400'
     color:'#ff2782'
     , fontWeight:'500'
   },
-
-
-    
+         
       topSection: {
         paddingTop: 15,
       },
@@ -951,7 +1031,6 @@ fontWeight: '400'
         borderRadius: 10,
         width: "100%",
         marginVertical: 20,
-        marginBottom: 50
       },
       btnTxt: {
         color: "white",
@@ -974,48 +1053,4 @@ fontWeight: '400'
       dropdownStyleTxt: {
  fontSize: 14
       },
-
-        
-  navMenu: {
-  marginVertical:20,
-  display: 'flex',
-  flexDirection: 'row', 
-  justifyContent: 'space-between',
-  
-  },
-
-    eachMatch: {
-   borderRadius: 10,
-   backgroundColor:'white',flexDirection: 'row',
-   justifyContent: 'space-between',
-   alignItems: 'center',
-   paddingHorizontal: 10,
-   paddingVertical:10,
-   marginVertical:5,
-   borderWidth: 3,
-  
-    alignItems: 'center',
-
-    borderColor: 'rgba(209, 225, 240, 0.782)',
-    
-  },
-
-   eachMatchTeam: {
-//    flex:1,
-   flexDirection: 'row',
-   justifyContent: 'space-between',
-   color: 'white',
-   alignItems: 'center'
-  },
-
-   eachMatchTime: {
-  flex:1,
-  alignItems: 'center'
-  },
-
-   eachMatchTeamTxt: {
- fontWeight: '500',
- fontSize: 15
-  },
-
 })

@@ -1,9 +1,9 @@
 import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { useGlobalContext } from '../Function/Context'
+import { useGlobalContext } from '../../Function/Context'
 import SelectDropdown from 'react-native-select-dropdown'
 import { addDoc, collection, doc, updateDoc } from 'firebase/firestore'
-import { db } from '../Utils/Firebase'
+import { db } from '../../Utils/Firebase'
 
 
 const initialState={

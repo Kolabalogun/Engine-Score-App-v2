@@ -12,9 +12,9 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { addDoc, collection, doc, getDoc, updateDoc } from "firebase/firestore";
-import { useGlobalContext } from "../Function/Context";
-import { db } from "../Utils/Firebase";
-import Loader from "../FrontEnd/Components/Others/Loader";
+import { useGlobalContext } from "../../Function/Context";
+import { db } from "../../Utils/Firebase";
+import Loader from "../../FrontEnd/Components/Others/Loader";
 import SelectDropdown from "react-native-select-dropdown";
 
 const Players = ({ navigation }) => {
@@ -22,7 +22,6 @@ const Players = ({ navigation }) => {
     TeamsFromDB,
     notification,
     notificationF,
-    currentUser,
     loader,
     loaderF,
   } = useGlobalContext();
@@ -32,7 +31,9 @@ const Players = ({ navigation }) => {
   const [TeamData, TeamDataF] = useState([]);
 
   const [TeamNameFilter, TeamNameFilterF] = useState([]);
-  const [TeamNameSelect, TeamNameSelectF] = useState("");
+  const [TeamNameSelect, TeamNameSelectF] = useState(null);
+
+
 
   useEffect(() => {
     const data = TeamsFromDB.filter(
@@ -77,58 +78,86 @@ const Players = ({ navigation }) => {
     const [PlayerDataFromDB, PlayerDataFromDBF] = useState([]);
 
 
-
       useEffect(() => {
-      getBlogDetail();
-      }, [Competition, TeamNameSelect]);
+        getBlogDetail();
+      }, [Competition, TeamNameSelect, PlayerName, PlayerData, TeamData]);
 
       const getBlogDetail = async () => {
         const docRef = doc(db, "Player Data", 'WmVhSufxYzBSkL8HsqkF');
         const snapshot = await getDoc(docRef);
         if (snapshot.exists()) {
           PlayerDataFromDBF([ ...snapshot.data().playerDatas ]);
+      
         }
       };
 
 const [FilteredPlayerDataFromDB, FilteredPlayerDataFromDBF] = useState([]);
 
        useEffect(() => {
-        if (PlayerDataFromDB.length> 0) {
-              const data = PlayerDataFromDB.filter(
-                (player) =>
-                  !(player.Competition === Competition &&
-                    player.PlayerName === PlayerName,
-                  player.TeamNameSelect === TeamNameSelect)
-              );
+        if (
+          PlayerDataFromDB.length > 0 &&
+          TeamNameSelect &&
+          PlayerName &&
+          Competition
+        ) {
+          const data = PlayerDataFromDB.filter(
+            (player) =>
+              !(player.Competition === Competition &&
+                player.PlayerName === PlayerName &&
+              player.TeamNameSelect === TeamNameSelect)
+          );
 
-              FilteredPlayerDataFromDBF(data);   
+          if (data.length > 0) {
+            
+          FilteredPlayerDataFromDBF(data);
+          }
+
         }
-       
 
-       }, [PlayerDataFromDB, Competition, TeamNameSelect, PlayerName]);
-
-const [FilteredPlayerDataFromDBForGoalData, FilteredPlayerDataFromDBForGoalDataF] = useState([]);
-
-       useEffect(() => {
-        if (PlayerDataFromDB.length> 0) {
-              const data = PlayerDataFromDB.filter(
-                (player) =>
-                  (player.Competition === Competition &&
-                    player.PlayerName === PlayerName,
-                  player.TeamNameSelect === TeamNameSelect)
-              );
-
-              FilteredPlayerDataFromDBForGoalDataF(data);   
-              console.log(data);
-        }
+        GoalsF(FilteredPlayerDataFromDBForGoalData.Goals)
+        AssistsF(FilteredPlayerDataFromDBForGoalData.Assists)
        
 
        }, [PlayerDataFromDB, Competition, TeamNameSelect, PlayerName]);
 
 
 
+       const [
+         FilteredPlayerDataFromDBForGoalData,
+         FilteredPlayerDataFromDBForGoalDataF,
+       ] = useState({
+         Goals: 0,
+         Assists: 0,
+       });
+console.log(FilteredPlayerDataFromDBForGoalData);
 
-  
+   useEffect(() => {
+     if (PlayerDataFromDB.length > 0 && TeamNameSelect && PlayerName && Competition) {
+       const data = PlayerDataFromDB.filter(
+         (player) =>
+           (player.Competition === Competition &&
+             player.PlayerName === PlayerName &&
+           player.TeamNameSelect === TeamNameSelect)
+       );
+
+       if (data.length > 0) {
+        
+       FilteredPlayerDataFromDBForGoalDataF(data[0]);
+       } else {
+        FilteredPlayerDataFromDBForGoalDataF({
+         Goals: 0,
+         Assists: 0,
+       });
+       }
+
+     
+     GoalsF(FilteredPlayerDataFromDBForGoalData.Goals);
+     AssistsF(FilteredPlayerDataFromDBForGoalData.Assists);
+     }
+
+   }, [PlayerDataFromDB, Competition, TeamNameSelect, PlayerName]);
+
+
 
 
 
@@ -158,6 +187,11 @@ const [FilteredPlayerDataFromDBForGoalData, FilteredPlayerDataFromDBForGoalDataF
           ],
         });
               loaderF(false);
+              GoalsF(0)
+              AssistsF(0)
+
+              navigation.navigate('Stat')
+
       } catch (error) {
         console.log(error, "line 219");
       }
@@ -166,21 +200,19 @@ const [FilteredPlayerDataFromDBForGoalData, FilteredPlayerDataFromDBForGoalDataF
     }
   };
 
-  function navigateToListofTeam(params) {
-    navigation.navigate("Team List");
-  }
+ 
 
   function Headers({ functions, imgtype }) {
     return (
       <View style={styles.homeHeader}>
         <TouchableOpacity
           onPress={() => {
-            navigation.goBack();
+           navigation.toggleDrawer();
           }}
           style={styles.profilePic}
         >
           <Image
-            source={require("../../assets/ba.png")}
+            source={require("../../assets/menu.png")}
             resizeMode="cover"
             style={{ height: 20, width: 20 }}
           />
@@ -209,14 +241,12 @@ const [FilteredPlayerDataFromDBForGoalData, FilteredPlayerDataFromDBForGoalDataF
         <SafeAreaView style={styles.container}>
           <View>
             <Headers
-              functions={navigateToListofTeam}
-              imgtype={require("../../assets/list.png")}
             />
 
             <ScrollView showsVerticalScrollIndicator={false}>
               <View style={styles.topSection}>
                 <Text style={styles.topText}>Player Data</Text>
-                <Text style={styles.capText}>Add GoalScorer or Assists</Text>
+                <Text style={styles.capText}>Add Goal Scorer or Assists</Text>
               </View>
 
               <KeyboardAvoidingView style={styles.Inputs}>

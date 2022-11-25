@@ -1,7 +1,7 @@
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-// import { createStackNavigator } from "@react-navigation/stack";
+
 import { useEffect, useState } from "react";
 
 import { Platform, StatusBar, StyleSheet} from "react-native";

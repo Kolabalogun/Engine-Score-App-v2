@@ -1,7 +1,7 @@
 import { Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
-import Header from '../FrontEnd/Components/Others/Header'
-import { useGlobalContext } from '../Function/Context'
+import Header from '../../FrontEnd/Components/Others/Header'
+import { useGlobalContext } from '../../Function/Context'
 
 const MatchList = ({navigation}) => {
 
@@ -93,7 +93,7 @@ const MatchList = ({navigation}) => {
     
 
     {match.MatchActive ?<View style={{flexDirection: 'row', }}>
-        <Text style={styles.eachMatchTeamTimeScore}>{match.HomeTeamScore}</Text> 
+        
         <Text style={styles.eachMatchTeamTimeScore}>{match.HomeTeamScore}</Text> 
     <Text style={styles.eachMatchTeamDateScore}>-</Text>
   <Text style={styles.eachMatchTeamTimeScore}>{match.AwayTeamScore}</Text>

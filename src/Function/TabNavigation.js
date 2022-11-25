@@ -39,11 +39,11 @@ const TabNavigations = () => {
             (size = focused ? 23 : 20),
               (color = focused ? "#ff2782" : "#cdd4dc");
           }
-           else if (route.name === "Performance") {
-            iconName = "user";
-            (size = focused ? 23 : 20),
-              (color = focused ? "#ff2782" : "#cdd4dc");
-          }
+           else if (route.name === "Stat") {
+             iconName = "user";
+             (size = focused ? 23 : 20),
+               (color = focused ? "#ff2782" : "#cdd4dc");
+           }
 
           return <FontAwesome name={iconName} size={size} color={color} />;
 
@@ -59,7 +59,7 @@ const TabNavigations = () => {
       <Tabs.Screen name="Home" component={Home} />
       <Tabs.Screen name="Match" component={Match} />
       <Tabs.Screen name="Group" component={Group} />
-      <Tabs.Screen name="Performance" component={Performance} />
+      <Tabs.Screen name="Stat" component={Performance} />
     </Tabs.Navigator>
   );
 };

@@ -1,86 +1,91 @@
 import {
   Image,
   Platform,
-  Pressable,
+  SafeAreaView,
   ScrollView,
- TouchableOpacity,
+  TouchableOpacity,
   StyleSheet,
-  Text,
+  Text,RefreshControl,
   View,
 } from "react-native";
-// import { createStackNavigator } from "@react-navigation/stack";
+;
 import React, { useEffect } from "react";
-import MatchList from "../Components/Match/MatchList";
-// import { useGlobalContext } from "../../Backend/Context";
-import { NavigationContainer } from "@react-navigation/native";
-// import MatchResult from "../Components/Match/MatchResult";
+
 import { useGlobalContext } from "../../Function/Context";
-import MatchResult from "./MatchResult";
-import { color } from "react-native-reanimated";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import Header from "../Components/Others/Header";
-import InternetChecker from "../Components/Others/InternetChecker";
+import Nav from "../Components/Others/Nav";
 
-const stack = createNativeStackNavigator();
+
+
 
 const Home = ({ navigation }) => {
-     const {MatchsFromDB, competitionF, competition, TopPicksDB, }= useGlobalContext()
+     const {
+       MatchsFromDB,
+       getMatchsFromDB,
+       competition,
+       TopPicksDB,
+       competitionType,
+       getTopPick,
+     } = useGlobalContext();
 
 
 
           const Engine40list = MatchsFromDB.map((match, index) =>{
-    if (match.Competition === 'Engine 4.0') {
-        return (
-         <TouchableOpacity key={index} onPress={() => navigation.navigate('MatchResult', {
-                matchId: match.id
-            })} style={styles.eachMatch}>
-<View style={styles.eachMatchTeam}>
+    if (match.Competition === competitionType) {
+      return (
+        <TouchableOpacity
+          key={index}
+          onPress={() =>
+            navigation.navigate("MatchResult", {
+              matchId: match.id,
+            })
+          }
+          style={styles.eachMatch}
+        >
+          <View style={styles.eachMatchTeam}>
+            <Text style={styles.eachMatchTeamTxt}>{match.HomeTeam}</Text>
 
-  <Text style={styles.eachMatchTeamTxt}>{match.HomeTeam}</Text>
+            <Image
+              source={require("../../../assets/logo-01.png")}
+              resizeMode="contain"
+              style={{ height: 45, width: 45 }}
+            />
+          </View>
+          <View style={styles.eachMatchTime}>
+            {match.MatchActive ? (
+              <View style={{ flexDirection: "row" }}>
+                <Text style={styles.eachMatchTeamTimeScore}>
+                  {match.HomeTeamScore}
+                </Text>
+                <Text style={styles.eachMatchTeamDateScore}>-</Text>
+                <Text style={styles.eachMatchTeamTimeScore}>
+                  {match.AwayTeamScore}
+                </Text>
+              </View>
+            ) : (
+              <>
+                <Text style={styles.eachMatchTeamTime}>{match.Matchtime}</Text>
+                <Text style={styles.eachMatchTeamDate}>{match.MatchDate}</Text>
+              </>
+            )}
+          </View>
+          <View style={styles.eachMatchTeam}>
+            <Image
+              source={require("../../../assets/logo-02.png")}
+              resizeMode="contain"
+              style={{ height: 45, width: 45 }}
+            />
 
- <Image
-            source={require("../../../assets/logo-01.png")}
-            resizeMode="contain"
-            style={{ height: 45, width: 45,  }}
-          />
-
-
-</View>
-<View style={styles.eachMatchTime}>
-
-    
-
-    {match.MatchActive ?<View style={{flexDirection: 'row', }}>
-        <Text style={styles.eachMatchTeamTimeScore}>{match.HomeTeamScore}</Text> 
-    <Text style={styles.eachMatchTeamDateScore}>-</Text>
-  <Text style={styles.eachMatchTeamTimeScore}>{match.AwayTeamScore}</Text>
-  </View>
-   : <>
-    <Text style={styles.eachMatchTeamTime}>{match.Matchtime}</Text>
-  <Text style={styles.eachMatchTeamDate}>{match.MatchDate}</Text></>}
-
- 
-  </View>
-  <View style={styles.eachMatchTeam}>
-
-  
- <Image
-            source={require("../../../assets/logo-02.png")}
-            resizeMode="contain"
-            style={{ height: 45, width: 45,  }}
-          />
-
-  <Text style={styles.eachMatchTeamTxt}>{match.AwayTeam}</Text>
-
-</View>
-</TouchableOpacity>
-        )
+            <Text style={styles.eachMatchTeamTxt}>{match.AwayTeam}</Text>
+          </View>
+        </TouchableOpacity>
+      );
     }
   } )
         const Engine30list = MatchsFromDB.map((match, index) =>{
-    if (match.Competition === 'Engine 3.0') {
+    if (match.Competition === competitionType) {
         return (
          <TouchableOpacity key={index} onPress={() => navigation.navigate('MatchResult', {
                 matchId: match.id
@@ -120,171 +125,142 @@ const Home = ({ navigation }) => {
   } )
 
 
-  function onMatchClick(params) {
-    navigation.navigate("MatchResult");
-  }
+ 
 
-
-  const [Competition, CompetitionF] = useState('Engine 4.0')
 
 
 
   // Top Pick  
-
    const [TopPickState, TopPickStateF] = useState([])
 
-  useEffect(() => {
-  const data = TopPicksDB.filter(top => top.Competition === Competition)
-
-  
+   const getTopPickData = () => {
+  const data = TopPicksDB.filter((top) => top.Competition === competitionType);
   TopPickStateF(data);
-  }, [TopPicksDB, Competition])
+   }
+
+  useEffect(() => {
+  getTopPickData()
+  }, [TopPicksDB, competitionType]);
   
 
 
 
 
+  const wait = (timeout) => {
+    return new Promise((resolve) => setTimeout(resolve, timeout));
+  };
+
+   const [refreshing, setRefreshing] = React.useState(false);
+
+const onRefresh = React.useCallback(() => {
+  setRefreshing(true);
+  getTopPick()
+  getMatchsFromDB();
+  wait(2000).then(() => setRefreshing(false));
+}, []);
 
 
   function Screen_A() {
     return (
-
-        <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <View style={styles.main}>
+          <Header navigation={navigation} />
 
-          {/* {!online && <InternetChecker/>} */}
+          <Nav />
 
-      
-<Header navigation={navigation}/>
+          <ScrollView
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+            showsVerticalScrollIndicator={false}
+          >
+            <View style={styles.dashboard}>
+              <Text style={styles.dashboardTitle}>Top Pick</Text>
 
+              {TopPickState.map((tp, index) => (
+                <TouchableOpacity key={index} style={styles.dashboardBox}>
+                  <Text style={styles.competitionName}>{tp.Competition}</Text>
+                  <Text style={styles.matchDay}>Matchday One</Text>
 
-<View style={styles.navMenu}>
+                  <View style={styles.scoreBoard}>
+                    <View style={styles.teamBoard}>
+                      <Image
+                        source={require("../../../assets/logo-01.png")}
+                        resizeMode="contain"
+                        style={{ height: 90, width: 90 }}
+                      />
 
-  <TouchableOpacity onPress={()=> {competitionF(4)
-CompetitionF('Engine 4.0')  
-}} style={{ backgroundColor: competition === 4 ? '#ff2782' : '#fff'
-    , 
-    paddingHorizontal:10 ,
-    paddingVertical:15,
-    flex: 1,
-    marginHorizontal: 5,
-    alignItems: 'center',
-    borderRadius: 20}}>
-<Text style={{ color: competition===4 ? '#fff' : '#ff2782'
-    , fontWeight:'500',
-    fontSize:15}}>Engine 4.0</Text>
-  </TouchableOpacity>
+                      <Text style={styles.teamTxt}>
+                        {tp.MatchSelect.HomeTeam}
+                      </Text>
+                    </View>
+                    <View style={styles.score}>
+                      {tp.MatchSelect.MatchActive ? (
+                        <>
+                          <Text style={styles.scoreTxt}>
+                            {tp.MatchSelect.HomeTeamScore}
+                          </Text>
+                          <Text style={styles.scoreTxt}>:</Text>
+                          <Text style={styles.scoreTxt}>
+                            {tp.MatchSelect.AwayTeamScore}
+                          </Text>
+                        </>
+                      ) : (
+                        <View
+                          style={{
+                            flexDirection: "column",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            flex: 1,
+                          }}
+                        >
+                          <Text
+                            style={{
+                              color: "white",
+                              fontWeight: "500",
+                            }}
+                          >
+                            {tp.MatchSelect.Matchtime}
+                          </Text>
+                          <Text
+                            style={{
+                              color: "white",
+                              fontWeight: "500",
+                              fontSize: 15,
+                            }}
+                          >
+                            {"vs"}
+                          </Text>
+                          <Text style={styles.eachMatchTeamDate}>
+                            {tp.MatchSelect.MatchDate}
+                          </Text>
+                        </View>
+                      )}
+                    </View>
+                    <View style={styles.teamBoard}>
+                      <Image
+                        source={require("../../../assets/logo-02.png")}
+                        resizeMode="contain"
+                        style={{ height: 90, width: 90 }}
+                      />
 
-  
-  <TouchableOpacity onPress={()=> {competitionF(3)
-CompetitionF('Engine 3.0')    
-}} style={{ backgroundColor: competition === 3 ? '#ff2782' : '#fff'
-    , 
-    paddingHorizontal:10 ,
-    paddingVertical:15,
-    flex: 1,
-    marginHorizontal: 5,
-    alignItems: 'center',
-    borderRadius: 20}}>
-<Text style={{ color: competition===3 ? '#fff' : '#ff2782'
-    , fontWeight:'500',
-    fontSize:15}}>Engine 3.0</Text>
-  </TouchableOpacity>
-  
-</View>
+                      <Text style={styles.teamTxt}>
+                        {tp.MatchSelect.AwayTeam}
+                      </Text>
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              ))}
+            </View>
 
-<ScrollView showsVerticalScrollIndicator={false}>
+            <View>
+              <Text style={styles.dashboardTitle}>Match</Text>
 
-
- <View style={styles.dashboard}>
-
-<Text  style={styles.dashboardTitle}>
-  Top Pick
-</Text>
-
-{TopPickState.map((tp, index) =>
-<TouchableOpacity 
- key={index}  style={styles.dashboardBox}>
-
-  <Text style={styles.competitionName}>{tp.Competition}</Text>
-  <Text style={styles.matchDay}>Matchday One</Text>
-  
-
-  <View  style={styles.scoreBoard}>
-      <View  style={styles.teamBoard}>
-
-         <Image
-            source={require("../../../assets/logo-01.png")}
-            resizeMode="contain"
-            style={{ height: 90, width: 90 }}
-          />
-
-              <Text style={styles.teamTxt}>{tp.MatchSelect.HomeTeam}</Text>
-    
-  </View> 
-   <View  style={styles.score}>
-    {
-      tp.MatchSelect.MatchActive ? <>
-      <Text style = {styles.scoreTxt}>{tp.MatchSelect.HomeTeamScore}</Text>
-      <Text style = {styles.scoreTxt}>:</Text>
-        <Text style = {styles.scoreTxt}>{tp.MatchSelect.AwayTeamScore}</Text>
-        </> :
-        <View style={{flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flex: 1}}>
-         <Text style={{
-  color:'white',
-  fontWeight:'500',
-  }}>{tp.MatchSelect.Matchtime}</Text>
-         <Text style={{  color:'white',
-  fontWeight:'500',
-  fontSize: 15}}>{'vs'}</Text>
-  <Text style={styles.eachMatchTeamDate}>{tp.MatchSelect.MatchDate}</Text>
-
+              {competition === 4 ? Engine40list : Engine30list}
+            </View>
+          </ScrollView>
         </View>
-    }
-  </View>
-    <View  style={styles.teamBoard}>
-        <Image
-            source={require("../../../assets/logo-02.png")}
-            resizeMode="contain"
-            style={{ height: 90, width: 90 }}
-          />
-
-              <Text style={styles.teamTxt}>{tp.MatchSelect.AwayTeam}</Text>
-  </View>
-  </View>
-
-
-</TouchableOpacity>
- )}
-
-
-
-</View>
-
-<View>
-
-  <Text  style={styles.dashboardTitle}>
-  Match
-</Text>
-
-{competition===4 ? Engine40list
- 
- :
-
-Engine30list}
-  
-  </View> 
-
-
-
-</ScrollView>
-
-
-    </View>
-    </View>
-   
-
-  
+      </SafeAreaView>
     );
   }
 
@@ -306,17 +282,6 @@ const styles = StyleSheet.create({
    main: {
     paddingTop: 15,
 
-  },
-
-
-  
-  
-  navMenu: {
-  marginVertical:20,
-  display: 'flex',
-  flexDirection: 'row', 
-  justifyContent: 'space-between',
-  
   },
 
 

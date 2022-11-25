@@ -6,12 +6,12 @@ import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 // import { auth, db, storage } from '../../Utils/Firebase';
 import { getDownloadURL, getStorage, ref, uploadBytesResumable } from 'firebase/storage';
 // import Loader from '../../Components/Loader';
-import { useGlobalContext } from '../Function/Context';
-import { pickImage, uploadImgetoFireStorage } from '../Utils/DisplayImage';
-import { db } from '../Utils/Firebase';
-import Loader from '../FrontEnd/Components/Others/Loader';
+import { useGlobalContext } from '../../Function/Context';
+import { pickImage, uploadImgetoFireStorage } from '../../Utils/DisplayImage';
+import { db } from '../../Utils/Firebase';
+import Loader from '../../FrontEnd/Components/Others/Loader';
 import SelectDropdown from 'react-native-select-dropdown';
-import Header from '../FrontEnd/Components/Others/Header';
+import Header from '../../FrontEnd/Components/Others/Header';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 const CreateMatch = ({navigation}) => {
@@ -143,7 +143,7 @@ TeamDataF(data.map(d => d.TeamName))
           navigation.goBack();
         }} style={styles.profilePic}>
         <Image
-            source={require("../../assets/ba.png")}
+            source={require("../../../assets/ba.png")}
             resizeMode="cover"
             style={{ height: 20, width: 20,  }}
           />
@@ -174,7 +174,7 @@ TeamDataF(data.map(d => d.TeamName))
 
       <SafeAreaView style={styles.container}>
    <View>
-            <Headers functions = {navigateToListofTeam} imgtype={require("../../assets/list.png")}/>
+            <Headers functions = {navigateToListofTeam} imgtype={require("../../../assets/list.png")}/>
 
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.topSection}>
