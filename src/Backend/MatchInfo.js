@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useGlobalContext } from '../Function/Context';
 import Header from '../FrontEnd/Components/Others/Header';
 import SelectDropdown from 'react-native-select-dropdown';
-import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { addDoc, arrayUnion, collection, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../Utils/Firebase';
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
@@ -24,6 +24,7 @@ HomeTeamScore: '',
                 AwayTeamScore: '',
                 MatchTimeline:[],
                 MatchActive: false,
+                id: ''
 
 }
 
@@ -62,7 +63,7 @@ const MatchInfo = ({route, navigation}) => {
   }, []);
     // Notifications
 
-  const {competition, competitionF, notification, notificationF, currentUser, loader, loaderF, TeamsFromDB } = useGlobalContext();
+  const {competition, competitionF, notification, notificationF, handleDeleteMatch, loader, loaderF, TeamsFromDB, } = useGlobalContext();
 
 
       const { matchId } = route.params;
@@ -99,6 +100,7 @@ HomeTeamScore,
                 AwayTeamScore,
                 MatchTimeline,
                 MatchActive,
+                id
 } = matchhInfo
 
 
@@ -122,7 +124,7 @@ const Matchnotes = ['Match Started', 'Goal',  'Yellow Card', 'Substitution',`Red
  
 
    
-
+// console.log(matchhInfo);
 
 
 
@@ -136,7 +138,6 @@ const Matchnotes = ['Match Started', 'Goal',  'Yellow Card', 'Substitution',`Red
     }, []);
 
    
-
 
 
 
@@ -161,6 +162,8 @@ const Matchnotes = ['Match Started', 'Goal',  'Yellow Card', 'Substitution',`Red
              await schedulePushNotification();
           }
 
+          SendNotificationToAllUsers()
+
             
   navigation.navigate("MatchList");
         } catch (err) {
@@ -174,8 +177,44 @@ const Matchnotes = ['Match Started', 'Goal',  'Yellow Card', 'Substitution',`Red
 
   }
 
+
+
   
 
+    
+  const [UsersToken, UsersTokenF] = useState(['']);
+  const [UsersList, UsersListF] = useState(['']);
+
+      useEffect(() => {
+  getUserDetail();
+  }, []);
+
+
+  const getUserDetail = async () => {
+    const docRef = doc(db, "Users",  'Vgp5x0EfVAXtx8JM7yGx');
+    const snapshot = await getDoc(docRef);
+    if (snapshot.exists()) {
+      UsersListF( [...snapshot.data().expoPushTokenFB] );
+      UsersTokenF( {...snapshot.data()} );
+    }
+  };
+
+
+
+ const handleSendUserTokentoDB = async () => {
+if (expoPushToken !== '') {
+
+        try {
+         await updateDoc(doc(db, "Users", 'Vgp5x0EfVAXtx8JM7yGx'), {
+          ...UsersToken,
+      expoPushTokenFB: arrayUnion(expoPushToken),
+        });  
+        } catch (error) {
+            console.log(error, 'line 219');
+           
+        }
+}
+};
 
 // Notifications
 
@@ -184,12 +223,13 @@ const Matchnotes = ['Match Started', 'Goal',  'Yellow Card', 'Substitution',`Red
 async function schedulePushNotification() {
   await Notifications.scheduleNotificationAsync({
     content: {
-      title: `${HomeTeam} vs ${AwayTeam}`  ,
+         title: `${HomeTeam} vs ${AwayTeam}`  ,
       body: `${notificationBody} [${notificationNote}]`,
     //   data: { data: 'goes here' },
     },
     trigger: { seconds: 2 },
   });
+  handleSendUserTokentoDB()
 }
 
 
@@ -218,7 +258,8 @@ async function registerForPushNotificationsAsync() {
       return;
     }
     token = (await Notifications.getExpoPushTokenAsync()).data;
-    console.log(token);
+    // console.log(token, 'token:line 217');
+    handleSendUserTokentoDB()
   } else {
     alert('Must use physical device for Push Notifications');
   }
@@ -226,35 +267,39 @@ async function registerForPushNotificationsAsync() {
   return token;
 }
 
-// async function registerForPushNotificationsAsync(userId) {
-// 	let token;
-	
-// 	if (Constants.isDevice) {
-// 		const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);		
-// 		let finalStatus = existingStatus;
-// 		if (existingStatus !== "granted") {
-// 			const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-// 			finalStatus = status;
-// 		}
-// 		if (finalStatus !== "granted") {
-// 			alert("Failed to get push token for push notification!");
-// 			return;
-// 		}
-// 		try {
-// 			token = await Notifications.getExpoPushTokenAsync();
-// 		}catch(err){
-// 			alert(`failed to get token error ${err}`);
-// 		}
-//                 token = token.data
-// 	} else {
-// 		alert("Must use physical device for Push Notifications");
-// 	}
-
-// 	return token;
-// }
 
 
-// Notifications
+
+  
+
+
+  const msgs=  UsersList.map((list, index) => JSON.parse(JSON
+  .stringify({
+    to: list,
+     
+       title: `${HomeTeam} vs ${AwayTeam}`  ,
+      body: `${notificationBody} [${notificationNote}]`,
+  })))
+
+  
+
+  // console.log(msgs,'line176');
+
+  const SendNotificationToAllUsers = () => {
+    let res = fetch("https://exp.host/--/api/v2/push/send", {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+
+'Content-Type': 'application/json'
+      },
+      body: 
+        JSON.stringify( msgs),
+      
+      
+    })
+  }
+
 
 
 
@@ -286,7 +331,6 @@ async function registerForPushNotificationsAsync() {
   
         
 
-             
   
   
   
@@ -614,6 +658,10 @@ async function registerForPushNotificationsAsync() {
         <TouchableOpacity style={styles.btn} onPress={handleSubmit}>
           <Text style={styles.btnTxt}>Save</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={styles.btnDelete} onPress={() => {handleDeleteMatch(matchId) 
+        }}>
+          <Text style={styles.btnTxt}>Delete Match</Text>
+        </TouchableOpacity>
   
   
       </ScrollView>
@@ -633,7 +681,7 @@ const styles = StyleSheet.create({
     
         backgroundColor: "aliceblue",
         // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-          paddingHorizontal: 20,
+          paddingHorizontal: 10,
           paddingTop: 10
       },
 
@@ -686,6 +734,15 @@ const styles = StyleSheet.create({
       btn: {
         paddingVertical: 12,
         backgroundColor: "rgb(20, 119, 251)",
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: 10,
+        width: "100%",
+        marginVertical: 20,
+      },
+      btnDelete: {
+        paddingVertical: 12,
+        backgroundColor: "red",
         alignItems: "center",
         justifyContent: "center",
         borderRadius: 10,

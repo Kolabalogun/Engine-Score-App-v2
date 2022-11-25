@@ -2,6 +2,8 @@ import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'reac
 import React, { useEffect, useState } from 'react'
 import { useGlobalContext } from '../Function/Context'
 import SelectDropdown from 'react-native-select-dropdown'
+import { addDoc, collection, doc, updateDoc } from 'firebase/firestore'
+import { db } from '../Utils/Firebase'
 
 
 const initialState={
@@ -21,11 +23,11 @@ HomeTeamScore: 0,
 
 }
 
-const TopPick = () => {
+const TopPick = ({navigation}) => {
 
   
 
-    const {competition, competitionF, MatchsFromDB} = useGlobalContext()
+    const {competition, competitionF, MatchsFromDB, notification, notificationF, loaderF} = useGlobalContext()
 
      function Headers({functions, imgtype}) {
     return(
@@ -88,6 +90,72 @@ MatchDataF(data)
 
    }, [CompetitionState])
    
+
+
+
+   const handleSubmit = async (e) => {
+    e.preventDefault();
+
+
+    if (Competition === 'Engine 4.0') {
+        if (MatchSelect) {
+
+        try {
+         await updateDoc(doc(db, "Top Pick", 'FReTe1WrlShEj1CQmlTR'), {
+               Competition: Competition,
+               MatchSelect: MatchSelect
+                
+            });
+            loaderF(false);
+            notificationF("Team Successfully Added");
+ 
+    navigation.navigate("Home");
+
+        } catch (error) {
+            // console.log(error);
+            notificationF(error);
+        }
+
+      
+    } else {
+        return notificationF("All fields must be filled");
+    }
+    }
+
+    else {
+        if (MatchSelect) {
+
+        try {
+         await updateDoc(doc(db, "Top Pick", 'ZBKXoFBPpW6BOxIhyRBr'), {
+               Competition: Competition,
+               MatchSelect: MatchSelect
+                
+            });
+            loaderF(false);
+            notificationF("Team Successfully Added");
+ 
+    navigation.navigate("Home");
+
+        } catch (error) {
+            // console.log(error);
+            notificationF(error);
+        }
+
+      
+    } else {
+        return notificationF("All fields must be filled");
+    }
+    }
+ 
+
+
+  
+    
+   
+
+};
+
+
 
 
   return (
@@ -199,7 +267,7 @@ CompetitionStateF('Engine 3.0')
         </> :
         <View style={{flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flex: 1}}>
          <Text style={styles.eachMatchTeamTime}>{Matchtime}</Text>
-         <Text style={{  color:'black',
+         <Text style={{  color:'white',
   fontWeight:'500',
   fontSize: 15}}>{'vs'}</Text>
   <Text style={styles.eachMatchTeamDate}>{MatchDate}</Text>
@@ -221,7 +289,13 @@ CompetitionStateF('Engine 3.0')
 
 </View> 
 
+       <Text style={{ color: "red", alignSelf: "center", padding: 3,  }}>
+          {notification}
+        </Text>
 
+   <TouchableOpacity style={styles.btn} onPress={handleSubmit}>
+          <Text style={styles.btnTxt}>Save</Text>
+        </TouchableOpacity>
 
 
     </View>
@@ -236,7 +310,7 @@ const styles = StyleSheet.create({
     
         backgroundColor: "aliceblue",
         // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-          paddingHorizontal: 20,
+          paddingHorizontal: 10,
           paddingTop: 10
       },
 
@@ -350,5 +424,47 @@ fontWeight: '400'
   color: 'white',
   fontSize:48
   },
+
+      eachMatchTeamTime: {
+  color:'white',
+  fontWeight:'500',
+
+  },
+
+       eachMatchTeamDate: {
+  color:'#aaa',
+  fontWeight:'400',
+
+  },
+
+     eachMatchTeamTimeScore: {
+  color:'red',
+  fontWeight:'500',
+  fontSize: 17
+  },
+
+       eachMatchTeamDateScore: {
+  color:'#aaa',
+  fontWeight:'400',
+  fontSize: 20,
+    paddingHorizontal: 8
+  },
+
+      btn: {
+        paddingVertical: 12,
+        backgroundColor: "rgb(20, 119, 251)",
+        alignItems: "center",
+        justifyContent: "center",
+        borderRadius: 10,
+        width: "100%",
+        marginVertical: 20,
+        marginBottom: 50
+      },
+      btnTxt: {
+        color: "white",
+        fontSize: 16,
+        fontWeight: "500",
+      },
+
 
 })

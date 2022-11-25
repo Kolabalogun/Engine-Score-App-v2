@@ -36,11 +36,16 @@ export default function App() {
     <NavigationContainer style={styles.container}>
     <AppProvider>
       {ModalState ? (
+        <>
         <Modal />
+       <StatusBar style="auto" />
+        </>
       ) : (
        
-      
+      <>
  <Navigations/>
+  <StatusBar style="auto" />
+ </>
        
       )}
     </AppProvider>

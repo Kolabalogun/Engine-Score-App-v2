@@ -371,7 +371,7 @@ const styles = StyleSheet.create({
     
         backgroundColor: "aliceblue",
         // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-          paddingHorizontal: 20,
+          paddingHorizontal: 10,
           paddingTop: 10
       },
 

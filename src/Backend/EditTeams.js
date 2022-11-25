@@ -40,6 +40,16 @@ benchs4:'',
     TeamFormation: '',
     selectedImage: null,
 
+        stat: {
+      wins: '',
+      loss: '',
+      draw: '',
+      matchplayed:'',
+      gd:'',
+      points: '',
+      
+    },
+id:''
 
 }
 
@@ -67,7 +77,7 @@ const EditTeams = ({route, navigation}) => {
 
 
   const{   Competition,
-    TeamName,
+    TeamName, stat,
     Players,
   TeamGroup,
     TeamManager,
@@ -149,7 +159,7 @@ const EditTeams = ({route, navigation}) => {
  
   function functions(params) {
           navigation.navigate("TeamStat", {
-            params:teamId
+             teamId: teamInfo.id
           });
   }
 
@@ -169,11 +179,11 @@ const EditTeams = ({route, navigation}) => {
        <Text style={styles.headerTitle}>Engine <Text style={styles.headerTitleScore} >Scores</Text></Text>
         </View>
         <TouchableOpacity onPress={functions} style={styles.profilePic}>
-        <Image
+        {/* <Image
             source={imgtype}
             resizeMode="cover"
             style={{ height: 30, width: 30,  }}
-          />
+          /> */}
         </TouchableOpacity>
       </View>
       )
@@ -312,6 +322,136 @@ const EditTeams = ({route, navigation}) => {
 	
    
 />
+
+
+
+
+<View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+   <View style={{ marginTop: 10, flex: 1 }}>
+            <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+              Wins
+            </Text>
+            <TextInput
+             maxLength = {1}
+             keyboardType = 'decimal-pad'
+             value={stat.wins}
+              onChangeText={(e) => {
+             
+             teamInfoF({ ...teamInfo, stat: {
+              ...stat,
+              wins: e
+             } });
+              }}
+              placeholder="Match Won"
+            
+              style={styles.Input}
+            />
+          </View> 
+          <View style={{ marginTop: 10, flex: 1 }}>
+            <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+              Draw
+            </Text>
+            <TextInput
+             maxLength = {1}
+             keyboardType = 'decimal-pad'
+             value={stat.draw}
+              onChangeText={(e) => {
+             
+             teamInfoF({ ...teamInfo, stat: {
+              ...stat,
+              draw: e
+             } });
+              }}
+              placeholder="Match Draws"
+            
+              style={styles.Input}
+            />
+          </View>
+           <View style={{ marginTop: 10, flex: 1 }}>
+            <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+              Loss
+            </Text>
+            <TextInput
+           maxLength = {1}
+             keyboardType = 'decimal-pad'
+           value={stat.loss}
+            onChangeText={(e) => {
+             
+             teamInfoF({ ...teamInfo, stat: {
+              ...stat,
+              loss: e
+             } });
+              }}
+              placeholder="Match Lost"
+            
+              style={styles.Input}
+            />
+          </View>
+</View>
+<View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+   <View style={{ marginTop: 10, flex: 1 }}>
+            <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+             Match Played
+            </Text>
+            <TextInput
+             maxLength = {1}
+             keyboardType = 'decimal-pad'
+             value={stat.matchplayed}
+              onChangeText={(e) => {
+             
+             teamInfoF({ ...teamInfo, stat: {
+              ...stat,
+              matchplayed: e
+             } });
+              }}
+              placeholder="Match Played"
+            
+              style={styles.Input}
+            />
+          </View> 
+   <View style={{ marginTop: 10, flex: 1 }}>
+            <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+              Goal Difference
+            </Text>
+            <TextInput
+             maxLength = {2}
+             keyboardType = 'decimal-pad'
+             value={stat.gd}
+              onChangeText={(e) => {
+             
+             teamInfoF({ ...teamInfo, stat: {
+              ...stat,
+              gd: e
+             } });
+              }}
+              placeholder="Goal Difference"
+            
+              style={styles.Input}
+            />
+          </View> 
+          <View style={{ marginTop: 10, flex: 1 }}>
+            <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+              Points
+            </Text>
+            <TextInput
+             maxLength = {2}
+             keyboardType = 'decimal-pad'
+             value={stat.points}
+              onChangeText={(e) => {
+             
+             teamInfoF({ ...teamInfo, stat: {
+              ...stat,
+              points: e
+             } });
+              }}
+              placeholder="Match Points"
+            
+              style={styles.Input}
+            />
+          </View>
+        
+</View>
+
           </View>
 
 
@@ -814,7 +954,7 @@ const styles = StyleSheet.create({
     
         backgroundColor: "aliceblue",
         // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-          paddingHorizontal: 20,
+          paddingHorizontal: 10,
           paddingTop: 10
       },
 

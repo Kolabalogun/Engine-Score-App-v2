@@ -1,23 +1,37 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, LogBox } from "react-native";
 import React, { useState, useContext, useEffect } from "react";
 
 import { MatchArray } from "../FrontEnd/Components/Match/MatchArray";
 import { GroupArray } from "../FrontEnd/Components/Group/GroupState";
 import { useNavigation } from "@react-navigation/native";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth, db } from "../Utils/Firebase";
-import { collection, deleteDoc, doc, onSnapshot } from "firebase/firestore";
+import { getRedirectResult, onAuthStateChanged, signInWithPopup } from "firebase/auth";
+import { auth, db, provider } from "../Utils/Firebase";
+import { collection, deleteDoc, doc, getDoc, onSnapshot } from "firebase/firestore";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import NetInfo from '@react-native-community/netinfo';
+
 
 
 const AppContext = React.createContext();
 
+LogBox.ignoreLogs([
+    "Setting a timer",
+    "AsyncStorage has been extracted from react-native core and will be removed in a future release.",
+  ]);
+
+
+
 const AppProvider = ({ children }) => {
+
+
+  
+
 
   const [competition, competitionF] = useState(4)
 
 
-    const [currentUser, currentUserF] = useState(null);
-    
+
+
    const [notification, notificationF] = useState("");
    const [loader, loaderF] = useState("");
 
@@ -34,23 +48,9 @@ const AppProvider = ({ children }) => {
 
   const navigation = useNavigation();
 
-    // check if user is signed In
-    useEffect(() => {
-        onAuthStateChanged(auth, (user) => {
-          if (user) {
-            currentUserF(user);
-          } else {
-            currentUserF(null);
-          }
-        });
-      }, []);
+ 
 
-       //   logging out user
-  const handleLogout = () => {
-    signOut(auth).then(() => {
-      currentUserF(null);
-    });
-  };
+
 
 
   // get list of teams from firebase 
@@ -89,10 +89,32 @@ const AppProvider = ({ children }) => {
       unsub();
     };
   }, []);
+  // get list of users from firebase 
+
+  
+  const [UsersToken, UsersTokenF] = useState('');
+
+      useEffect(() => {
+  getBlogDetail();
+  }, []);
+
+
+  const getBlogDetail = async () => {
+    const docRef = doc(db, "Users",  'Vgp5x0EfVAXtx8JM7yGx');
+    const snapshot = await getDoc(docRef);
+    if (snapshot.exists()) {
+      UsersTokenF({ ...snapshot.data() });
+    }
+  };
+
+  // console.log( UsersToken, 'context line 137');
+
+
+
 
     // to delete Teams
   const handleDeleteTeam = async (id) => {
-    console.warn('sdhgghds');
+    // console.warn('sdhgghds');
     // if (window.confirm("Are you sure you want to delete this blog?")) {
       try {
         loaderF(true);
@@ -143,12 +165,13 @@ const AppProvider = ({ children }) => {
 
     // to delete Matchs
   const handleDeleteMatch = async (id) => {
-    console.warn('sdhgghds');
+    // console.warn('sdhgghds');
     // if (window.confirm("Are you sure you want to delete this blog?")) {
       try {
         loaderF(true);
         await deleteDoc(doc(db, "Matchs", id));
         loaderF(false);
+        navigation.goBack()
         // toast.error("Blog successfully deleted");
       } catch (error) {
         console.log(error);
@@ -158,11 +181,93 @@ const AppProvider = ({ children }) => {
 
 
 
-  const [online, onlineF]  = useState(true)
+
+  // get list of top picks from firebase 
+
+  
+  const [TopPicksDB, TopPicksDBF] = useState([]);
+
+
+  useEffect(() => {
+    loaderF(true);
+    const unsub = onSnapshot(
+      collection(db, "Top Pick"),
+
+      (snapshot) => {
+        let list = [];
+
+        snapshot.docs.forEach((doc) => {
+          list.push({ id: doc.id, ...doc.data() });
+        });
+        TopPicksDBF(list);
+        loaderF(false);
+
+     
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+
+    return () => {
+      unsub();
+    };
+  }, []);
+
+
+
+
+
 
   // check if there is internet connecttion 
+  const [online, onlineF]  = useState(true)
+
+NetInfo.fetch().then(state => {
+ 
+  onlineF(state.isConnected);
+});
 
 
+if (!online) {
+  alert('You have no Internet Connection!!')
+}
+
+
+
+ 
+    const [currentUser, currentUserF] = useState(null);
+
+   
+    
+// console.log(currentUser);
+
+  const storeData = async (value) => {
+  try {
+    await AsyncStorage.setItem('@checkUserSignIn', value)
+  } catch (e) {
+    // saving error
+  }
+}
+
+
+const getData = async () => {
+  try {
+    const value = await AsyncStorage.getItem('@checkUserSignIn')
+    // console.log(value);
+    if(value !== null) {
+      currentUserF(value)
+    }
+  } catch(e) {
+    // error reading value
+  }
+}
+
+
+ useEffect(() => {
+     getData()
+    }, [])
+
+    const [competitionType, competitionTypeF] = useState('Engine 4.0')
 
 
 
@@ -353,8 +458,8 @@ MatchsFromDB,
 
 handleDeleteMatch,
 
-online, 
-
+online, UsersToken, storeData, getData, TopPicksDB,
+competitionType, competitionTypeF,
 
 
         Group,

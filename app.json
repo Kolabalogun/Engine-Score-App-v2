@@ -17,6 +17,8 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+
+    
     "ios": {
       "supportsTablet": true
     },
@@ -42,18 +44,12 @@
         }
       ],
       [
-        "expo-notifications",
-         {
-          "icon": "./local/assets/notification-icon.png",
-          "color": "#ffffff",
-          "sounds": [
-            "./local/assets/notification-sound.wav",
-            "./local/assets/notification-sound-other.wav"
-          ]
-        }
+        "expo-notifications"
+     
        
       ]
     ],
+    
     "extra": {
       "eas": {
         "projectId": "e9ce2d52-3d8b-44ee-bc15-df2978ec7cf9"

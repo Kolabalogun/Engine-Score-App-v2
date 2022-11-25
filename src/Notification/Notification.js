@@ -71,6 +71,24 @@ async function schedulePushNotification() {
 }
 
 
+ const handleSubmit = async (e) => {
+    e.preventDefault();
+
+        try {
+            await addDoc(collection(db, "Users"), {
+              // UserToken: token,
+
+              expoPushToken: expoPushToken
+                
+            });
+            
+
+        } catch (error) {
+            console.log(error);
+            // notificationF(error);
+        }
+
+};
 
 async function registerForPushNotificationsAsync() {
   let token;
@@ -97,6 +115,11 @@ async function registerForPushNotificationsAsync() {
     }
     token = (await Notifications.getExpoPushTokenAsync()).data;
     console.log(token);
+    // handleSubmit()
+
+
+
+
   } else {
     alert('Must use physical device for Push Notifications');
   }

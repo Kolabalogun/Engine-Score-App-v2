@@ -8,47 +8,49 @@ import { useState } from "react";
 
 
 const Group = ({navigation}) => {
-  const { Group } = useGlobalContext();
+  const { TeamsFromDB } = useGlobalContext();
 
+
+   const [competitionType, competitionTypeF] = useState('Engine 4.0')
 
   
   const [competition, competitionF] = useState(4)
 
-  const points = Group;
+  const points = TeamsFromDB;
   points.sort(function (a, b) {
     return b.points - a.points;
   });
 
   const Group1Elements = points.map((group, index) => {
-    if (group.group === 1) {
+    if (group.TeamGroup === 1 && group.Competition === competitionType) {
       return (
         <Grouplist
           key={index}
           id={group.id}
-          name={group.name}
-          played={group.played}
-          draw={group.draw}
-          win={group.won}
-          lost={group.lost}
-          gd={group.goalD}
-          point={group.points}
+          name={group.TeamName}
+          played={group.stat.matchplayed}
+          draw={group.stat.draw}
+          win={group.stat.wins}
+          lost={group.stat.loss}
+          gd={group.stat.gd}
+          point={group.stat.points}
         />
       );
     }
   });
-  const Group2Elements = points.map((group, index) => {
-    if (group.group === 2) {
+ const Group2Elements = points.map((group, index) => {
+    if (group.TeamGroup === 2 && group.Competition === competitionType) {
       return (
         <Grouplist
           key={index}
           id={group.id}
-          name={group.name}
-          played={group.played}
-          draw={group.draw}
-          win={group.won}
-          lost={group.lost}
-          gd={group.goalD}
-          point={group.points}
+          name={group.TeamName}
+          played={group.stat.matchplayed}
+          draw={group.stat.draw}
+          win={group.stat.wins}
+          lost={group.stat.loss}
+          gd={group.stat.gd}
+          point={group.stat.points}
         />
       );
     }
@@ -62,7 +64,9 @@ const Group = ({navigation}) => {
 
     <View style={styles.navMenu}>
 
-  <TouchableOpacity onPress={()=> {competitionF(4)}} style={{ backgroundColor: competition === 4 ? '#ff2782' : '#fff'
+  <TouchableOpacity onPress={()=> {competitionF(4)
+competitionTypeF('Engine 4.0')  
+}} style={{ backgroundColor: competition === 4 ? '#ff2782' : '#fff'
     , 
     paddingHorizontal:10 ,
     paddingVertical:15,
@@ -76,7 +80,9 @@ const Group = ({navigation}) => {
   </TouchableOpacity>
 
   
-  <TouchableOpacity onPress={()=> {competitionF(3)}} style={{ backgroundColor: competition === 3 ? '#ff2782' : '#fff'
+  <TouchableOpacity onPress={()=> {competitionF(3)
+competitionTypeF('Engine 3.0')  
+}} style={{ backgroundColor: competition === 3 ? '#ff2782' : '#fff'
     , 
     paddingHorizontal:10 ,
     paddingVertical:15,
@@ -97,7 +103,7 @@ const Group = ({navigation}) => {
           <View style={styles.table}>
             <View style={styles.topTable}>
               {/* <Text style={styles.tableHead}>No</Text> */}
-              <Text style={styles.tableHead}>Teams</Text>
+              <Text style={styles.tableHeadOne}>Teams</Text>
               <Text style={styles.tableHead}>P</Text>
               <Text style={styles.tableHead}>W</Text>
               <Text style={styles.tableHead}>L</Text>
@@ -113,7 +119,7 @@ const Group = ({navigation}) => {
           <View style={styles.table}>
             <View style={styles.topTable}>
               {/* <Text style={styles.tableHead}>No</Text> */}
-              <Text style={styles.tableHead}>Teams</Text>
+              <Text style={styles.tableHeadOne}>Teams</Text>
               <Text style={styles.tableHead}>P</Text>
               <Text style={styles.tableHead}>W</Text>
               <Text style={styles.tableHead}>L</Text>
@@ -193,6 +199,11 @@ const styles = StyleSheet.create({
   tableHead: {
     color: "black",
 fontWeight: '500'
+  },
+  tableHeadOne: {
+    color: "black",
+fontWeight: '500',
+  width: 65,
   },
   titleText: {
     fontSize: 15,

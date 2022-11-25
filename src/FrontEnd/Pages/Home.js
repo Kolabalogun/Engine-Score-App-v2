@@ -26,7 +26,7 @@ import InternetChecker from "../Components/Others/InternetChecker";
 const stack = createNativeStackNavigator();
 
 const Home = ({ navigation }) => {
-     const {MatchsFromDB, competitionF, competition, online, }= useGlobalContext()
+     const {MatchsFromDB, competitionF, competition, TopPicksDB, }= useGlobalContext()
 
 
 
@@ -125,6 +125,26 @@ const Home = ({ navigation }) => {
   }
 
 
+  const [Competition, CompetitionF] = useState('Engine 4.0')
+
+
+
+  // Top Pick  
+
+   const [TopPickState, TopPickStateF] = useState([])
+
+  useEffect(() => {
+  const data = TopPicksDB.filter(top => top.Competition === Competition)
+
+  
+  TopPickStateF(data);
+  }, [TopPicksDB, Competition])
+  
+
+
+
+
+
 
   function Screen_A() {
     return (
@@ -140,7 +160,9 @@ const Home = ({ navigation }) => {
 
 <View style={styles.navMenu}>
 
-  <TouchableOpacity onPress={()=> {competitionF(4)}} style={{ backgroundColor: competition === 4 ? '#ff2782' : '#fff'
+  <TouchableOpacity onPress={()=> {competitionF(4)
+CompetitionF('Engine 4.0')  
+}} style={{ backgroundColor: competition === 4 ? '#ff2782' : '#fff'
     , 
     paddingHorizontal:10 ,
     paddingVertical:15,
@@ -154,7 +176,9 @@ const Home = ({ navigation }) => {
   </TouchableOpacity>
 
   
-  <TouchableOpacity onPress={()=> {competitionF(3)}} style={{ backgroundColor: competition === 3 ? '#ff2782' : '#fff'
+  <TouchableOpacity onPress={()=> {competitionF(3)
+CompetitionF('Engine 3.0')    
+}} style={{ backgroundColor: competition === 3 ? '#ff2782' : '#fff'
     , 
     paddingHorizontal:10 ,
     paddingVertical:15,
@@ -178,9 +202,10 @@ const Home = ({ navigation }) => {
   Top Pick
 </Text>
 
-<View  style={styles.dashboardBox}>
+{TopPickState.map((tp, index) =><TouchableOpacity 
+ key={index}  style={styles.dashboardBox}>
 
-  <Text style={styles.competitionName}>{competition === 4 ? 'Engine 4.0' : 'Engine 3.0'}</Text>
+  <Text style={styles.competitionName}>{tp.Competition}</Text>
   <Text style={styles.matchDay}>Matchday One</Text>
   
 
@@ -193,13 +218,28 @@ const Home = ({ navigation }) => {
             style={{ height: 90, width: 90 }}
           />
 
-              <Text style={styles.teamTxt}>Mechanical</Text>
+              <Text style={styles.teamTxt}>{tp.MatchSelect.HomeTeam}</Text>
     
   </View> 
    <View  style={styles.score}>
-    <Text style = {styles.scoreTxt}>0</Text>
+    {
+      tp.MatchSelect.MatchActive ? <>
+      <Text style = {styles.scoreTxt}>{tp.MatchSelect.HomeTeamScore}</Text>
       <Text style = {styles.scoreTxt}>:</Text>
-        <Text style = {styles.scoreTxt}>0</Text>
+        <Text style = {styles.scoreTxt}>{tp.MatchSelect.AwayTeamScore}</Text>
+        </> :
+        <View style={{flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flex: 1}}>
+         <Text style={{
+  color:'white',
+  fontWeight:'500',
+  }}>{tp.MatchSelect.Matchtime}</Text>
+         <Text style={{  color:'white',
+  fontWeight:'500',
+  fontSize: 15}}>{'vs'}</Text>
+  <Text style={styles.eachMatchTeamDate}>{tp.MatchSelect.MatchDate}</Text>
+
+        </View>
+    }
   </View>
     <View  style={styles.teamBoard}>
         <Image
@@ -208,12 +248,14 @@ const Home = ({ navigation }) => {
             style={{ height: 90, width: 90 }}
           />
 
-              <Text style={styles.teamTxt}>Computer</Text>
+              <Text style={styles.teamTxt}>{tp.MatchSelect.AwayTeam}</Text>
   </View>
   </View>
 
 
-</View>
+</TouchableOpacity> )}
+
+
 
 </View>
 
@@ -245,14 +287,15 @@ Engine30list}
   }
 
   return (
-    <stack.Navigator
-      screenOptions={{
-        header: () => null,
-      }}
-    >
-      <stack.Screen name="Screen_A" component={Screen_A} />
-      <stack.Screen name="MatchResult" component={MatchResult} />
-    </stack.Navigator>
+    // <stack.Navigator
+    //   screenOptions={{
+    //     header: () => null,
+    //   }}
+    // >
+    //   {/* <stack.Screen name="Screen_A" component={Screen_A} /> */}
+
+    // </stack.Navigator>
+    <Screen_A/>
   );
 };
 

@@ -119,8 +119,15 @@ let image = ''
              
                 TeamManager:TeamManager,
                 timestamp: serverTimestamp(),
-                // author: currentUser.email,
-                // userId: currentUser.uid,
+             stat: {
+              mp: '0',
+      wins: '0',
+      loss: '0',
+      draw: '0',
+      matchplayed:'0',
+      gd:'0',
+      points: '0'
+    },
                 dateId: dateId,
                 
             });
@@ -865,7 +872,7 @@ const styles = StyleSheet.create({
     
         backgroundColor: "aliceblue",
         // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-          paddingHorizontal: 20,
+          paddingHorizontal: 10,
           paddingTop: 10
       },
 

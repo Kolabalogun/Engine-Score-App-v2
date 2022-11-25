@@ -46,9 +46,9 @@ const styles = StyleSheet.create({
   },
   tableHeadone: {
     color: "black",
-    paddingRight: 5,
+    
     alignItems: "center",
-    // width: 30,
+    width: 60,
     fontSize: 13,
   },
 });
