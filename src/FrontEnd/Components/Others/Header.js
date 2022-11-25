@@ -18,11 +18,11 @@ const Header = ({navigation, functions, imgtype}) => {
        <Text style={styles.headerTitle}>Engine <Text style={styles.headerTitleScore} >Scores</Text></Text>
         </View>
         <View style={styles.profilePic}>
-        <Image
+        {/* <Image
             source={require("../../../../assets/pro.jpg")}
             resizeMode="cover"
             style={{ height: 30, width: 30, borderRadius: 50 }}
-          />
+          /> */}
         </View>
       </View>
   );

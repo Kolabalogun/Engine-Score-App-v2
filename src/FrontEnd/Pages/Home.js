@@ -202,7 +202,8 @@ CompetitionF('Engine 3.0')
   Top Pick
 </Text>
 
-{TopPickState.map((tp, index) =><TouchableOpacity 
+{TopPickState.map((tp, index) =>
+<TouchableOpacity 
  key={index}  style={styles.dashboardBox}>
 
   <Text style={styles.competitionName}>{tp.Competition}</Text>
@@ -253,7 +254,8 @@ CompetitionF('Engine 3.0')
   </View>
 
 
-</TouchableOpacity> )}
+</TouchableOpacity>
+ )}
 
 
 
@@ -287,14 +289,6 @@ Engine30list}
   }
 
   return (
-    // <stack.Navigator
-    //   screenOptions={{
-    //     header: () => null,
-    //   }}
-    // >
-    //   {/* <stack.Screen name="Screen_A" component={Screen_A} /> */}
-
-    // </stack.Navigator>
     <Screen_A/>
   );
 };
@@ -401,7 +395,7 @@ const styles = StyleSheet.create({
    backgroundColor:'white',flexDirection: 'row',
    justifyContent: 'space-between',
    alignItems: 'center',
-   paddingHorizontal: 30,
+   paddingHorizontal: 15,
    paddingVertical:10,
    marginVertical:5,
    borderWidth: 3,

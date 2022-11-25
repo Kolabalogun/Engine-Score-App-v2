@@ -220,7 +220,7 @@ fontWeight: '400'
    backgroundColor:'white',flexDirection: 'row',
    justifyContent: 'space-between',
    alignItems: 'center',
-   paddingHorizontal: 30,
+   paddingHorizontal: 15,
    paddingVertical:10,
    marginVertical:5,
    borderWidth: 3,
@@ -240,7 +240,7 @@ fontWeight: '400'
   },
 
    eachMatchTime: {
-//   flex:1,
+  flex:1,
   alignItems: 'center',
   alignSelf: 'center',
 //   paddingHorizontal: 10

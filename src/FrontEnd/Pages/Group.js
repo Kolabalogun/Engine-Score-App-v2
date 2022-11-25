@@ -5,6 +5,7 @@ import Grouplist from "../Components/Group/Grouplist";
 import { StatusBar } from "expo-status-bar";
 import Header from "../Components/Others/Header";
 import { useState } from "react";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 
 const Group = ({navigation}) => {
@@ -57,7 +58,8 @@ const Group = ({navigation}) => {
   });
 
   return (
-    <ScrollView style={styles.container}>
+    <SafeAreaView style={styles.container}>
+
       <View style={styles.main}>
   <Header navigation={navigation}/>
 
@@ -97,7 +99,7 @@ competitionTypeF('Engine 3.0')
   
 </View>
 
-
+    <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.group}>
           <Text style={styles.groupName}>Group One</Text>
           <View style={styles.table}>
@@ -130,9 +132,11 @@ competitionTypeF('Engine 3.0')
             {Group2Elements}
           </View>
         </View>
-
+  </ScrollView>
       </View>
-    </ScrollView>
+  
+
+    </SafeAreaView>
   );
 };
 
