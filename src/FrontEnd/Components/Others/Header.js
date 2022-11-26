@@ -1,6 +1,6 @@
 import { Image, StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React from "react";
-import { TouchableRipple } from "react-native-paper";
+
 
 const Header = ({navigation, functions, imgtype}) => {
   return (

@@ -1,69 +1,61 @@
 import { Image, StyleSheet, Text, View } from "react-native";
 import React from "react";
-// import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import Home from "../FrontEnd/Pages/Home";
-import Notification from "../Notification/Notification";
-// import Index from "../Group/Index";
+
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
 import Group from "../FrontEnd/Pages/Group";
 import Match from "../FrontEnd/Pages/Matches";
 import Performance from "../FrontEnd/Pages/Performance";
+import TopPick from "../Backend/Top Pick/TopPick";
+import ListofTeams from "../Backend/Team/ListofTeams";
+import MatchList from "../Backend/Match/MatchList";
+import Players from "../Backend/Player/Players";
 
+const Tabs = createMaterialBottomTabNavigator();
 
-
-
-const Tabs = createMaterialBottomTabNavigator ();
-
-const TabNavigations = () => {
+const AdminNavigation = () => {
   return (
     <Tabs.Navigator
-    barStyle={{ backgroundColor: '#fff' }}
-    initialRouteName="Home"
+      barStyle={{ backgroundColor: "#fff" }}
+      initialRouteName="Home"
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, size, color }) => {
           let iconName;
-          if (route.name === "Home") {
+          if (route.name === "Top Pick") {
             iconName = "home";
             (size = focused ? 23 : 22),
               (color = focused ? "#ff2782" : "#cdd4dc");
-          }
-           else if (route.name === "Match") {
+          } else if (route.name === "Team List") {
             iconName = "calendar-o";
             (size = focused ? 23 : 22),
               (color = focused ? "#ff2782" : "#cdd4dc");
-          }
-           else if (route.name === "Group") {
+          } else if (route.name === "Players") {
             iconName = "group";
             (size = focused ? 23 : 22),
               (color = focused ? "#ff2782" : "#cdd4dc");
+          } else if (route.name === "MatchList") {
+            iconName = "list-alt";
+            (size = focused ? 23 : 22),
+              (color = focused ? "#ff2782" : "#cdd4dc");
           }
-           else if (route.name === "Stat") {
-             iconName = "list-alt";
-             (size = focused ? 23 : 22),
-               (color = focused ? "#ff2782" : "#cdd4dc");
-           }
 
           return <FontAwesome name={iconName} size={size} color={color} />;
-
-          
         },
-  
-
 
         tabBarShowLabel: false,
         headerShown: false,
       })}
     >
-      <Tabs.Screen name="Home" component={Home} />
-      <Tabs.Screen name="Match" component={Match} />
-      <Tabs.Screen name="Group" component={Group} />
-      <Tabs.Screen name="Stat" component={Performance} />
+      <Tabs.Screen name="Top Pick" component={TopPick} />
+      <Tabs.Screen name="Team List" component={ListofTeams} />
+      <Tabs.Screen name="MatchList" component={MatchList} />
+      <Tabs.Screen name="Players" component={Players} />
     </Tabs.Navigator>
   );
 };
 
-export default TabNavigations;
+export default AdminNavigation;
 
 const styles = StyleSheet.create({});

@@ -1,36 +1,46 @@
-import { Image, SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Image, SafeAreaView, RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
-import Header from '../../FrontEnd/Components/Others/Header'
+
 import { useGlobalContext } from '../../Function/Context'
+import Loader from '../../FrontEnd/Components/Others/Loader';
 
 const MatchList = ({navigation}) => {
 
-    const {MatchsFromDB, competitionF, competition}= useGlobalContext()
+    const { MatchsFromDB, competitionF, competition, getMatchsFromDB, loader } =
+      useGlobalContext();
 
      function Headers() {
-    return(
-       <View style={styles.homeHeader}>
-        <TouchableOpacity onPress={() =>{
-          navigation.toggleDrawer();
-        }} style={styles.profilePic}>
-        <Image
-            source={require("../../assets/menu.png")}
+    return (
+      <View style={styles.homeHeader}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("Home");
+          }}
+          style={styles.profilePic}
+        >
+          <Image
+            source={require("../../../assets/home.png")}
             resizeMode="cover"
-            style={{ height: 20, width: 20,  }}
+            style={{ height: 28, width: 28 }}
           />
         </TouchableOpacity>
         <View style={styles.headerTitleDiv}>
-       <Text style={styles.headerTitle}>Engine <Text style={styles.headerTitleScore} >Scores</Text></Text>
+          <Text style={styles.headerTitle}>
+            Engine <Text style={styles.headerTitleScore}>Scores</Text>
+          </Text>
         </View>
-        <TouchableOpacity onPress={() => navigation.navigate('Create Match')} style={styles.profilePic}>
-        <Image
-           source={require("../../assets/ft.png")}
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Create Match")}
+          style={styles.profilePic}
+        >
+          <Image
+            source={require("../../../assets/ft.png")}
             resizeMode="cover"
-            style={{ height: 30, width: 30,  }}
+            style={{ height: 30, width: 30 }}
           />
         </TouchableOpacity>
       </View>
-      )
+    );
   }
 
 
@@ -81,7 +91,7 @@ const MatchList = ({navigation}) => {
   <Text style={styles.eachMatchTeamTxt}>{match.HomeTeam}</Text>
 
  <Image
-            source={require("../../assets/logo-01.png")}
+            source={require("../../../assets/logo-01.png")}
             resizeMode="contain"
             style={{ height: 45, width: 45,  }}
           />
@@ -89,8 +99,6 @@ const MatchList = ({navigation}) => {
 
 </View>
 <View style={styles.eachMatchTime}>
-
-    
 
     {match.MatchActive ?<View style={{flexDirection: 'row', }}>
         
@@ -100,7 +108,8 @@ const MatchList = ({navigation}) => {
   </View>
    : <>
     <Text style={styles.eachMatchTeamTime}>{match.Matchtime}</Text>
-  <Text style={styles.eachMatchTeamDate}>{match.MatchDate}</Text></>}
+  <Text style={styles.eachMatchTeamDate}>{match.MatchDate}</Text></>
+  }
 
  
   </View>
@@ -108,7 +117,7 @@ const MatchList = ({navigation}) => {
 
   
  <Image
-            source={require("../../assets/logo-02.png")}
+            source={require("../../../assets/logo-02.png")}
             resizeMode="contain"
             style={{ height: 45, width: 45,  }}
           />
@@ -123,63 +132,93 @@ const MatchList = ({navigation}) => {
         const Engine30list = MatchsFromDB.map((match, index) =>{
     if (match.Competition === 'Engine 3.0') {
         return (
-         <TouchableOpacity key={index} onPress={() => navigation.navigate('MatchInfo', {
-                matchId: match.id
-            })} style={styles.eachMatch}>
-<View style={styles.eachMatchTeam}>
+          <TouchableOpacity
+            key={index}
+            onPress={() =>
+              navigation.navigate("MatchInfo", {
+                matchId: match.id,
+              })
+            }
+            style={styles.eachMatch}
+          >
+            <View style={styles.eachMatchTeam}>
+              <Text style={styles.eachMatchTeamTxt}>{match.HomeTeam}</Text>
 
-  <Text style={styles.eachMatchTeamTxt}>{match.HomeTeam}</Text>
+              <Image
+                source={require("../../../assets/logo-01.png")}
+                resizeMode="contain"
+                style={{ height: 45, width: 45 }}
+              />
+            </View>
+            <View style={styles.eachMatchTime}>
+              {match.MatchActive ? (
+                <View style={{ flexDirection: "row" }}>
+                  <Text style={styles.eachMatchTeamTimeScore}>
+                    {match.HomeTeamScore}
+                  </Text>
+                  <Text style={styles.eachMatchTeamDateScore}>-</Text>
+                  <Text style={styles.eachMatchTeamTimeScore}>
+                    {match.AwayTeamScore}
+                  </Text>
+                </View>
+              ) : (
+                <>
+                  <Text style={styles.eachMatchTeamTime}>
+                    {match.Matchtime}
+                  </Text>
+                  <Text style={styles.eachMatchTeamDate}>
+                    {match.MatchDate}
+                  </Text>
+                </>
+              )}
+            </View>
+            <View style={styles.eachMatchTeam}>
+              <Image
+                source={require("../../../assets/logo-02.png")}
+                resizeMode="contain"
+                style={{ height: 45, width: 45 }}
+              />
 
- <Image
-            source={require("../../assets/logo-01.png")}
-            resizeMode="contain"
-            style={{ height: 45, width: 45,  }}
-          />
-
-
-</View>
-<View style={styles.eachMatchTime}>
-
- <Text style={styles.eachMatchTeamTime}>{match.Matchtime}</Text>
-  <Text style={styles.eachMatchTeamDate}>{match.MatchDate}</Text>
-  </View>
-  <View style={styles.eachMatchTeam}>
-
-  
- <Image
-            source={require("../../assets/logo-02.png")}
-            resizeMode="contain"
-            style={{ height: 45, width: 45,  }}
-          />
-
-  <Text style={styles.eachMatchTeamTxt}>{match.AwayTeam}</Text>
-
-</View>
-</TouchableOpacity>
-        )
+              <Text style={styles.eachMatchTeamTxt}>{match.AwayTeam}</Text>
+            </View>
+          </TouchableOpacity>
+        );
     }
   } )
+
+
+   const wait = (timeout) => {
+     return new Promise((resolve) => setTimeout(resolve, timeout));
+   };
+
+   const [refreshing, setRefreshing] = React.useState(false);
+
+   const onRefresh = React.useCallback(() => {
+     setRefreshing(true);
+     getMatchsFromDB()
+     wait(2000).then(() => setRefreshing(false));
+   }, []);
 
 
 
   return (
     <SafeAreaView style={styles.container}>
-        <Headers/>
-        <Nav/>
-     <ScrollView>
+      <Headers />
+      <Nav />
 
-
-{competition===4 ? Engine40list
- 
- :
-
-Engine30list}
       
+      {loader ? <Loader/> :     <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        showsVerticalScrollIndicator={false}
+      >
+        {competition === 4 ? Engine40list : Engine30list}
+      </ScrollView> }
 
-
-     </ScrollView>
+ 
     </SafeAreaView>
-  )
+  );
 }
 
 export default MatchList
@@ -265,7 +304,7 @@ fontWeight: '400'
      eachMatchTeamTimeScore: {
   color:'red',
   fontWeight:'500',
-  fontSize: 17
+  fontSize: 20
   },
 
        eachMatchTeamDateScore: {

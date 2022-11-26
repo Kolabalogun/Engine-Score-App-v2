@@ -6,11 +6,12 @@ import AddTeams from "../Backend/Team/AddTeams";
 import CreateMatch from "../Backend/Match/CreateMatch";
 import EditTeams from "../Backend/Team/EditTeams";
 import MatchInfo from "../Backend/Match/MatchInfo";
-import TeamStart from "../Backend/Team/TeamStart";
+
 import MatchResult from "../FrontEnd/Pages/MatchResult";
 import { useGlobalContext } from "./Context";
-// import Drawerr from "../FrontEnd/Pages/Drawer";
+
 import DrawerNavigation from "./DrawerNavigation";
+import AdminNavigation from "./AdminNavigation";
 
 
 
@@ -21,10 +22,11 @@ const Stack = createNativeStackNavigator();
 
 const Navigations = () => {
 
-  const {currentUser}= useGlobalContext()
+  const {currentUser, loader}= useGlobalContext()
 
 
   return (
+
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
@@ -35,16 +37,22 @@ const Navigations = () => {
       {!currentUser ?   <Stack.Screen name="UserSignIn" component={UserSignInPage} />
 :
 <>
+ 
+ 
+
 
       <Stack.Screen name="DrawerNavigation" component={DrawerNavigation} />
+      <Stack.Screen name="AdminNavigation" component={AdminNavigation} />
       <Stack.Screen name="EditTeams" component={EditTeams} />
       <Stack.Screen name="Add Teams" component={AddTeams} />
       <Stack.Screen name="Create Match" component={CreateMatch} />
       <Stack.Screen name="MatchInfo" component={MatchInfo} />
-      <Stack.Screen name="TeamStat" component={TeamStart} />
+
             <Stack.Screen name="MatchResult" component={MatchResult} />
 
       </>
+
+
        }
 
     

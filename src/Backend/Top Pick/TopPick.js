@@ -4,56 +4,60 @@ import { useGlobalContext } from '../../Function/Context'
 import SelectDropdown from 'react-native-select-dropdown'
 import { addDoc, collection, doc, updateDoc } from 'firebase/firestore'
 import { db } from '../../Utils/Firebase'
+import Loader from '../../FrontEnd/Components/Others/Loader'
 
 
-const initialState={
+const initialState = {
+  Competition: "",
 
-    Competition: '',
-
-HomeTeam: '',
-HomeTeamFormation: '',
-MatchDate: '',
-AwayTeam: '',
-AwayTeamFormation:'',
-Matchtime:'',
-HomeTeamScore: 0,
-                AwayTeamScore: 0,
-                MatchTimeline:'',
-                MatchActive: false,
-
-}
+  MatchDay: "",
+  HomeTeam: "",
+  HomeTeamFormation: "",
+  MatchDate: "",
+  AwayTeam: "",
+  AwayTeamFormation: "",
+  Matchtime: "",
+  HomeTeamScore: 0,
+  AwayTeamScore: 0,
+  MatchTimeline: "",
+  MatchActive: false,
+};
 
 const TopPick = ({navigation}) => {
 
   
 
-    const {competition, competitionF, MatchsFromDB, notification, notificationF, loaderF} = useGlobalContext()
+    const {competition, competitionF, MatchsFromDB, notification, notificationF, loaderF, loader} = useGlobalContext()
 
      function Headers({functions, imgtype}) {
-    return(
-       <View style={styles.homeHeader}>
-        <TouchableOpacity onPress={() =>{
-          navigation.toggleDrawer();
-          
-        }} style={styles.profilePic}>
-        <Image
-            source={require("../../assets/menu.png")}
+    return (
+      <View style={styles.homeHeader}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("Home");
+          }}
+          style={styles.profilePic}
+        >
+          <Image
+            source={require("../../../assets/home.png")}
             resizeMode="cover"
-            style={{ height: 20, width: 20,  }}
+            style={{ height: 28, width: 28 }}
           />
         </TouchableOpacity>
         <View style={styles.headerTitleDiv}>
-       <Text style={styles.headerTitle}>Engine <Text style={styles.headerTitleScore} >Scores</Text></Text>
+          <Text style={styles.headerTitle}>
+            Engine <Text style={styles.headerTitleScore}>Scores</Text>
+          </Text>
         </View>
         <TouchableOpacity onPress={functions} style={styles.profilePic}>
-        <Image
+          <Image
             source={imgtype}
             resizeMode="cover"
-            style={{ height: 30, width: 30,  }}
+            style={{ height: 30, width: 30 }}
           />
         </TouchableOpacity>
       </View>
-      )
+    );
   }
 
 
@@ -63,19 +67,21 @@ const TopPick = ({navigation}) => {
 
   const [MatchSelect, MatchSelectF] = useState(initialState)
 
-      const{      Competition,
+      const {
+        Competition,
 
-HomeTeam,
-HomeTeamFormation,
-MatchDate,
-AwayTeam,
-AwayTeamFormation,
-Matchtime,
-HomeTeamScore,
-                AwayTeamScore,
-                MatchTimeline,
-                MatchActive,
-} = MatchSelect
+        HomeTeam,
+        HomeTeamFormation,
+        MatchDate,
+        AwayTeam,
+        AwayTeamFormation,
+        Matchtime,
+        HomeTeamScore,
+        AwayTeamScore,
+        MatchTimeline,
+        MatchActive,
+        MatchDay,
+      } = MatchSelect;
 
   
 
@@ -99,7 +105,7 @@ MatchDataF(data)
 
     if (Competition === 'Engine 4.0') {
         if (MatchSelect) {
-
+loaderF(true)
         try {
          await updateDoc(doc(db, "Top Pick", 'FReTe1WrlShEj1CQmlTR'), {
                Competition: Competition,
@@ -110,7 +116,7 @@ MatchDataF(data)
             notificationF("Team Successfully Added");
  
     navigation.navigate("Home");
-
+loaderF(false)
         } catch (error) {
             // console.log(error);
             notificationF(error);
@@ -124,7 +130,7 @@ MatchDataF(data)
 
     else {
         if (MatchSelect) {
-
+loaderF(true)
         try {
          await updateDoc(doc(db, "Top Pick", 'ZBKXoFBPpW6BOxIhyRBr'), {
                Competition: Competition,
@@ -135,7 +141,7 @@ MatchDataF(data)
             notificationF("Team Successfully Added");
  
     navigation.navigate("Home");
-
+loaderF(false)
         } catch (error) {
             // console.log(error);
             notificationF(error);
@@ -160,146 +166,160 @@ MatchDataF(data)
 
   return (
     <View style={styles.container}>
+      <Headers />
+      <View style={styles.navMenu}>
+        <TouchableOpacity
+          onPress={() => {
+            competitionF(4);
+            CompetitionStateF("Engine 4.0");
+          }}
+          style={{
+            backgroundColor: competition === 4 ? "#ff2782" : "#fff",
+            paddingHorizontal: 10,
+            paddingVertical: 15,
+            flex: 1,
+            marginHorizontal: 5,
+            alignItems: "center",
+            borderRadius: 20,
+          }}
+        >
+          <Text
+            style={{
+              color: competition === 4 ? "#fff" : "#ff2782",
+              fontWeight: "500",
+              fontSize: 15,
+            }}
+          >
+            Engine 4.0
+          </Text>
+        </TouchableOpacity>
 
-        <Headers/>
-       <View style={styles.navMenu}>
+        <TouchableOpacity
+          onPress={() => {
+            competitionF(3);
+            CompetitionStateF("Engine 3.0");
+          }}
+          style={{
+            backgroundColor: competition === 3 ? "#ff2782" : "#fff",
+            paddingHorizontal: 10,
+            paddingVertical: 15,
+            flex: 1,
+            marginHorizontal: 5,
+            alignItems: "center",
+            borderRadius: 20,
+          }}
+        >
+          <Text
+            style={{
+              color: competition === 3 ? "#fff" : "#ff2782",
+              fontWeight: "500",
+              fontSize: 15,
+            }}
+          >
+            Engine 3.0
+          </Text>
+        </TouchableOpacity>
+      </View>
 
-  <TouchableOpacity onPress={()=> {competitionF(4)
-  CompetitionStateF('Engine 4.0')
-}} style={{ backgroundColor: competition === 4 ? '#ff2782' : '#fff'
-    , 
-    paddingHorizontal:10 ,
-    paddingVertical:15,
-    flex: 1,
-    marginHorizontal: 5,
-    alignItems: 'center',
-    borderRadius: 20}}>
-<Text style={{ color: competition===4 ? '#fff' : '#ff2782'
-    , fontWeight:'500',
-    fontSize:15}}>Engine 4.0</Text>
-  </TouchableOpacity>
-
-  
-  <TouchableOpacity onPress={()=> {competitionF(3)
-CompetitionStateF('Engine 3.0')  
-}} style={{ backgroundColor: competition === 3 ? '#ff2782' : '#fff'
-    , 
-    paddingHorizontal:10 ,
-    paddingVertical:15,
-    flex: 1,
-    marginHorizontal: 5,
-    alignItems: 'center',
-    borderRadius: 20}}>
-<Text style={{ color: competition===3 ? '#fff' : '#ff2782'
-    , fontWeight:'500',
-    fontSize:15}}>Engine 3.0</Text>
-  </TouchableOpacity>
-  
-</View>
-
-   <View style={{ marginTop: 10 }}>
-
- <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+      {loader ? (
+        <Loader />
+      ) : (
+        <>
+     
+          <View style={{ marginTop: 10 }}>
+            <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
               Competition
             </Text>
 
             <TextInput
               value={CompetitionState}
-
-              readonly = {true}
+              readonly={true}
               placeholder="Competition"
-    
               style={styles.InputTextArea}
-   
-  
             />
           </View>
-
-              <View style={{ marginTop: 10 }}>
+          <View style={{ marginTop: 10 }}>
             <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
               Select Match
             </Text>
 
-    <SelectDropdown
-	data={MatchData}
-
-
-      defaultButtonText ={'Select Match'}
-      buttonStyle={styles.dropdownStyle}
-      buttonTextStyle={styles.dropdownStyleTxt}
-
-	onSelect={(selectedItem, index) => {
-	MatchSelectF(selectedItem);
-	}}
-	
-   
-/>
-          
+            <SelectDropdown
+              data={MatchData}
+              defaultButtonText={"Select Match"}
+              buttonStyle={styles.dropdownStyle}
+              buttonTextStyle={styles.dropdownStyleTxt}
+              onSelect={(selectedItem, index) => {
+                MatchSelectF(selectedItem);
+              }}
+            />
           </View>
+          <View style={styles.dashboardBox}>
+            <Text style={styles.competitionName}>Maracana Field</Text>
+            <Text style={styles.matchDay}>Matchday {MatchDay}</Text>
 
+            <View style={styles.scoreBoard}>
+              <View style={styles.teamBoard}>
+                <Image
+                  source={require("../../../assets/logo-01.png")}
+                  resizeMode="contain"
+                  style={{ height: 90, width: 90 }}
+                />
 
+                <Text style={styles.teamTxt}>{HomeTeam}</Text>
+              </View>
+              <View style={styles.score}>
+                {MatchActive ? (
+                  <>
+                    <Text style={styles.scoreTxt}>{HomeTeamScore}</Text>
+                    <Text style={styles.scoreTxt}>:</Text>
+                    <Text style={styles.scoreTxt}>{AwayTeamScore}</Text>
+                  </>
+                ) : (
+                  <View
+                    style={{
+                      flexDirection: "column",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flex: 1,
+                    }}
+                  >
+                    <Text style={styles.eachMatchTeamTime}>{Matchtime}</Text>
+                    <Text
+                      style={{
+                        color: "white",
+                        fontWeight: "500",
+                        fontSize: 15,
+                      }}
+                    >
+                      {"vs"}
+                    </Text>
+                    <Text style={styles.eachMatchTeamDate}>{MatchDate}</Text>
+                  </View>
+                )}
+              </View>
+              <View style={styles.teamBoard}>
+                <Image
+                  source={require("../../../assets/logo-02.png")}
+                  resizeMode="contain"
+                  style={{ height: 90, width: 90 }}
+                />
 
+                <Text style={styles.teamTxt}>{AwayTeam}</Text>
+              </View>
+            </View>
+          </View>
+          <Text style={{ color: "red", alignSelf: "center", padding: 3 }}>
+            {notification}
+          </Text>
 
-          <View  style={styles.dashboardBox}>
+        </>
+      )}
 
-  <Text style={styles.competitionName}>Maracana Field</Text>
-  <Text style={styles.matchDay}>Matchday One</Text>
-  
-
-  <View  style={styles.scoreBoard}>
-      <View  style={styles.teamBoard}>
-
-         <Image
-            source={require("../../assets/logo-01.png")}
-            resizeMode="contain"
-            style={{ height: 90, width: 90 }}
-          />
-
-              <Text style={styles.teamTxt}>{HomeTeam}</Text>
-    
-  </View> 
-   <View  style={styles.score}>
-    {
-      MatchActive ? <>
-      <Text style = {styles.scoreTxt}>{HomeTeamScore}</Text>
-      <Text style = {styles.scoreTxt}>:</Text>
-        <Text style = {styles.scoreTxt}>{AwayTeamScore}</Text>
-        </> :
-        <View style={{flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flex: 1}}>
-         <Text style={styles.eachMatchTeamTime}>{Matchtime}</Text>
-         <Text style={{  color:'white',
-  fontWeight:'500',
-  fontSize: 15}}>{'vs'}</Text>
-  <Text style={styles.eachMatchTeamDate}>{MatchDate}</Text>
-
-        </View>
-    }
-  </View>
-    <View  style={styles.teamBoard}>
-        <Image
-            source={require("../../assets/logo-02.png")}
-            resizeMode="contain"
-            style={{ height: 90, width: 90 }}
-          />
-
-              <Text style={styles.teamTxt}>{AwayTeam}</Text>
-  </View>
-  </View>
-
-
-</View> 
-
-       <Text style={{ color: "red", alignSelf: "center", padding: 3,  }}>
-          {notification}
-        </Text>
-
-   <TouchableOpacity style={styles.btn} onPress={handleSubmit}>
-          <Text style={styles.btnTxt}>Save</Text>
-        </TouchableOpacity>
-
-
+      <TouchableOpacity style={styles.btn} onPress={handleSubmit}>
+        <Text style={styles.btnTxt}>Save</Text>
+      </TouchableOpacity>
     </View>
-  )
+  );
 }
 
 export default TopPick
@@ -440,7 +460,7 @@ fontWeight: '400'
      eachMatchTeamTimeScore: {
   color:'red',
   fontWeight:'500',
-  fontSize: 17
+  fontSize: 20
   },
 
        eachMatchTeamDateScore: {
@@ -452,7 +472,7 @@ fontWeight: '400'
 
       btn: {
         paddingVertical: 12,
-        backgroundColor: "rgb(20, 119, 251)",
+        backgroundColor: "#ff2782",
         alignItems: "center",
         justifyContent: "center",
         borderRadius: 10,

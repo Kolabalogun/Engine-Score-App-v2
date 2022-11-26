@@ -2,13 +2,9 @@ import { StyleSheet, Text, LogBox } from "react-native";
 import React, { useState, useContext, useEffect } from "react";
 
 import { MatchArray } from "../FrontEnd/Components/Match/MatchArray";
-import { GroupArray } from "../FrontEnd/Components/Group/GroupState";
+
 import { useNavigation } from "@react-navigation/native";
-import {
-  getRedirectResult,
-  onAuthStateChanged,
-  signInWithPopup,
-} from "firebase/auth";
+
 import { auth, db, provider } from "../Utils/Firebase";
 import {
   collection,
@@ -215,7 +211,7 @@ const AppProvider = ({ children }) => {
     alert("You have no Internet Connection!!");
   }
 
-  const [currentUser, currentUserF] = useState(null);
+  const [currentUser, currentUserF] = useState(false);
 
   const storeData = async (value) => {
     try {

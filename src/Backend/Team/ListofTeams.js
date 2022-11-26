@@ -1,10 +1,30 @@
-import { Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import {
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  RefreshControl,
+  Text,
+  TouchableOpacity,
+  View,
+  ScrollView,
+} from "react-native";
 import React from 'react'
 import { useGlobalContext } from '../../Function/Context';
+import Loader from "../../FrontEnd/Components/Others/Loader";
 
 const ListofTeams = ({navigation}) => {
 
-       const { competition, competitionF,  notification, notificationF, currentUser, loader, loaderF, TeamsFromDB, handleDeleteTeam } = useGlobalContext();
+       const {
+         competition,
+         competitionF,
+         getTeamsFromDB,
+         notificationF,
+         currentUser,
+         loader,
+         loaderF,
+         TeamsFromDB,
+         handleDeleteTeam,
+       } = useGlobalContext();
 
 
         function navigateToAddNewTeam(params) {
@@ -76,12 +96,12 @@ const ListofTeams = ({navigation}) => {
     return(
        <View style={styles.homeHeader}>
         <TouchableOpacity onPress={() =>{
-          navigation.toggleDrawer();
+        navigation.navigate("Home");
         }} style={styles.profilePic}>
         <Image
-            source={require("../../../assets/menu.png")}
+            source={require("../../../assets/home.png")}
             resizeMode="cover"
-            style={{ height: 20, width: 20,  }}
+            style={{ height: 28, width: 28,  }}
           />
         </TouchableOpacity>
         <View style={styles.headerTitleDiv}>
@@ -99,50 +119,90 @@ const ListofTeams = ({navigation}) => {
   }
 
 
+   const wait = (timeout) => {
+     return new Promise((resolve) => setTimeout(resolve, timeout));
+   };
+
+   const [refreshing, setRefreshing] = React.useState(false);
+
+   const onRefresh = React.useCallback(() => {
+     setRefreshing(true);
+     getTeamsFromDB();
+     wait(2000).then(() => setRefreshing(false));
+   }, []);
+
   return (
-       <SafeAreaView style={styles.container}>
-        <Headers functions = {navigateToAddNewTeam} imgtype={require("../../../assets/add.png")}/>
-  <View style={styles.navMenu}>
+    <SafeAreaView style={styles.container}>
+      <Headers
+        functions={navigateToAddNewTeam}
+        imgtype={require("../../../assets/add.png")}
+      />
+      <View style={styles.navMenu}>
+        <TouchableOpacity
+          onPress={() => {
+            competitionF(4);
+          }}
+          style={{
+            backgroundColor: competition === 4 ? "#ff2782" : "#fff",
+            paddingHorizontal: 10,
+            paddingVertical: 15,
+            flex: 1,
+            marginHorizontal: 5,
+            alignItems: "center",
+            borderRadius: 20,
+          }}
+        >
+          <Text
+            style={{
+              color: competition === 4 ? "#fff" : "#ff2782",
+              fontWeight: "500",
+              fontSize: 15,
+            }}
+          >
+            Engine 4.0
+          </Text>
+        </TouchableOpacity>
 
-  <TouchableOpacity onPress={()=> {competitionF(4)}} style={{ backgroundColor: competition === 4 ? '#ff2782' : '#fff'
-    , 
-    paddingHorizontal:10 ,
-    paddingVertical:15,
-    flex: 1,
-    marginHorizontal: 5,
-    alignItems: 'center',
-    borderRadius: 20}}>
-<Text style={{ color: competition===4 ? '#fff' : '#ff2782'
-    , fontWeight:'500',
-    fontSize:15}}>Engine 4.0</Text>
-  </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            competitionF(3);
+          }}
+          style={{
+            backgroundColor: competition === 3 ? "#ff2782" : "#fff",
+            paddingHorizontal: 10,
+            paddingVertical: 15,
+            flex: 1,
+            marginHorizontal: 5,
+            alignItems: "center",
+            borderRadius: 20,
+          }}
+        >
+          <Text
+            style={{
+              color: competition === 3 ? "#fff" : "#ff2782",
+              fontWeight: "500",
+              fontSize: 15,
+            }}
+          >
+            Engine 3.0
+          </Text>
+        </TouchableOpacity>
+      </View>
 
-  
-  <TouchableOpacity onPress={()=> {competitionF(3)}} style={{ backgroundColor: competition === 3 ? '#ff2782' : '#fff'
-    , 
-    paddingHorizontal:10 ,
-    paddingVertical:15,
-    flex: 1,
-    marginHorizontal: 5,
-    alignItems: 'center',
-    borderRadius: 20}}>
-<Text style={{ color: competition===3 ? '#fff' : '#ff2782'
-    , fontWeight:'500',
-    fontSize:15}}>Engine 3.0</Text>
-  </TouchableOpacity>
-  
-</View>
-
-
-{competition===4 ? Engine40list
- 
- :
-
-Engine30list}
-
-</SafeAreaView>
-
-  )
+      {loader ? (
+        <Loader />
+      ) : (
+        <ScrollView
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+          showsVerticalScrollIndicator={false}
+        >
+          {competition === 4 ? Engine40list : Engine30list}
+        </ScrollView>
+      )}
+    </SafeAreaView>
+  );
 }
 
 export default ListofTeams
@@ -226,7 +286,7 @@ fontWeight: '400'
       },
       btn: {
         paddingVertical: 12,
-        backgroundColor: "rgb(20, 119, 251)",
+        backgroundColor: "#ff2782",
         alignItems: "center",
         justifyContent: "center",
         borderRadius: 10,

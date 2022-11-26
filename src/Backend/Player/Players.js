@@ -186,11 +186,12 @@ console.log(FilteredPlayerDataFromDBForGoalData);
               Assists,}
           ],
         });
-              loaderF(false);
+          
               GoalsF(0)
               AssistsF(0)
 
               navigation.navigate('Stat')
+                  loaderF(false);
 
       } catch (error) {
         console.log(error, "line 219");
@@ -207,14 +208,14 @@ console.log(FilteredPlayerDataFromDBForGoalData);
       <View style={styles.homeHeader}>
         <TouchableOpacity
           onPress={() => {
-           navigation.toggleDrawer();
+            navigation.navigate("Home");
           }}
           style={styles.profilePic}
         >
           <Image
-            source={require("../../assets/menu.png")}
+            source={require("../../../assets/home.png")}
             resizeMode="cover"
-            style={{ height: 20, width: 20 }}
+            style={{ height: 28, width: 28 }}
           />
         </TouchableOpacity>
         <View style={styles.headerTitleDiv}>
@@ -414,7 +415,7 @@ const styles = StyleSheet.create({
   },
   btn: {
     paddingVertical: 12,
-    backgroundColor: "rgb(20, 119, 251)",
+    backgroundColor: "#ff2782",
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 10,

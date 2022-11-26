@@ -1,4 +1,11 @@
-import { StyleSheet, Text, SafeAreaView, TouchableOpacity } from 'react-native'
+import {
+  StyleSheet,
+  Text,
+  SafeAreaView,
+  TouchableOpacity,
+  Image,
+  View
+} from "react-native";
 import React, { useEffect, useRef, useState } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { useGlobalContext } from '../Function/Context'
@@ -82,7 +89,7 @@ async function schedulePushNotification() {
   await Notifications.scheduleNotificationAsync({
     content: {
       title: `Engine Scores`  ,
-      body: `Welcome`,
+      body: `Welcome to the League of Football`,
     //   data: { data: 'goes here' },
     },
     trigger: { seconds: 2 },
@@ -135,27 +142,79 @@ async function registerForPushNotificationsAsync() {
     }, [])
 
   return (
-    <SafeAreaView  style= {styles.container}>
-        <TouchableOpacity onPress={() => {schedulePushNotification()
-       storeData('true')
-       currentUserF('true')
-        }}>
-  <Text>Click to Continue</Text>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.homeHeader}>
+        <View style={styles.headerTitleDiv}>
+          <Text style={styles.headerTitle}>
+            Engine<Text style={styles.headerTitleScore}>Scores</Text>
+          </Text>
+        </View>
+      </View>
+
+      <Image source={require("../../assets/logo-no-bg.png")} />
+
+      <Text>Get every minute Engineering Live Score here. Gather</Text>
+      <Text style={{marginBottom: 10,}}>fast info and go along with others.</Text>
+      <View style={{ flexDirection: "row" }}>
+        <TouchableOpacity
+          style={{
+            paddingHorizontal: 20,
+            paddingVertical: 18,
+            backgroundColor: "#ff2782",
+            flexDirection: "row",
+            flex: 1,
+            borderRadius: 30,
+            alignItems: "center",
+            justifyContent: "center",
+            marginTop: 15,
+          }}
+          onPress={() => {
+            schedulePushNotification();
+            storeData("true");
+            currentUserF("true");
+          }}
+        >
+          <Text
+            style={{
+              color: "white",
+              fontSize: 16,
+              textAlign: "center",
+            }}
+          >
+            CLICK TO CONTINUE
+          </Text>
         </TouchableOpacity>
-    
+      </View>
     </SafeAreaView>
-  )
+  );
 }
 
 export default UserSignInPage
 
 const styles = StyleSheet.create({
-      container: {
-   flex: 1,
+  container: {
+    flex: 1,
     backgroundColor: "#edeff2",
-     paddingHorizontal: 15,
-      paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 40,
- alignItems: 'center',
- justifyContent: 'center',
+    paddingHorizontal: 15,
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 40,
+    alignItems: "center",
+    justifyContent: "center",
   },
-})
+
+  homeHeader: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+
+  headerTitle: {
+    fontSize: 36,
+    fontWeight: "400",
+  },
+
+  headerTitleScore: {
+    color: "#ff2782",
+    fontWeight: "500",
+  },
+});

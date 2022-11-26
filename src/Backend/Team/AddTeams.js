@@ -945,7 +945,7 @@ fontWeight: '400'
       },
       btn: {
         paddingVertical: 12,
-        backgroundColor: "rgb(20, 119, 251)",
+        backgroundColor: "#ff2782",
         alignItems: "center",
         justifyContent: "center",
         borderRadius: 10,

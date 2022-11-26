@@ -1,14 +1,23 @@
-import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React from "react";
+import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 
-const Loader = () => {
-  return (
-    <View>
-      <Text>Loader</Text>
-    </View>
-  )
-}
+const Loader = () => (
+  <View style={[styles.container, styles.horizontal]}>
+    <ActivityIndicator size="large" color="#ff2782" />
+  </View>
+);
 
-export default Loader
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    backgroundColor: "#edeff2",
+  },
+  horizontal: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    padding: 10,
+  },
+});
 
-const styles = StyleSheet.create({})
+export default Loader;

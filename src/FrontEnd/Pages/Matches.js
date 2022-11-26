@@ -17,9 +17,11 @@ import { useGlobalContext } from "../../Function/Context";
 import { StatusBar } from "expo-status-bar";
 import Header from "../Components/Others/Header";
 import Nav from "../Components/Others/Nav";
+import Loader from "../Components/Others/Loader";
 
 const Match = ({ navigation }) => {
-  const { MatchsFromDB, getMatchsFromDB, competition } = useGlobalContext();
+  const { MatchsFromDB, getMatchsFromDB, competition, loader } =
+    useGlobalContext();
 
   const Engine40list = MatchsFromDB.map((match, index) => {
     if (match.Competition === "Engine 4.0") {
@@ -132,18 +134,22 @@ const Match = ({ navigation }) => {
 
         <Nav />
 
-        <ScrollView
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-          showsVerticalScrollIndicator={false}
-        >
-          <View>
-            <Text style={styles.dashboardTitle}>Match</Text>
+        {loader ? (
+          <Loader />
+        ) : (
+          <ScrollView
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+            showsVerticalScrollIndicator={false}
+          >
+            <View>
+              <Text style={styles.dashboardTitle}>Match</Text>
 
-            {competition === 4 ? Engine40list : Engine30list}
-          </View>
-        </ScrollView>
+              {competition === 4 ? Engine40list : Engine30list}
+            </View>
+          </ScrollView>
+        )}
       </View>
     </SafeAreaView>
   );

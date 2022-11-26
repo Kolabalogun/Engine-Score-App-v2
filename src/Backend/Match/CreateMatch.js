@@ -42,6 +42,7 @@ TeamDataF(data.map(d => d.TeamName))
   const [HomeTeamFormation, HomeTeamFormationF] = useState('');
  
   const [MatchDate, MatchDateF] = useState('');
+  const [MatchDay, MatchDayF] = useState('');
 
   
   const [AwayTeam, AwayTeamF] = useState("");
@@ -75,46 +76,52 @@ TeamDataF(data.map(d => d.TeamName))
  
 
 
-    if (HomeTeam && AwayTeam  && Competition && HomeTeamFormation && MatchDate && Matchtime &&AwayTeamFormation ) {
-        // if we adding new team
-        loaderF(true);
+    if (
+      HomeTeam &&
+      AwayTeam &&
+      Competition &&
+      HomeTeamFormation &&
+      MatchDate &&
+      Matchtime &&
+      AwayTeamFormation &&
+      MatchDay
+    ) {
+      // if we adding new team
+      loaderF(true);
 
-      
+      try {
+        await addDoc(collection(db, "Matchs"), {
+          Competition: Competition,
+          HomeTeam: HomeTeam,
+          MatchDate: MatchDate,
+          HomeTeamFormation: HomeTeamFormation,
+          AwayTeamFormation: AwayTeamFormation,
+          HomeTeamScore: 0,
+          AwayTeamScore: 0,
+          MatchTimeline: [],
+          MatchActive: false,
 
-        try {
-            await addDoc(collection(db, "Matchs"), {
-                Competition: Competition,
-                HomeTeam: HomeTeam,
-                MatchDate: MatchDate,
-                HomeTeamFormation: HomeTeamFormation,
-                AwayTeamFormation: AwayTeamFormation,
-                HomeTeamScore: 0,
-                AwayTeamScore: 0,
-                MatchTimeline:[],
-                MatchActive: false,
-             
-                AwayTeam:AwayTeam,
-                Matchtime:Matchtime,
-     
-                // author: currentUser.email,
-                // userId: currentUser.uid,
-                dateId: dateId,
-                
-            });
+          AwayTeam: AwayTeam,
+          Matchtime: Matchtime,
+
+          MatchDay: MatchDay,
+
+          // author: currentUser.email,
+          // userId: currentUser.uid,
+          dateId: dateId,
+        });
+    
+        notificationF("Team Successfully Added");
+        HomeTeamF("");
+        AwayTeamF("");
+        navigation.navigate("MatchList");
             loaderF(false);
-            notificationF("Team Successfully Added");
-    HomeTeamF('')
-    AwayTeamF('')
-    navigation.navigate("MatchList");
-
-        } catch (error) {
-            // console.log(error);
-            notificationF(error);
-        }
-
-      
+      } catch (error) {
+        // console.log(error);
+        notificationF(error);
+      }
     } else {
-        return notificationF("All fields must be filled");
+      return notificationF("All fields must be filled");
     }
     
     
@@ -168,199 +175,163 @@ TeamDataF(data.map(d => d.TeamName))
 
   return (
     <>
-
-    {
-      loader ? <Loader/> :
-
-      <SafeAreaView style={styles.container}>
-   <View>
-            <Headers functions = {navigateToListofTeam} imgtype={require("../../../assets/list.png")}/>
-
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.topSection}>
-          <Text style={styles.topText}>Create Match</Text>
-          <Text style={styles.capText}>
-  Please input the Match Details.
-          </Text>
-        </View>
-  
-        <KeyboardAvoidingView style={styles.Inputs}>
-  
-        
-
-             
-  
-  
-  
-  
-          <View style={{ marginTop: 10 }}>
-            <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
-            Competition
-            </Text>
-          
-
-               <SelectDropdown
-	data={competitionData}
-    
-
-      defaultButtonText = 'Select Competition'
-      buttonStyle={styles.dropdownStyle}
-      buttonTextStyle={styles.dropdownStyleTxt}
-
-	onSelect={(selectedItem, index) => {
-	CompetitionF(selectedItem)
-	}}
-	
-   
-/>
-          </View>
-  
-          <View style={{ marginTop: 10 }}>
-            <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
-              Home Team
-            </Text>
-
-    <SelectDropdown
-	data={TeamData}
-    
-
-      defaultButtonText = 'Please select Home Team'
-      buttonStyle={styles.dropdownStyle}
-      buttonTextStyle={styles.dropdownStyleTxt}
-
-	onSelect={(selectedItem, index) => {
-	HomeTeamF(selectedItem)
-	}}
-	
-   
-/>
-
-          
-          </View>
-  
-          <View style={{ marginTop: 10 }}>
-            <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
-             Away Team
-            </Text>
-
-                <SelectDropdown
-	data={TeamData}
-    
-
-      defaultButtonText = 'Please select Away Team'
-      buttonStyle={styles.dropdownStyle}
-      buttonTextStyle={styles.dropdownStyleTxt}
-
-	onSelect={(selectedItem, index) => {
-	AwayTeamF(selectedItem)
-	}}
-	
-   
-/>
-
-       
-          </View>
-          <View style={{ marginTop: 10 }}>
-            <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
-            Home Team Formation
-            </Text>
-         
-             <SelectDropdown
-	data={formationData}
-    
-
-      defaultButtonText = 'Select Home Team Formation'
-      buttonStyle={styles.dropdownStyle}
-      buttonTextStyle={styles.dropdownStyleTxt}
-
-	onSelect={(selectedItem, index) => {
-	HomeTeamFormationF(selectedItem)
-	}}
-	
-   
-/>
-          </View>
-          <View style={{ marginTop: 10 }}>
-            <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
-            Away Team Formation
-            </Text>
-         
-             <SelectDropdown
-	data={formationData}
-    
-
-      defaultButtonText = 'Select Away Team Formation'
-      buttonStyle={styles.dropdownStyle}
-      buttonTextStyle={styles.dropdownStyleTxt}
-
-	onSelect={(selectedItem, index) => {
-	AwayTeamFormationF(selectedItem)
-	}}
-	
-   
-/>
-          </View>
-
-
-          <View style={{ marginTop: 10 }}>
-
- <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
-              Date
-            </Text>
-
-            <TextInput
-              value={MatchDate}
-              name= 'goalkepper'
-              onChangeText={(e) => MatchDateF(e)}
-              placeholder="Enter Date e.g (20 Jan)"
-             maxLength={6}
-              style={styles.InputTextArea}
-   
-  
+      {loader ? (
+        <Loader />
+      ) : (
+        <SafeAreaView style={styles.container}>
+          <View>
+            <Headers
+              functions={navigateToListofTeam}
+              imgtype={require("../../../assets/list.png")}
             />
+
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <View style={styles.topSection}>
+                <Text style={styles.topText}>Create Match</Text>
+                <Text style={styles.capText}>
+                  Please input the Match Details.
+                </Text>
+              </View>
+
+              <KeyboardAvoidingView style={styles.Inputs}>
+                <View style={{ marginTop: 10 }}>
+                  <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+                    Competition
+                  </Text>
+
+                  <SelectDropdown
+                    data={competitionData}
+                    defaultButtonText="Select Competition"
+                    buttonStyle={styles.dropdownStyle}
+                    buttonTextStyle={styles.dropdownStyleTxt}
+                    onSelect={(selectedItem, index) => {
+                      CompetitionF(selectedItem);
+                    }}
+                  />
+                </View>
+
+                <View style={{ marginTop: 10 }}>
+                  <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+                    Home Team
+                  </Text>
+
+                  <SelectDropdown
+                    data={TeamData}
+                    defaultButtonText="Please select Home Team"
+                    buttonStyle={styles.dropdownStyle}
+                    buttonTextStyle={styles.dropdownStyleTxt}
+                    onSelect={(selectedItem, index) => {
+                      HomeTeamF(selectedItem);
+                    }}
+                  />
+                </View>
+
+                <View style={{ marginTop: 10 }}>
+                  <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+                    Away Team
+                  </Text>
+
+                  <SelectDropdown
+                    data={TeamData}
+                    defaultButtonText="Please select Away Team"
+                    buttonStyle={styles.dropdownStyle}
+                    buttonTextStyle={styles.dropdownStyleTxt}
+                    onSelect={(selectedItem, index) => {
+                      AwayTeamF(selectedItem);
+                    }}
+                  />
+                </View>
+                <View style={{ marginTop: 10 }}>
+                  <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+                    Home Team Formation
+                  </Text>
+
+                  <SelectDropdown
+                    data={formationData}
+                    defaultButtonText="Select Home Team Formation"
+                    buttonStyle={styles.dropdownStyle}
+                    buttonTextStyle={styles.dropdownStyleTxt}
+                    onSelect={(selectedItem, index) => {
+                      HomeTeamFormationF(selectedItem);
+                    }}
+                  />
+                </View>
+                <View style={{ marginTop: 10 }}>
+                  <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+                    Away Team Formation
+                  </Text>
+
+                  <SelectDropdown
+                    data={formationData}
+                    defaultButtonText="Select Away Team Formation"
+                    buttonStyle={styles.dropdownStyle}
+                    buttonTextStyle={styles.dropdownStyleTxt}
+                    onSelect={(selectedItem, index) => {
+                      AwayTeamFormationF(selectedItem);
+                    }}
+                  />
+                </View>
+
+                <View style={{ marginTop: 10 }}>
+                  <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+                    Matchday
+                  </Text>
+
+                  <TextInput
+                    value={MatchDay}
+                    name="goalkepper"
+                    onChangeText={(e) => MatchDayF(e)}
+                    placeholder="MatchDay"
+                    maxLength={2}
+                    style={styles.InputTextArea}
+                    keyboardType="decimal-pad"
+                  />
+                </View>
+
+                <View style={{flexDirection: 'row',}}>
+                  <View style={{ flex: 1, marginTop: 10 }}>
+                    <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+                      Date
+                    </Text>
+
+                    <TextInput
+                      value={MatchDate}
+                      name="goalkepper"
+                      onChangeText={(e) => MatchDateF(e)}
+                      placeholder="Enter Date e.g (20 Jan)"
+                      maxLength={6}
+                      style={styles.InputTextArea}
+                    />
+                  </View>
+
+                  <View style={{ flex: 1, marginTop: 10 }}>
+                    <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+                      Time
+                    </Text>
+
+                    <TextInput
+                      value={Matchtime}
+                      name="goalkepper"
+                      onChangeText={(e) => MatchtimeF(e)}
+                      placeholder="Enter Time e.g (03:00)"
+                      maxLength={5}
+                      style={styles.InputTextArea}
+                    />
+                  </View>
+                </View>
+              </KeyboardAvoidingView>
+              <Text style={{ color: "red", alignSelf: "center", padding: 3 }}>
+                {notification}
+              </Text>
+              <TouchableOpacity style={styles.btn} onPress={handleSubmit}>
+                <Text style={styles.btnTxt}>Save</Text>
+              </TouchableOpacity>
+            </ScrollView>
           </View>
-
-          <View style={{ marginTop: 10 }}>
-
- <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
-              Time
-            </Text>
-
-            <TextInput
-              value={Matchtime}
-              name= 'goalkepper'
-                onChangeText={(e) => MatchtimeF(e)}
-              placeholder="Enter Time e.g (03:00)"
-             maxLength={5}
-              style={styles.InputTextArea}
-   
-  
-            />
-          </View>
-  
-        </KeyboardAvoidingView>
-        <Text style={{ color: "red", alignSelf: "center", padding: 3 }}>
-          {notification}
-        </Text>
-        <TouchableOpacity style={styles.btn} onPress={handleSubmit}>
-          <Text style={styles.btnTxt}>Save</Text>
-        </TouchableOpacity>
-  
-  
-      </ScrollView>
-      </View>
-
-    
-
-
-    </SafeAreaView>
-      
-    }
-    
+        </SafeAreaView>
+      )}
     </>
-
- 
-  )
+  );
 }
 
 export default CreateMatch;
@@ -437,19 +408,18 @@ fontWeight: '400'
         // height: 170,
         alignItems: 'baseline',
         justifyContent: 'flex-start',
-     
-        textAlignVertical: 'top'
+
        
       
       },
       btn: {
         paddingVertical: 12,
-        backgroundColor: "rgb(20, 119, 251)",
+        backgroundColor: "#ff2782",
         alignItems: "center",
         justifyContent: "center",
         borderRadius: 10,
         width: "100%",
-        marginVertical: 20,
+        marginBottom: 30,
       },
       btnTxt: {
         color: "white",

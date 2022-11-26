@@ -15,9 +15,11 @@ import Header from "../Components/Others/Header";
 import { useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../Utils/Firebase";
+import Loader from "../Components/Others/Loader";
+import Nav from "../Components/Others/Nav";
 
 const Performance = ({ navigation }) => {
-  const { competitionType, competitionTypeF, competition, competitionF } =
+  const { competitionType, competitionTypeF, competition, competitionF, loader, loaderF } =
     useGlobalContext();
 
   const [PlayerDataFromDB, PlayerDataFromDBF] = useState([]);
@@ -27,11 +29,13 @@ const Performance = ({ navigation }) => {
   }, []);
 
   const getBlogDetail = async () => {
+loaderF(true)
     const docRef = doc(db, "Player Data", "WmVhSufxYzBSkL8HsqkF");
     const snapshot = await getDoc(docRef);
     if (snapshot.exists()) {
       PlayerDataFromDBF([...snapshot.data().playerDatas]);
     }
+    loaderF(false)
   };
 
   const goalsRanking = PlayerDataFromDB;
@@ -108,76 +112,27 @@ const Performance = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <View style={styles.main}>
         <Header navigation={navigation} />
+        <Nav />
 
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-        >
-          <View style={styles.navMenu}>
-            <TouchableOpacity
-              onPress={() => {
-                competitionF(4);
-                competitionTypeF("Engine 4.0");
-              }}
-              style={{
-                backgroundColor: competition === 4 ? "#ff2782" : "#fff",
-                paddingHorizontal: 10,
-                paddingVertical: 15,
-                flex: 1,
-                marginHorizontal: 5,
-                alignItems: "center",
-                borderRadius: 20,
-              }}
-            >
-              <Text
-                style={{
-                  color: competition === 4 ? "#fff" : "#ff2782",
-                  fontWeight: "500",
-                  fontSize: 15,
-                }}
-              >
-                Engine 4.0
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              onPress={() => {
-                competitionF(3);
-                competitionTypeF("Engine 3.0");
-              }}
-              style={{
-                backgroundColor: competition === 3 ? "#ff2782" : "#fff",
-                paddingHorizontal: 10,
-                paddingVertical: 15,
-                flex: 1,
-                marginHorizontal: 5,
-                alignItems: "center",
-                borderRadius: 20,
-              }}
-            >
-              <Text
-                style={{
-                  color: competition === 3 ? "#fff" : "#ff2782",
-                  fontWeight: "500",
-                  fontSize: 15,
-                }}
-              >
-                Engine 3.0
-              </Text>
-            </TouchableOpacity>
-          </View>
-
-          <View style={styles.group}>
-            <Text style={styles.groupName}>Goals</Text>
-            <View style={styles.table}>{GoalsGroup}</View>
-          </View>
-          <View style={styles.group}>
-            <Text style={styles.groupName}>Assists</Text>
-            <View style={styles.table}>{AssistsGroup}</View>
-          </View>
-        </ScrollView>
+        {loader ? (
+          <Loader />
+        ) : (
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+          >
+            <View style={styles.group}>
+              <Text style={styles.groupName}>Goals</Text>
+              <View style={styles.table}>{GoalsGroup}</View>
+            </View>
+            <View style={styles.group}>
+              <Text style={styles.groupName}>Assists</Text>
+              <View style={styles.table}>{AssistsGroup}</View>
+            </View>
+          </ScrollView>
+        )}
       </View>
     </SafeAreaView>
   );

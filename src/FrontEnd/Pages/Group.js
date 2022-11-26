@@ -12,15 +12,12 @@ import { StatusBar } from "expo-status-bar";
 import Header from "../Components/Others/Header";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Nav from "../Components/Others/Nav";
+import Loader from "../Components/Others/Loader";
 
 
 const Group = ({navigation}) => {
-  const {
-    TeamsFromDB,
-   getTeamsFromDB,
-    competitionType,
-   
-  } = useGlobalContext();
+  const { TeamsFromDB, getTeamsFromDB, competitionType, loader } =
+    useGlobalContext();
 
 
 
@@ -82,49 +79,51 @@ const Group = ({navigation}) => {
       <View style={styles.main}>
         <Header navigation={navigation} />
 
-      <Nav/>
+        <Nav />
 
-        <ScrollView
-          s
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-          showsVerticalScrollIndicator={false}
-        >
-          
-          <View style={styles.group}>
-            <Text style={styles.groupName}>Group One</Text>
-            <View style={styles.table}>
-              <View style={styles.topTable}>
-                {/* <Text style={styles.tableHead}>No</Text> */}
-                <Text style={styles.tableHeadOne}>Teams</Text>
-                <Text style={styles.tableHead}>P</Text>
-                <Text style={styles.tableHead}>W</Text>
-                <Text style={styles.tableHead}>L</Text>
-                <Text style={styles.tableHead}>D</Text>
-                <Text style={styles.tableHead}>GD</Text>
-                <Text style={styles.tableHead}>Pts</Text>
+        {loader ? (
+          <Loader />
+        ) : (
+          <ScrollView
+            refreshControl={
+              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            }
+            showsVerticalScrollIndicator={false}
+          >
+            <View style={styles.group}>
+              <Text style={styles.groupName}>Group One</Text>
+              <View style={styles.table}>
+                <View style={styles.topTable}>
+                  {/* <Text style={styles.tableHead}>No</Text> */}
+                  <Text style={styles.tableHeadOne}>Teams</Text>
+                  <Text style={styles.tableHead}>P</Text>
+                  <Text style={styles.tableHead}>W</Text>
+                  <Text style={styles.tableHead}>L</Text>
+                  <Text style={styles.tableHead}>D</Text>
+                  <Text style={styles.tableHead}>GD</Text>
+                  <Text style={styles.tableHead}>Pts</Text>
+                </View>
+                {Group1Elements}
               </View>
-              {Group1Elements}
             </View>
-          </View>
-          <View style={styles.group}>
-            <Text style={styles.groupName}>Group Two</Text>
-            <View style={styles.table}>
-              <View style={styles.topTable}>
-                {/* <Text style={styles.tableHead}>No</Text> */}
-                <Text style={styles.tableHeadOne}>Teams</Text>
-                <Text style={styles.tableHead}>P</Text>
-                <Text style={styles.tableHead}>W</Text>
-                <Text style={styles.tableHead}>L</Text>
-                <Text style={styles.tableHead}>D</Text>
-                <Text style={styles.tableHead}>GD</Text>
-                <Text style={styles.tableHead}>Pts</Text>
+            <View style={styles.group}>
+              <Text style={styles.groupName}>Group Two</Text>
+              <View style={styles.table}>
+                <View style={styles.topTable}>
+                  {/* <Text style={styles.tableHead}>No</Text> */}
+                  <Text style={styles.tableHeadOne}>Teams</Text>
+                  <Text style={styles.tableHead}>P</Text>
+                  <Text style={styles.tableHead}>W</Text>
+                  <Text style={styles.tableHead}>L</Text>
+                  <Text style={styles.tableHead}>D</Text>
+                  <Text style={styles.tableHead}>GD</Text>
+                  <Text style={styles.tableHead}>Pts</Text>
+                </View>
+                {Group2Elements}
               </View>
-              {Group2Elements}
             </View>
-          </View>
-        </ScrollView>
+          </ScrollView>
+        )}
       </View>
     </SafeAreaView>
   );

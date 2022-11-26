@@ -5,6 +5,7 @@ import ListofTeams from '../Backend/Team/ListofTeams';
 import MatchList from '../Backend/Match/MatchList';
 import TopPick from '../Backend/Top Pick/TopPick';
 import Players from '../Backend/Player/Players';
+import Credit from '../FrontEnd/Pages/Credit';
 
 
 
@@ -15,12 +16,10 @@ export default function DrawerNavigation() {
    
       <Drawer.Navigator screenOptions={{
         headerShown: false,
-      }} initialRouteName="DrawerHome">
-        <Drawer.Screen name="DrawerHome" component={TabNavigations} />
-        <Drawer.Screen name="Top Pick" component={TopPick} />
-        <Drawer.Screen name="Team List" component={ListofTeams} />
-        <Drawer.Screen name="MatchList" component={MatchList} />
-        <Drawer.Screen name="Players" component={Players} />
+      }} initialRouteName="Go Home">
+        <Drawer.Screen name="Go Home" component={TabNavigations} />
+      
+        <Drawer.Screen name="Credits" component={Credit} />
       </Drawer.Navigator>
   
   );

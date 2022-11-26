@@ -16,6 +16,7 @@ import { useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import Header from "../Components/Others/Header";
 import Nav from "../Components/Others/Nav";
+import Loader from "../Components/Others/Loader";
 
 
 
@@ -28,6 +29,7 @@ const Home = ({ navigation }) => {
        TopPicksDB,
        competitionType,
        getTopPick,
+       loader,
      } = useGlobalContext();
 
 
@@ -87,40 +89,57 @@ const Home = ({ navigation }) => {
         const Engine30list = MatchsFromDB.map((match, index) =>{
     if (match.Competition === competitionType) {
         return (
-         <TouchableOpacity key={index} onPress={() => navigation.navigate('MatchResult', {
-                matchId: match.id
-            })} style={styles.eachMatch}>
-<View style={styles.eachMatchTeam}>
+          <TouchableOpacity
+            key={index}
+            onPress={() =>
+              navigation.navigate("MatchResult", {
+                matchId: match.id,
+              })
+            }
+            style={styles.eachMatch}
+          >
+            <View style={styles.eachMatchTeam}>
+              <Text style={styles.eachMatchTeamTxt}>{match.HomeTeam}</Text>
 
-  <Text style={styles.eachMatchTeamTxt}>{match.HomeTeam}</Text>
+              <Image
+                source={require("../../../assets/logo-01.png")}
+                resizeMode="contain"
+                style={{ height: 45, width: 45 }}
+              />
+            </View>
+            <View style={styles.eachMatchTime}>
+              {match.MatchActive ? (
+                <View style={{ flexDirection: "row" }}>
+                  <Text style={styles.eachMatchTeamTimeScore}>
+                    {match.HomeTeamScore}
+                  </Text>
+                  <Text style={styles.eachMatchTeamDateScore}>-</Text>
+                  <Text style={styles.eachMatchTeamTimeScore}>
+                    {match.AwayTeamScore}
+                  </Text>
+                </View>
+              ) : (
+                <>
+                  <Text style={styles.eachMatchTeamTime}>
+                    {match.Matchtime}
+                  </Text>
+                  <Text style={styles.eachMatchTeamDate}>
+                    {match.MatchDate}
+                  </Text>
+                </>
+              )}
+            </View>
+            <View style={styles.eachMatchTeam}>
+              <Image
+                source={require("../../../assets/logo-02.png")}
+                resizeMode="contain"
+                style={{ height: 45, width: 45 }}
+              />
 
- <Image
-            source={require("../../../assets/logo-01.png")}
-            resizeMode="contain"
-            style={{ height: 45, width: 45,  }}
-          />
-
-
-</View>
-<View style={styles.eachMatchTime}>
-
- <Text style={styles.eachMatchTeamTime}>{match.Matchtime}</Text>
-  <Text style={styles.eachMatchTeamDate}>{match.MatchDate}</Text>
-  </View>
-  <View style={styles.eachMatchTeam}>
-
-  
- <Image
-            source={require("../../../assets/logo-02.png")}
-            resizeMode="contain"
-            style={{ height: 45, width: 45,  }}
-          />
-
-  <Text style={styles.eachMatchTeamTxt}>{match.AwayTeam}</Text>
-
-</View>
-</TouchableOpacity>
-        )
+              <Text style={styles.eachMatchTeamTxt}>{match.AwayTeam}</Text>
+            </View>
+          </TouchableOpacity>
+        );
     }
   } )
 
@@ -155,6 +174,7 @@ const Home = ({ navigation }) => {
 const onRefresh = React.useCallback(() => {
   setRefreshing(true);
   getTopPick()
+  getTopPickData()
   getMatchsFromDB();
   wait(2000).then(() => setRefreshing(false));
 }, []);
@@ -168,97 +188,103 @@ const onRefresh = React.useCallback(() => {
 
           <Nav />
 
-          <ScrollView
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
-            showsVerticalScrollIndicator={false}
-          >
-            <View style={styles.dashboard}>
-              <Text style={styles.dashboardTitle}>Top Pick</Text>
+          {loader ? (
+            <Loader />
+          ) : (
+            <ScrollView
+              refreshControl={
+                <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+              }
+              showsVerticalScrollIndicator={false}
+            >
+              <View style={styles.dashboard}>
+                <Text style={styles.dashboardTitle}>Top Pick</Text>
 
-              {TopPickState.map((tp, index) => (
-                <TouchableOpacity key={index} style={styles.dashboardBox}>
-                  <Text style={styles.competitionName}>{tp.Competition}</Text>
-                  <Text style={styles.matchDay}>Matchday One</Text>
+                {TopPickState.map((tp, index) => (
+                  <TouchableOpacity key={index} style={styles.dashboardBox}>
+                    <Text style={styles.competitionName}>{tp.Competition}</Text>
+                    <Text style={styles.matchDay}>
+                      Matchday {tp.MatchSelect.MatchDay}
+                    </Text>
 
-                  <View style={styles.scoreBoard}>
-                    <View style={styles.teamBoard}>
-                      <Image
-                        source={require("../../../assets/logo-01.png")}
-                        resizeMode="contain"
-                        style={{ height: 90, width: 90 }}
-                      />
+                    <View style={styles.scoreBoard}>
+                      <View style={styles.teamBoard}>
+                        <Image
+                          source={require("../../../assets/logo-01.png")}
+                          resizeMode="contain"
+                          style={{ height: 90, width: 90 }}
+                        />
 
-                      <Text style={styles.teamTxt}>
-                        {tp.MatchSelect.HomeTeam}
-                      </Text>
-                    </View>
-                    <View style={styles.score}>
-                      {tp.MatchSelect.MatchActive ? (
-                        <>
-                          <Text style={styles.scoreTxt}>
-                            {tp.MatchSelect.HomeTeamScore}
-                          </Text>
-                          <Text style={styles.scoreTxt}>:</Text>
-                          <Text style={styles.scoreTxt}>
-                            {tp.MatchSelect.AwayTeamScore}
-                          </Text>
-                        </>
-                      ) : (
-                        <View
-                          style={{
-                            flexDirection: "column",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            flex: 1,
-                          }}
-                        >
-                          <Text
+                        <Text style={styles.teamTxt}>
+                          {tp.MatchSelect.HomeTeam}
+                        </Text>
+                      </View>
+                      <View style={styles.score}>
+                        {tp.MatchSelect.MatchActive ? (
+                          <>
+                            <Text style={styles.scoreTxt}>
+                              {tp.MatchSelect.HomeTeamScore}
+                            </Text>
+                            <Text style={styles.scoreTxt}>:</Text>
+                            <Text style={styles.scoreTxt}>
+                              {tp.MatchSelect.AwayTeamScore}
+                            </Text>
+                          </>
+                        ) : (
+                          <View
                             style={{
-                              color: "white",
-                              fontWeight: "500",
+                              flexDirection: "column",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              flex: 1,
                             }}
                           >
-                            {tp.MatchSelect.Matchtime}
-                          </Text>
-                          <Text
-                            style={{
-                              color: "white",
-                              fontWeight: "500",
-                              fontSize: 15,
-                            }}
-                          >
-                            {"vs"}
-                          </Text>
-                          <Text style={styles.eachMatchTeamDate}>
-                            {tp.MatchSelect.MatchDate}
-                          </Text>
-                        </View>
-                      )}
+                            <Text
+                              style={{
+                                color: "white",
+                                fontWeight: "500",
+                              }}
+                            >
+                              {tp.MatchSelect.Matchtime}
+                            </Text>
+                            <Text
+                              style={{
+                                color: "white",
+                                fontWeight: "500",
+                                fontSize: 15,
+                              }}
+                            >
+                              {"vs"}
+                            </Text>
+                            <Text style={styles.eachMatchTeamDate}>
+                              {tp.MatchSelect.MatchDate}
+                            </Text>
+                          </View>
+                        )}
+                      </View>
+                      <View style={styles.teamBoard}>
+                        <Image
+                          source={require("../../../assets/logo-02.png")}
+                          resizeMode="contain"
+                          style={{ height: 90, width: 90 }}
+                        />
+
+                        <Text style={styles.teamTxt}>
+                          {tp.MatchSelect.AwayTeam}
+                        </Text>
+                      </View>
                     </View>
-                    <View style={styles.teamBoard}>
-                      <Image
-                        source={require("../../../assets/logo-02.png")}
-                        resizeMode="contain"
-                        style={{ height: 90, width: 90 }}
-                      />
+                  </TouchableOpacity>
+                ))}
+              </View>
 
-                      <Text style={styles.teamTxt}>
-                        {tp.MatchSelect.AwayTeam}
-                      </Text>
-                    </View>
-                  </View>
-                </TouchableOpacity>
-              ))}
-            </View>
+              <View>
+                <Text style={styles.dashboardTitle}>Match</Text>
 
-            <View>
-              <Text style={styles.dashboardTitle}>Match</Text>
-
-              {competition === 4 ? Engine40list : Engine30list}
-            </View>
-          </ScrollView>
+                {competition === 4 ? Engine40list : Engine30list}
+              </View>
+            </ScrollView>
+          )}
         </View>
       </SafeAreaView>
     );
@@ -402,7 +428,7 @@ const styles = StyleSheet.create({
      eachMatchTeamTimeScore: {
   color:'red',
   fontWeight:'500',
-  fontSize: 17
+  fontSize: 20
   },
 
        eachMatchTeamDateScore: {
