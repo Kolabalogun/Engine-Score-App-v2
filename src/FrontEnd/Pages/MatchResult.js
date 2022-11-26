@@ -97,17 +97,17 @@ const MatchResult = ({ route, navigation }) => {
 
   //  list of formations
 
-  // const Home433 = require("../../../assets/formations/4-3-3 home.png");
-  // const Home442 = require("../../../assets/formations/4-4-2 home.png");
-  // const Home343 = require("../../../assets/formations/3-4-3 home.png");
-  // const Home352 = require("../../../assets/formations/3-5-2 home.png");
-  // const Home4231 = require("../../../assets/formations/4-3-2-1 home.png");
+  const Home433 = require("../../../assets/formations/4-3-3home.png");
+  const Home442 = require("../../../assets/formations/4-4-2home.png");
+  const Home343 = require("../../../assets/formations/3-4-3home.png");
+  const Home352 = require("../../../assets/formations/3-5-2home.png");
+  const Home4231 = require("../../../assets/formations/4-3-2-1home.png");
 
-  // const Away433 = require("../../../assets/formations/4-3-3 away.png");
+  const Away433 = require("../../../assets/formations/4-3-3away.png");
   const Away442 = require("../../../assets/formations/4-4-2away.png");
-  // const Away343 = require("../../../assets/formations/3-4-3 away.png");
-  // const Away352 = require("../../../assets/formations/3-5-2 away.png");
-  // const Away4231 = require("../../../assets/formations/4-3-2-1 away.png");
+  const Away343 = require("../../../assets/formations/3-4-3away.png");
+  const Away352 = require("../../../assets/formations/3-5-2away.png");
+  const Away4231 = require("../../../assets/formations/4-3-2-1away.png");
 
   return (
     <ScrollView
@@ -277,7 +277,7 @@ const MatchResult = ({ route, navigation }) => {
                 </View>
                 <View style={styles.team}>
                   <Image
-                    source={require("../../../assets/formations/3-5-2 away.png")}
+                    source={require("../../../assets/logo-02.png")}
                     resizeMode="cover"
                     style={{ height: 30, width: 30 }}
                   />
@@ -290,7 +290,7 @@ const MatchResult = ({ route, navigation }) => {
               </View>
 
               <View style={{ flexDirection: "row" }}>
-                {/* <Image
+                <Image
                   source={
                     HomeTeamFormation === "4-4-2"
                       ? Home442
@@ -304,12 +304,8 @@ const MatchResult = ({ route, navigation }) => {
                   }
                   resizeMode="contain"
                   style={{ marginVertical: 10 }}
-                /> */}
-                <Image
-                  source={require("../../../assets/formations/4-4-2away.png")}
-                  resizeMode="contain"
-                  style={{ marginVertical: 10 }}
                 />
+          
               </View>
 
               <Text style={styles.manager}>Manager</Text>
