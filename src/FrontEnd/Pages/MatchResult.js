@@ -289,7 +289,7 @@ const MatchResult = ({ route, navigation }) => {
                 </View>
               </View>
 
-              <View style={{ flexDirection: "row" }}>
+              <View style={{ flexDirection: "row", flex: 1 }}>
                 <Image
                   source={
                     HomeTeamFormation === "4-4-2"
@@ -303,9 +303,23 @@ const MatchResult = ({ route, navigation }) => {
                       : Home4231
                   }
                   resizeMode="contain"
-                  style={{ marginVertical: 10 }}
+                  style={{ height: 300, flex: 1 }}
                 />
-          
+                <Image
+                  source={
+                    AwayTeamFormation === "4-4-2"
+                      ? Away442
+                      : AwayTeamFormation === "4-3-3"
+                      ? Away433
+                      : AwayTeamFormation === "3-4-3"
+                      ? Away343
+                      : AwayTeamFormation === "3-5-2"
+                      ? Away352
+                      : Away4231
+                  }
+                  resizeMode="contain"
+                  style={{ height: 300, flex: 1 }}
+                />
               </View>
 
               <Text style={styles.manager}>Manager</Text>
