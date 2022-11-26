@@ -253,6 +253,56 @@ const AppProvider = ({ children }) => {
     wait(2000).then(() => setRefreshing(false));
   }, []);
 
+
+  // AutoUpdate 
+
+
+  let projectVersion = '1.0'
+
+    const [AutoUpdateState, AutoUpdateStateF] = useState({
+      isthereUpdate: false,
+      link: "",
+      currentVersion: projectVersion
+    });
+
+    useEffect(() => {
+      getUpdateDetail();
+    }, []);
+
+    const getUpdateDetail = async () => {
+      loaderF(true);
+      const docRef = doc(db, "AutoUpdate", "uhTnMICHPaLJOx5TJSw1");
+      const snapshot = await getDoc(docRef);
+      if (snapshot.exists()) {
+        AutoUpdateStateF({ ...snapshot.data() });
+      }
+      loaderF(false);
+    };
+
+    // console.log(AutoUpdateState);
+
+
+    // List of GoalScorers and Assits 
+
+      const [PlayerGoalAssistData, PlayerGoalAssistDataF] = useState([]);
+
+      useEffect(() => {
+        getPlayerGoalAssistData();
+      }, []);
+
+      const getPlayerGoalAssistData = async () => {
+        loaderF(true);
+        const docRef = doc(db, "Player Data", "WmVhSufxYzBSkL8HsqkF");
+        const snapshot = await getDoc(docRef);
+        if (snapshot.exists()) {
+          PlayerGoalAssistDataF([ ...snapshot.data().playerDatas ]);
+        }
+        loaderF(false);
+      };
+
+
+
+
   return (
     <AppContext.Provider
       value={{
@@ -288,6 +338,11 @@ const AppProvider = ({ children }) => {
         getMatchsFromDB,
         getTopPick,
         getTeamsFromDB,
+        AutoUpdateState,
+        projectVersion,
+
+        PlayerGoalAssistData,
+        getPlayerGoalAssistData,
       }}
     >
       {children}

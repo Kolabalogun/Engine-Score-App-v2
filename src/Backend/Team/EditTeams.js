@@ -880,108 +880,99 @@ loaderF(true)
 export default EditTeams
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    
-        backgroundColor: "aliceblue",
-        // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-          paddingHorizontal: 10,
-          paddingTop: 10
-      },
+  container: {
+    flex: 1,
 
-      
-  homeHeader :{
-display: 'flex',
-flexDirection: 'row',
-justifyContent: 'space-between',
-alignItems: 'center'
+    backgroundColor: "aliceblue",
+    // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    paddingHorizontal: 10,
+    paddingTop: 10,
   },
 
-  headerTitle :{
-fontSize:26,
-fontWeight: '400'
-
+  homeHeader: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "edeff2",
   },
 
+  headerTitle: {
+    fontSize: 26,
+    fontWeight: "400",
+  },
 
   headerTitleScore: {
-    color:'#ff2782'
-    , fontWeight:'500'
+    color: "#ff2782",
+    fontWeight: "500",
   },
-         
-      topSection: {
-        paddingTop: 15,
-      },
-      topText: {
-        fontWeight: "700",
-        fontSize: 25,
-    
-        color: "rgb(7, 1, 57)",
-        // marginTop: 10,
-      },
-      capText: {
-        color: "rgb(100, 100, 100)",
-        marginTop: 10,
-      },
-    
-      Inputs: {
-        marginTop: 10,
-        flex: 1,
-        justifyContent: "center",
-      },
-      Input: {
-        padding: 5,
-        borderRadius: 5,
-        borderWidth: 1,
-        fontSize: 15,
-        borderColor: "#aaa",
-        
-      },
-      InputTextArea: {
-        padding: 5,
-        borderRadius: 5,
-        borderWidth: 1,
-        fontSize: 15,
-        borderColor: "#aaa",
 
-      
+  topSection: {
+    paddingTop: 15,
+  },
+  topText: {
+    fontWeight: "700",
+    fontSize: 25,
 
-        // height: 170,
-        alignItems: 'baseline',
-        justifyContent: 'flex-start',
-     
-        textAlignVertical: 'top'
-       
-      
-      },
-      btn: {
-        paddingVertical: 12,
-        backgroundColor: "#ff2782",
-        alignItems: "center",
-        justifyContent: "center",
-        borderRadius: 10,
-        width: "100%",
-        marginVertical: 20,
-      },
-      btnTxt: {
-        color: "white",
-        fontSize: 16,
-        fontWeight: "500",
-      },
+    color: "rgb(7, 1, 57)",
+    // marginTop: 10,
+  },
+  capText: {
+    color: "rgb(100, 100, 100)",
+    marginTop: 10,
+  },
 
+  Inputs: {
+    marginTop: 10,
+    flex: 1,
+    justifyContent: "center",
+  },
+  Input: {
+    padding: 5,
+    borderRadius: 5,
+    borderWidth: 1,
+    fontSize: 15,
+    borderColor: "#aaa",
+  },
+  InputTextArea: {
+    padding: 5,
+    borderRadius: 5,
+    borderWidth: 1,
+    fontSize: 15,
+    borderColor: "#aaa",
 
-      dropdownStyle: {
+    // height: 170,
+    alignItems: "baseline",
+    justifyContent: "flex-start",
 
-        width: '100%',
-        padding: 5,
-        borderRadius: 5,
-        borderWidth: 1,
-        fontSize: 13,
-        borderColor: "#aaa",
-        backgroundColor: 'white',
-        height:40   
-      },
-      dropdownStyleTxt: {
- fontSize: 14
-      },
-})
+    textAlignVertical: "top",
+  },
+  btn: {
+    paddingVertical: 12,
+    backgroundColor: "#ff2782",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 10,
+    width: "100%",
+    marginVertical: 20,
+  },
+  btnTxt: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "500",
+  },
+
+  dropdownStyle: {
+    width: "100%",
+    padding: 5,
+    borderRadius: 5,
+    borderWidth: 1,
+    fontSize: 13,
+    borderColor: "#aaa",
+    backgroundColor: "white",
+    height: 40,
+  },
+  dropdownStyleTxt: {
+    fontSize: 14,
+  },
+});

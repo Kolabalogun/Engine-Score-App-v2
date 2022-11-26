@@ -867,155 +867,141 @@ let image = ''
 export default AddTeams;
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    
-        backgroundColor: "aliceblue",
-        // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-          paddingHorizontal: 10,
-          paddingTop: 10
-      },
+  container: {
+    flex: 1,
 
-      
-  homeHeader :{
-display: 'flex',
-flexDirection: 'row',
-justifyContent: 'space-between',
-alignItems: 'center'
+    backgroundColor: "aliceblue",
+    // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    paddingHorizontal: 10,
+    paddingTop: 10,
   },
 
-  headerTitle :{
-fontSize:26,
-fontWeight: '400'
-
+  homeHeader: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "edeff2",
   },
 
+  headerTitle: {
+    fontSize: 26,
+    fontWeight: "400",
+  },
 
   headerTitleScore: {
-    color:'#ff2782'
-    , fontWeight:'500'
+    color: "#ff2782",
+    fontWeight: "500",
   },
 
+  topSection: {
+    paddingTop: 15,
+  },
+  topText: {
+    fontWeight: "700",
+    fontSize: 25,
 
-    
-      topSection: {
-        paddingTop: 15,
-      },
-      topText: {
-        fontWeight: "700",
-        fontSize: 25,
-    
-        color: "rgb(7, 1, 57)",
-        // marginTop: 10,
-      },
-      capText: {
-        color: "rgb(100, 100, 100)",
-        marginTop: 10,
-      },
-    
-      Inputs: {
-        marginTop: 10,
-        flex: 1,
-        justifyContent: "center",
-      },
-      Input: {
-        padding: 5,
-        borderRadius: 5,
-        borderWidth: 1,
-        fontSize: 15,
-        borderColor: "#aaa",
-        
-      },
-      InputTextArea: {
-        padding: 5,
-        borderRadius: 5,
-        borderWidth: 1,
-        fontSize: 15,
-        borderColor: "#aaa",
+    color: "rgb(7, 1, 57)",
+    // marginTop: 10,
+  },
+  capText: {
+    color: "rgb(100, 100, 100)",
+    marginTop: 10,
+  },
 
-      
+  Inputs: {
+    marginTop: 10,
+    flex: 1,
+    justifyContent: "center",
+  },
+  Input: {
+    padding: 5,
+    borderRadius: 5,
+    borderWidth: 1,
+    fontSize: 15,
+    borderColor: "#aaa",
+  },
+  InputTextArea: {
+    padding: 5,
+    borderRadius: 5,
+    borderWidth: 1,
+    fontSize: 15,
+    borderColor: "#aaa",
 
-        // height: 170,
-        alignItems: 'baseline',
-        justifyContent: 'flex-start',
-     
-        textAlignVertical: 'top'
-       
-      
-      },
-      btn: {
-        paddingVertical: 12,
-        backgroundColor: "#ff2782",
-        alignItems: "center",
-        justifyContent: "center",
-        borderRadius: 10,
-        width: "100%",
-        marginVertical: 20,
-        marginBottom: 50
-      },
-      btnTxt: {
-        color: "white",
-        fontSize: 16,
-        fontWeight: "500",
-      },
+    // height: 170,
+    alignItems: "baseline",
+    justifyContent: "flex-start",
 
+    textAlignVertical: "top",
+  },
+  btn: {
+    paddingVertical: 12,
+    backgroundColor: "#ff2782",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 10,
+    width: "100%",
+    marginVertical: 20,
+    marginBottom: 50,
+  },
+  btnTxt: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "500",
+  },
 
-      dropdownStyle: {
+  dropdownStyle: {
+    width: "100%",
+    padding: 5,
+    borderRadius: 5,
+    borderWidth: 1,
+    fontSize: 13,
+    borderColor: "#aaa",
+    backgroundColor: "white",
+    height: 40,
+  },
+  dropdownStyleTxt: {
+    fontSize: 14,
+  },
 
-        width: '100%',
-        padding: 5,
-        borderRadius: 5,
-        borderWidth: 1,
-        fontSize: 13,
-        borderColor: "#aaa",
-        backgroundColor: 'white',
-        height:40   
-      },
-      dropdownStyleTxt: {
- fontSize: 14
-      },
-
-        
   navMenu: {
-  marginVertical:20,
-  display: 'flex',
-  flexDirection: 'row', 
-  justifyContent: 'space-between',
-  
+    marginVertical: 20,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 
-    eachMatch: {
-   borderRadius: 10,
-   backgroundColor:'white',flexDirection: 'row',
-   justifyContent: 'space-between',
-   alignItems: 'center',
-   paddingHorizontal: 10,
-   paddingVertical:10,
-   marginVertical:5,
-   borderWidth: 3,
-  
-    alignItems: 'center',
+  eachMatch: {
+    borderRadius: 10,
+    backgroundColor: "white",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    marginVertical: 5,
+    borderWidth: 3,
 
-    borderColor: 'rgba(209, 225, 240, 0.782)',
-    
+    alignItems: "center",
+
+    borderColor: "rgba(209, 225, 240, 0.782)",
   },
 
-   eachMatchTeam: {
-//    flex:1,
-   flexDirection: 'row',
-   justifyContent: 'space-between',
-   color: 'white',
-   alignItems: 'center'
+  eachMatchTeam: {
+    //    flex:1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    color: "white",
+    alignItems: "center",
   },
 
-   eachMatchTime: {
-  flex:1,
-  alignItems: 'center'
+  eachMatchTime: {
+    flex: 1,
+    alignItems: "center",
   },
 
-   eachMatchTeamTxt: {
- fontWeight: '500',
- fontSize: 15
+  eachMatchTeamTxt: {
+    fontWeight: "500",
+    fontSize: 15,
   },
-
-})
+});

@@ -31,23 +31,21 @@ const Header = ({navigation, functions, imgtype}) => {
 export default Header;
 
 const styles = StyleSheet.create({
-
-  homeHeader :{
-display: 'flex',
-flexDirection: 'row',
-justifyContent: 'space-between',
-alignItems: 'center'
+  homeHeader: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "edeff2",
   },
 
-  headerTitle :{
-fontSize:26,
-fontWeight: '400'
-
+  headerTitle: {
+    fontSize: 26,
+    fontWeight: "400",
   },
-
 
   headerTitleScore: {
-    color:'#ff2782'
-    , fontWeight:'500'
-  }
+    color: "#ff2782",
+    fontWeight: "500",
+  },
 });

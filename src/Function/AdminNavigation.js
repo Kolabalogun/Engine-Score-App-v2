@@ -12,6 +12,7 @@ import TopPick from "../Backend/Top Pick/TopPick";
 import ListofTeams from "../Backend/Team/ListofTeams";
 import MatchList from "../Backend/Match/MatchList";
 import Players from "../Backend/Player/Players";
+import ListofPlayers from "../Backend/Player/ListofPlayers";
 
 const Tabs = createMaterialBottomTabNavigator();
 
@@ -31,7 +32,7 @@ const AdminNavigation = () => {
             iconName = "calendar-o";
             (size = focused ? 23 : 22),
               (color = focused ? "#ff2782" : "#cdd4dc");
-          } else if (route.name === "Players") {
+          } else if (route.name === "ListofPlayers") {
             iconName = "group";
             (size = focused ? 23 : 22),
               (color = focused ? "#ff2782" : "#cdd4dc");
@@ -51,7 +52,7 @@ const AdminNavigation = () => {
       <Tabs.Screen name="Top Pick" component={TopPick} />
       <Tabs.Screen name="Team List" component={ListofTeams} />
       <Tabs.Screen name="MatchList" component={MatchList} />
-      <Tabs.Screen name="Players" component={Players} />
+      <Tabs.Screen name="ListofPlayers" component={ListofPlayers} />
     </Tabs.Navigator>
   );
 };

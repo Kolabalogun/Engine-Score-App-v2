@@ -224,102 +224,95 @@ const MatchList = ({navigation}) => {
 export default MatchList
 
 const styles = StyleSheet.create({
-      container: {
-        flex: 1,
-    
-        backgroundColor: "aliceblue",
-        // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-          paddingHorizontal: 10,
-          paddingTop: 10
-      },
+  container: {
+    flex: 1,
 
-
-      homeHeader :{
-display: 'flex',
-flexDirection: 'row',
-justifyContent: 'space-between',
-alignItems: 'center'
+    backgroundColor: "aliceblue",
+    // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+    paddingHorizontal: 10,
+    paddingTop: 10,
   },
 
-  headerTitle :{
-fontSize:26,
-fontWeight: '400'
-
+  homeHeader: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "edeff2",
   },
 
+  headerTitle: {
+    fontSize: 26,
+    fontWeight: "400",
+  },
 
   headerTitleScore: {
-    color:'#ff2782'
-    , fontWeight:'500'
+    color: "#ff2782",
+    fontWeight: "500",
   },
 
-  
   eachMatch: {
-   borderRadius: 10,
-   backgroundColor:'white',flexDirection: 'row',
-   justifyContent: 'space-between',
-   alignItems: 'center',
-   paddingHorizontal: 15,
-   paddingVertical:10,
-   marginVertical:5,
-   borderWidth: 3,
-  
-    alignItems: 'center',
+    borderRadius: 10,
+    backgroundColor: "white",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+    marginVertical: 5,
+    borderWidth: 3,
 
-    borderColor: 'rgba(209, 225, 240, 0.782)',
-    
+    alignItems: "center",
+
+    borderColor: "rgba(209, 225, 240, 0.782)",
   },
 
-   eachMatchTeam: {
-   flex:1,
-   flexDirection: 'row',
-   justifyContent: 'space-between',
-   color: 'white',
-   alignItems: 'center'
+  eachMatchTeam: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    color: "white",
+    alignItems: "center",
   },
 
-   eachMatchTime: {
-  flex:1,
-  alignItems: 'center',
-  alignSelf: 'center',
-//   paddingHorizontal: 10
+  eachMatchTime: {
+    flex: 1,
+    alignItems: "center",
+    alignSelf: "center",
+    //   paddingHorizontal: 10
   },
 
-   eachMatchTeamTxt: {
- fontWeight: '500'
+  eachMatchTeamTxt: {
+    fontWeight: "500",
   },
 
-     eachMatchTeamTime: {
-  color:'red',
-  fontWeight:'500',
-
+  eachMatchTeamTime: {
+    color: "red",
+    fontWeight: "500",
   },
 
-       eachMatchTeamDate: {
-  color:'#aaa',
-  fontWeight:'400',
-
+  eachMatchTeamDate: {
+    color: "#aaa",
+    fontWeight: "400",
   },
 
-     eachMatchTeamTimeScore: {
-  color:'red',
-  fontWeight:'500',
-  fontSize: 20
+  eachMatchTeamTimeScore: {
+    color: "red",
+    fontWeight: "500",
+    fontSize: 20,
   },
 
-       eachMatchTeamDateScore: {
-  color:'#aaa',
-  fontWeight:'400',
-  fontSize: 20,
-    paddingHorizontal: 8
+  eachMatchTeamDateScore: {
+    color: "#aaa",
+    fontWeight: "400",
+    fontSize: 20,
+    paddingHorizontal: 8,
   },
-          
+
   navMenu: {
-  marginVertical:20,
-  display: 'flex',
-  flexDirection: 'row', 
-  justifyContent: 'space-between',
-  
+    marginVertical: 20,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
-
-})
+});

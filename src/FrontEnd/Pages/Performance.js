@@ -112,27 +112,29 @@ loaderF(true)
     <SafeAreaView style={styles.container}>
       <View style={styles.main}>
         <Header navigation={navigation} />
-        <Nav />
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
+          <Nav />
 
-        {loader ? (
-          <Loader />
-        ) : (
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
-          >
-            <View style={styles.group}>
-              <Text style={styles.groupName}>Goals</Text>
-              <View style={styles.table}>{GoalsGroup}</View>
-            </View>
-            <View style={styles.group}>
-              <Text style={styles.groupName}>Assists</Text>
-              <View style={styles.table}>{AssistsGroup}</View>
-            </View>
-          </ScrollView>
-        )}
+          {loader ? (
+            <Loader />
+          ) : (
+            <>
+              <View style={styles.group}>
+                <Text style={styles.groupName}>Goals</Text>
+                <View style={styles.table}>{GoalsGroup}</View>
+              </View>
+              <View style={styles.group}>
+                <Text style={styles.groupName}>Assists</Text>
+                <View style={styles.table}>{AssistsGroup}</View>
+              </View>
+            </>
+          )}
+        </ScrollView>
       </View>
     </SafeAreaView>
   );

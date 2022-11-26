@@ -68,39 +68,46 @@ const MatchResult = ({ route, navigation }) => {
 
   useEffect(() => {
     const data = TeamsFromDB.filter(
-      (team) =>
-        team.Competition === Competition && team.TeamName === HomeTeam
+      (team) => team.Competition === Competition && team.TeamName === HomeTeam
     );
 
     HomeTeamDataF(data);
   }, [Competition, TeamsFromDB]);
   useEffect(() => {
     const data = TeamsFromDB.filter(
-      (team) =>
-        team.Competition === Competition && team.TeamName === AwayTeam
+      (team) => team.Competition === Competition && team.TeamName === AwayTeam
     );
     AwayTeamDataF(data);
   }, [Competition, TeamsFromDB]);
 
   const [activeMenu, activeMenuF] = useState("lineup");
 
+  const wait = (timeout) => {
+    return new Promise((resolve) => setTimeout(resolve, timeout));
+  };
 
+  const [refreshing, setRefreshing] = React.useState(false);
 
-    const wait = (timeout) => {
-      return new Promise((resolve) => setTimeout(resolve, timeout));
-    };
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    getTeamsFromDB();
+    getBlogDetail();
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
 
+  //  list of formations
 
- const [refreshing, setRefreshing] = React.useState(false);
+  // const Home433 = require("../../../assets/formations/4-3-3 home.png");
+  // const Home442 = require("../../../assets/formations/4-4-2 home.png");
+  // const Home343 = require("../../../assets/formations/3-4-3 home.png");
+  // const Home352 = require("../../../assets/formations/3-5-2 home.png");
+  // const Home4231 = require("../../../assets/formations/4-3-2-1 home.png");
 
- const onRefresh = React.useCallback(() => {
-   setRefreshing(true);
-   getTeamsFromDB()
-   getBlogDetail();
-   wait(2000).then(() => setRefreshing(false));
- }, []);
-
-
+  // const Away433 = require("../../../assets/formations/4-3-3 away.png");
+  const Away442 = require("../../../assets/formations/4-4-2away.png");
+  // const Away343 = require("../../../assets/formations/3-4-3 away.png");
+  // const Away352 = require("../../../assets/formations/3-5-2 away.png");
+  // const Away4231 = require("../../../assets/formations/4-3-2-1 away.png");
 
   return (
     <ScrollView
@@ -270,9 +277,9 @@ const MatchResult = ({ route, navigation }) => {
                 </View>
                 <View style={styles.team}>
                   <Image
-                    source={require("../../../assets/logo-02.png")}
-                    resizeMode="contain"
-                    style={{ height: 35, width: 35 }}
+                    source={require("../../../assets/formations/3-5-2 away.png")}
+                    resizeMode="cover"
+                    style={{ height: 30, width: 30 }}
                   />
 
                   <View style={styles.formation}>
@@ -282,11 +289,28 @@ const MatchResult = ({ route, navigation }) => {
                 </View>
               </View>
 
-              <Image
-                source={require("../../../assets/line.png")}
-                resizeMode="contain"
-                style={{ marginVertical: 10 }}
-              />
+              <View style={{ flexDirection: "row" }}>
+                {/* <Image
+                  source={
+                    HomeTeamFormation === "4-4-2"
+                      ? Home442
+                      : HomeTeamFormation === "4-3-3"
+                      ? Home433
+                      : HomeTeamFormation === "3-4-3"
+                      ? Home343
+                      : HomeTeamFormation === "3-5-2"
+                      ? Home352
+                      : Home4231
+                  }
+                  resizeMode="contain"
+                  style={{ marginVertical: 10 }}
+                /> */}
+                <Image
+                  source={require("../../../assets/formations/4-4-2away.png")}
+                  resizeMode="contain"
+                  style={{ marginVertical: 10 }}
+                />
+              </View>
 
               <Text style={styles.manager}>Manager</Text>
 
