@@ -29,8 +29,7 @@ const Navigations = () => {
 
   return (
     <>
-      {AutoUpdateState.isthereUpdate &&
-      projectVersion !== AutoUpdateState.currentVersion ? (
+      { projectVersion !== AutoUpdateState.currentVersion ? (
         <AutoUpdatee />
       ) : (
         <Stack.Navigator

@@ -26,7 +26,7 @@ const initialState = {
   Matchtime: "",
   HomeTeamScore: 0,
   AwayTeamScore: 0,
-  MatchTimeline: "",
+  MatchTimeline: [],
   MatchActive: false,
 };
 const MatchResult = ({ route, navigation }) => {
@@ -289,7 +289,7 @@ const MatchResult = ({ route, navigation }) => {
                 </View>
               </View>
 
-              <View style={{ flexDirection: "row", flex: 1 }}>
+              <View style={{ flexDirection: "row", flex: 1,  }}>
                 <Image
                   source={
                     HomeTeamFormation === "4-4-2"
@@ -318,7 +318,7 @@ const MatchResult = ({ route, navigation }) => {
                       : Away4231
                   }
                   resizeMode="contain"
-                  style={{ height: 300, flex: 1 }}
+                  style={{ height: 300, flex: 1, marginTop: -8 }}
                 />
               </View>
 
@@ -396,7 +396,7 @@ const MatchResult = ({ route, navigation }) => {
             </View>
           ) : (
             <View style={styles.formationSection}>
-              {MatchTimeline.slice(0)
+              {MatchTimeline?.slice(0)
                 .reverse()
                 .map((details, index) => (
                   <View style={styles.eachSummary} key={index}>
@@ -451,6 +451,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#edeff2",
+    // paddingTop: 30,
   },
 
   homeHeader: {
@@ -458,6 +459,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    paddingBottom: 20,
   },
 
   headerTitle: {
@@ -569,6 +571,7 @@ const styles = StyleSheet.create({
   manager: {
     fontWeight: "500",
     textAlign: "center",
+    marginTop:10,
   },
 
   managerSplit: {
@@ -585,10 +588,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
 
-  manager: {
-    fontWeight: "500",
-    textAlign: "center",
-  },
+
 
   eachMatchTeamTime: {
     color: "red",

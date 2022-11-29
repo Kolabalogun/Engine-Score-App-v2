@@ -273,6 +273,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     backgroundColor: "edeff2",
+    paddingBottom: 20,
   },
 
   headerTitle: {

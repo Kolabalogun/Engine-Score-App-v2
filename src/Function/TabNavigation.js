@@ -30,7 +30,7 @@ const TabNavigations = () => {
               (color = focused ? "#ff2782" : "#cdd4dc");
           }
            else if (route.name === "Match") {
-            iconName = "calendar-o";
+            iconName = "soccer-ball-o";
             (size = focused ? 23 : 22),
               (color = focused ? "#ff2782" : "#cdd4dc");
           }

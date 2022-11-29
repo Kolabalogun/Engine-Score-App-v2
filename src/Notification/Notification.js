@@ -73,7 +73,7 @@ async function schedulePushNotification() {
 
  const handleSubmit = async (e) => {
     e.preventDefault();
-
+loaderF('true')
         try {
             await addDoc(collection(db, "Users"), {
               // UserToken: token,
@@ -81,7 +81,7 @@ async function schedulePushNotification() {
               expoPushToken: expoPushToken
                 
             });
-            
+            loaderF("false");
 
         } catch (error) {
             console.log(error);

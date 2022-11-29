@@ -191,7 +191,7 @@ console.log(FilteredPlayerDataFromDBForGoalData);
               AssistsF(0)
 
               navigation.navigate('Stat')
-                  loaderF(false);
+              loaderF(false);
 
       } catch (error) {
         console.log(error, "line 219");
@@ -290,7 +290,7 @@ console.log(FilteredPlayerDataFromDBForGoalData);
 
                   <SelectDropdown
                     data={PlayerData}
-                    defaultButtonText="Please select Away Team"
+                    defaultButtonText="Please select Player's Name"
                     buttonStyle={styles.dropdownStyle}
                     buttonTextStyle={styles.dropdownStyleTxt}
                     onSelect={(selectedItem, index) => {
@@ -363,6 +363,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    paddingBottom: 20,
   },
 
   headerTitle: {

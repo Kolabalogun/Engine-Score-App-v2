@@ -131,11 +131,12 @@ let image = ''
                 dateId: dateId,
                 
             });
-            loaderF(false);
+          
             notificationF("Team Successfully Added");
     TeamNameF('')
     TeamManagerF('')
     navigation.navigate("Team List");
+      loaderF(false);
 
         } catch (error) {
             // console.log(error);
@@ -211,72 +212,30 @@ let image = ''
 
   return (
     <>
+      {loader ? (
+        <Loader />
+      ) : (
+        <SafeAreaView style={styles.container}>
+          <View>
+            <Headers
+              functions={navigateToListofTeam}
+              imgtype={require("../../../assets/list.png")}
+            />
 
-    {
-      loader ? <Loader/> :
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <View style={styles.topSection}>
+                <Text style={styles.topText}>Add New Team</Text>
+                <Text style={styles.capText}>
+                  Please input the details of the Team.
+                </Text>
+              </View>
 
-      <SafeAreaView style={styles.container}>
-   <View>
-            <Headers functions = {navigateToListofTeam} imgtype={require("../../../assets/list.png")}/>
-
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.topSection}>
-          <Text style={styles.topText}>Add New Team</Text>
-          <Text style={styles.capText}>
-  Please input the details of the Team.
-          </Text>
-        </View>
-  
-        <KeyboardAvoidingView style={styles.Inputs}>
-  
-        <TouchableOpacity
-                  onPress={Imagepicker}
-                  style={{
-                    height: 80,
-                    width: 80,
-  
-                    alignItems: "center",
-                    justifyContent: "center",
-                    alignSelf: "center",
-  marginVertical: 20,
-                    borderRadius: 120,
-                  }}
-                >
-                  {!selectedImage ? (
-                    <View style={{ alignSelf: "center" }}>
-                      <Image
-                        source={require("../../../assets/photo.png")}
-                        style={{
-                          height: 100,
-                          width: 100,
-                        }}
-                      />
-                      <Text style={{width: '100%', textAlign: 'center'}}>Add Team Logo</Text>
-                    </View>
-                  ) : (
-                    <Image
-                      source={{ uri: selectedImage }}
-                      style={{
-                        height: "100%",
-                        width: "100%",
-  
-                        borderRadius: 100,
-                      }}
-                    />
-                  )}
-                </TouchableOpacity>
-
-
-             
-  
-  
-  
-  
-          <View style={{ marginTop: 10 }}>
-            <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
-            Competition
-            </Text>
-            {/* <TextInput
+              <KeyboardAvoidingView style={styles.Inputs}>
+                <View style={{ marginTop: 10 }}>
+                  <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+                    Competition
+                  </Text>
+                  {/* <TextInput
               value={Competition}
               onChangeText={(e) => CompetitionF(e)}
               placeholder="Enter the Team Name"
@@ -284,584 +243,410 @@ let image = ''
               style={styles.Input}
             /> */}
 
-               <SelectDropdown
-	data={competitionData}
-    
+                  <SelectDropdown
+                    data={competitionData}
+                    defaultButtonText="Select Competition"
+                    buttonStyle={styles.dropdownStyle}
+                    buttonTextStyle={styles.dropdownStyleTxt}
+                    onSelect={(selectedItem, index) => {
+                      CompetitionF(selectedItem);
+                    }}
+                  />
+                </View>
 
-      defaultButtonText = 'Select Competition'
-      buttonStyle={styles.dropdownStyle}
-      buttonTextStyle={styles.dropdownStyleTxt}
+                <View style={{ marginTop: 10 }}>
+                  <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+                    Team Name
+                  </Text>
+                  <TextInput
+                    value={TeamName}
+                    onChangeText={(e) => TeamNameF(e)}
+                    placeholder="Enter the Team Name"
+                    style={styles.Input}
+                  />
+                </View>
 
-	onSelect={(selectedItem, index) => {
-	CompetitionF(selectedItem)
-	}}
-	
-   
-/>
+                <View style={{ marginTop: 10 }}>
+                  <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+                    Manager
+                  </Text>
+                  <TextInput
+                    value={TeamManager}
+                    onChangeText={(e) => TeamManagerF(e)}
+                    placeholder="Enter the Manager of the Team"
+                    style={styles.Input}
+                  />
+                </View>
+                <View style={{ marginTop: 10 }}>
+                  <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+                    Team Formation
+                  </Text>
+
+                  <SelectDropdown
+                    data={formationData}
+                    defaultButtonText="Select Team Formation"
+                    buttonStyle={styles.dropdownStyle}
+                    buttonTextStyle={styles.dropdownStyleTxt}
+                    onSelect={(selectedItem, index) => {
+                      FormationF(selectedItem);
+                    }}
+                  />
+                </View>
+
+                <View style={{ marginTop: 10 }}>
+                  <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+                    Team Group
+                  </Text>
+
+                  <SelectDropdown
+                    data={GroupData}
+                    defaultButtonText="Select Team Group"
+                    buttonStyle={styles.dropdownStyle}
+                    buttonTextStyle={styles.dropdownStyleTxt}
+                    onSelect={(selectedItem, index) => {
+                      TeamGroupF(selectedItem);
+                    }}
+                  />
+                </View>
+
+                <View style={{ marginTop: 10 }}>
+                  <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+                    Players
+                  </Text>
+
+                  <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+                    GoalKeeper
+                  </Text>
+
+                  <TextInput
+                    value={Players.goalkepper}
+                    name="goalkepper"
+                    onChangeText={(e) =>
+                      PlayersF((prev) => {
+                        return { ...prev, goalkepper: e };
+                      })
+                    }
+                    placeholder="Please enter GoalKeeper's Name"
+                    style={styles.InputTextArea}
+                  />
+
+                  <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+                    Defender
+                  </Text>
+
+                  <TextInput
+                    value={Players.defender1}
+                    name="defender1"
+                    onChangeText={(e) =>
+                      PlayersF((prev) => {
+                        return { ...prev, defender1: e };
+                      })
+                    }
+                    placeholder="Please enter defender1's Name"
+                    style={styles.InputTextArea}
+                  />
+
+                  <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+                    Defender
+                  </Text>
+
+                  <TextInput
+                    value={Players.defender2}
+                    name="defender2"
+                    onChangeText={(e) =>
+                      PlayersF((prev) => {
+                        return { ...prev, defender2: e };
+                      })
+                    }
+                    placeholder="Please enter defender2's Name"
+                    style={styles.InputTextArea}
+                  />
+
+                  <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+                    Defender
+                  </Text>
+
+                  <TextInput
+                    value={Players.defender3}
+                    name="defender3"
+                    onChangeText={(e) =>
+                      PlayersF((prev) => {
+                        return { ...prev, defender3: e };
+                      })
+                    }
+                    placeholder="Please enter defender3's Name"
+                    style={styles.InputTextArea}
+                  />
+
+                  <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+                    Defender
+                  </Text>
+
+                  <TextInput
+                    value={Players.defender4}
+                    name="defender4"
+                    onChangeText={(e) =>
+                      PlayersF((prev) => {
+                        return { ...prev, defender4: e };
+                      })
+                    }
+                    placeholder="Please enter defender4's Name"
+                    style={styles.InputTextArea}
+                  />
+
+                  <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+                    Defender
+                  </Text>
+
+                  <TextInput
+                    value={Players.defender5}
+                    name="defender5"
+                    onChangeText={(e) =>
+                      PlayersF((prev) => {
+                        return { ...prev, defender5: e };
+                      })
+                    }
+                    placeholder="Please enter defender5's Name"
+                    style={styles.InputTextArea}
+                  />
+
+                  <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+                    Midfielders
+                  </Text>
+
+                  <TextInput
+                    value={Players.midfielders1}
+                    name="midfielders1"
+                    onChangeText={(e) =>
+                      PlayersF((prev) => {
+                        return { ...prev, midfielders1: e };
+                      })
+                    }
+                    placeholder="Please enter midfielders1's Name"
+                    style={styles.InputTextArea}
+                  />
+
+                  <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+                    Midfielders
+                  </Text>
+
+                  <TextInput
+                    value={Players.midfielders2}
+                    name="midfielders1"
+                    onChangeText={(e) =>
+                      PlayersF((prev) => {
+                        return { ...prev, midfielders2: e };
+                      })
+                    }
+                    placeholder="Please enter midfielders2's Name"
+                    style={styles.InputTextArea}
+                  />
+
+                  <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+                    Midfielders
+                  </Text>
+
+                  <TextInput
+                    value={Players.midfielders3}
+                    name="midfielders3"
+                    onChangeText={(e) =>
+                      PlayersF((prev) => {
+                        return { ...prev, midfielders3: e };
+                      })
+                    }
+                    placeholder="Please enter midfielders3's Name"
+                    style={styles.InputTextArea}
+                  />
+
+                  <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+                    Midfielders
+                  </Text>
+
+                  <TextInput
+                    value={Players.midfielders4}
+                    name="midfielders4"
+                    onChangeText={(e) =>
+                      PlayersF((prev) => {
+                        return { ...prev, midfielders4: e };
+                      })
+                    }
+                    placeholder="Please enter midfielders4's Name"
+                    style={styles.InputTextArea}
+                  />
+
+                  <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+                    Midfielders
+                  </Text>
+
+                  <TextInput
+                    value={Players.midfielders5}
+                    name="midfielders5"
+                    onChangeText={(e) =>
+                      PlayersF((prev) => {
+                        return { ...prev, midfielders5: e };
+                      })
+                    }
+                    placeholder="Please enter midfielders5's Name"
+                    style={styles.InputTextArea}
+                  />
+
+                  <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+                    attakers
+                  </Text>
+
+                  <TextInput
+                    value={Players.attakers1}
+                    name="attakers1"
+                    onChangeText={(e) =>
+                      PlayersF((prev) => {
+                        return { ...prev, attakers1: e };
+                      })
+                    }
+                    placeholder="Please enter attakers1's Name"
+                    style={styles.InputTextArea}
+                  />
+
+                  <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+                    attakers
+                  </Text>
+
+                  <TextInput
+                    value={Players.attakers2}
+                    name="attakers1"
+                    onChangeText={(e) =>
+                      PlayersF((prev) => {
+                        return { ...prev, attakers2: e };
+                      })
+                    }
+                    placeholder="Please enter attakers2's Name"
+                    style={styles.InputTextArea}
+                  />
+
+                  <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+                    attakers
+                  </Text>
+
+                  <TextInput
+                    value={Players.attakers3}
+                    name="attakers3"
+                    onChangeText={(e) =>
+                      PlayersF((prev) => {
+                        return { ...prev, attakers3: e };
+                      })
+                    }
+                    placeholder="Please enter attakers3's Name"
+                    style={styles.InputTextArea}
+                  />
+
+                  <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+                    attakers
+                  </Text>
+
+                  <TextInput
+                    value={Players.attakers4}
+                    name="attakers4"
+                    onChangeText={(e) =>
+                      PlayersF((prev) => {
+                        return { ...prev, attakers4: e };
+                      })
+                    }
+                    placeholder="Please enter attakers4's Name"
+                    style={styles.InputTextArea}
+                  />
+
+                  <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+                    attakers
+                  </Text>
+
+                  <TextInput
+                    value={Players.attakers5}
+                    name="attakers5"
+                    onChangeText={(e) =>
+                      PlayersF((prev) => {
+                        return { ...prev, attakers5: e };
+                      })
+                    }
+                    placeholder="Please enter attakers5's Name"
+                    style={styles.InputTextArea}
+                  />
+
+                  <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+                    benchs
+                  </Text>
+
+                  <TextInput
+                    value={Players.benchs1}
+                    name="benchs1"
+                    onChangeText={(e) =>
+                      PlayersF((prev) => {
+                        return { ...prev, benchs1: e };
+                      })
+                    }
+                    placeholder="Please enter benchs1's Name"
+                    style={styles.InputTextArea}
+                  />
+
+                  <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+                    benchs
+                  </Text>
+
+                  <TextInput
+                    value={Players.benchs2}
+                    name="benchs1"
+                    onChangeText={(e) =>
+                      PlayersF((prev) => {
+                        return { ...prev, benchs2: e };
+                      })
+                    }
+                    placeholder="Please enter benchs2's Name"
+                    style={styles.InputTextArea}
+                  />
+
+                  <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+                    benchs
+                  </Text>
+
+                  <TextInput
+                    value={Players.benchs3}
+                    name="benchs3"
+                    onChangeText={(e) =>
+                      PlayersF((prev) => {
+                        return { ...prev, benchs3: e };
+                      })
+                    }
+                    placeholder="Please enter benchs3's Name"
+                    style={styles.InputTextArea}
+                  />
+
+                  <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+                    benchs
+                  </Text>
+
+                  <TextInput
+                    value={Players.benchs4}
+                    name="benchs4"
+                    onChangeText={(e) =>
+                      PlayersF((prev) => {
+                        return { ...prev, benchs4: e };
+                      })
+                    }
+                    placeholder="Please enter benchs4's Name"
+                    style={styles.InputTextArea}
+                  />
+                </View>
+              </KeyboardAvoidingView>
+              <Text style={{ color: "red", alignSelf: "center", padding: 3 }}>
+                {notification}
+              </Text>
+              <TouchableOpacity style={styles.btn} onPress={handleSubmit}>
+                <Text style={styles.btnTxt}>Save</Text>
+              </TouchableOpacity>
+            </ScrollView>
           </View>
-  
-          <View style={{ marginTop: 10 }}>
-            <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
-              Team Name
-            </Text>
-            <TextInput
-              value={TeamName}
-              onChangeText={(e) => TeamNameF(e)}
-              placeholder="Enter the Team Name"
-            
-              style={styles.Input}
-            />
-          </View>
-  
-          <View style={{ marginTop: 10 }}>
-            <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
-             Manager
-            </Text>
-            <TextInput
-              value={TeamManager}
-              onChangeText={(e) => TeamManagerF(e)}
-              placeholder="Enter the Manager of the Team"
-         
-              style={styles.Input}
-            />
-          </View>
-          <View style={{ marginTop: 10 }}>
-            <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
-             Team Formation
-            </Text>
-          
-             <SelectDropdown
-	data={formationData}
-    
-
-      defaultButtonText = 'Select Team Formation'
-      buttonStyle={styles.dropdownStyle}
-      buttonTextStyle={styles.dropdownStyleTxt}
-
-	onSelect={(selectedItem, index) => {
-	FormationF(selectedItem)
-	}}
-	
-   
-/> 
- 
-
-          </View>
-
-             <View style={{ marginTop: 10 }}>
-            <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
-             Team Group
-            </Text>
-          
-             <SelectDropdown
-	data={GroupData}
-    
-
-      defaultButtonText = 'Select Team Group'
-      buttonStyle={styles.dropdownStyle}
-      buttonTextStyle={styles.dropdownStyleTxt}
-
-	onSelect={(selectedItem, index) => {
-	TeamGroupF(selectedItem)
-	}}
-	
-   
-/> 
- 
-
-          </View>
-
-
-          <View style={{ marginTop: 10 }}>
-            <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
-              Players
-            </Text>
-
-
-
- <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
-              GoalKeeper
-            </Text>
-
-            <TextInput
-              value={Players.goalkepper}
-              name= 'goalkepper'
-              onChangeText={(e) => PlayersF((prev) => {
-                return{...prev, goalkepper :e};
-               
-              })}
-              placeholder="Please enter GoalKeeper's Name"
-             
-              style={styles.InputTextArea}
-   
-  
-            />
-            
- <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
-              Defender
-            </Text>
-
-            <TextInput
-              value={Players.defender1}
-              name= 'defender1'
-               onChangeText={(e) => {
-                 
-             teamInfoF({ ...teamInfo, Players : {
-                ...Players,
-                defender1:e
-             } });
-              }}
-              placeholder="Please enter defender1's Name"
-             
-              style={styles.InputTextArea}
-   
-  
-            />
-
-
-
- <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
-              Defender
-            </Text>
-
-            <TextInput
-              value={Players.defender2}
-              name= 'defender2'
-               onChangeText={(e) => {
-                 
-             teamInfoF({ ...teamInfo, Players : {
-                ...Players,
-                defender2:e
-             } });
-              }}
-              placeholder="Please enter defender2's Name"
-             
-              style={styles.InputTextArea}
-   
-  
-            />
-
-
-
- <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
-              Defender
-            </Text>
-
-            <TextInput
-              value={Players.defender3}
-              name= 'defender3'
-               onChangeText={(e) => {
-                 
-             teamInfoF({ ...teamInfo, Players : {
-                ...Players,
-                defender3:e
-             } });
-              }}
-              placeholder="Please enter defender3's Name"
-             
-              style={styles.InputTextArea}
-   
-  
-            />
-
-
-
- <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
-              Defender
-            </Text>
-
-            <TextInput
-              value={Players.defender4}
-              name= 'defender4'
-               onChangeText={(e) => {
-                 
-             teamInfoF({ ...teamInfo, Players : {
-                ...Players,
-                defender4:e
-             } });
-              }}
-              placeholder="Please enter defender4's Name"
-             
-              style={styles.InputTextArea}
-   
-  
-            />
-
-
-
- <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
-              Defender
-            </Text>
-
-            <TextInput
-              value={Players.defender5}
-              name= 'defender5'
-               onChangeText={(e) => {
-                 
-             teamInfoF({ ...teamInfo, Players : {
-                ...Players,
-                defender5:e
-             } });
-              }}
-              placeholder="Please enter defender5's Name"
-             
-              style={styles.InputTextArea}
-   
-  
-            />
-
-
-
- <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
-              Midfielders
-            </Text>
-
-            <TextInput
-              value={Players.midfielders1}
-              name= 'midfielders1'
-               onChangeText={(e) => {
-                 
-             teamInfoF({ ...teamInfo, Players : {
-                ...Players,
-                midfielders1:e
-             } });
-              }}
-              placeholder="Please enter midfielders1's Name"
-             
-              style={styles.InputTextArea}
-   
-  
-            />
-
-
-
- <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
-              Midfielders
-            </Text>
-
-            <TextInput
-              value={Players.midfielders2}
-              name= 'midfielders1'
-               onChangeText={(e) => {
-                 
-             teamInfoF({ ...teamInfo, Players : {
-                ...Players,
-                midfielders2:e
-             } });
-              }}
-              placeholder="Please enter midfielders2's Name"
-             
-              style={styles.InputTextArea}
-   
-  
-            />
-
-
-
- <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
-              Midfielders
-            </Text>
-
-            <TextInput
-              value={Players.midfielders3}
-              name= 'midfielders3'
-               onChangeText={(e) => {
-                 
-             teamInfoF({ ...teamInfo, Players : {
-                ...Players,
-                midfielders3:e
-             } });
-              }}
-              placeholder="Please enter midfielders3's Name"
-             
-              style={styles.InputTextArea}
-   
-  
-            />
-
-
-
- <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
-              Midfielders
-            </Text>
-
-            <TextInput
-              value={Players.midfielders4}
-              name= 'midfielders4'
-               onChangeText={(e) => {
-                 
-             teamInfoF({ ...teamInfo, Players : {
-                ...Players,
-                midfielders4:e
-             } });
-              }}
-              placeholder="Please enter midfielders4's Name"
-             
-              style={styles.InputTextArea}
-   
-  
-            />
-        
-
-
-
- <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
-              Midfielders
-            </Text>
-
-            <TextInput
-              value={Players.midfielders5}
-              name= 'midfielders5'
-               onChangeText={(e) => {
-                 
-             teamInfoF({ ...teamInfo, Players : {
-                ...Players,
-                midfielders5:e
-             } });
-              }}
-              placeholder="Please enter midfielders5's Name"
-             
-              style={styles.InputTextArea}
-   
-  
-            />
-
-
-
- <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
-              attakers
-            </Text>
-
-            <TextInput
-              value={Players.attakers1}
-              name= 'attakers1'
-               onChangeText={(e) => {
-                 
-             teamInfoF({ ...teamInfo, Players : {
-                ...Players,
-                attakers1:e
-             } });
-              }}
-              placeholder="Please enter attakers1's Name"
-             
-              style={styles.InputTextArea}
-   
-  
-            />
-
-
-
- <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
-              attakers
-            </Text>
-
-            <TextInput
-              value={Players.attakers2}
-              name= 'attakers1'
-               onChangeText={(e) => {
-                 
-             teamInfoF({ ...teamInfo, Players : {
-                ...Players,
-                attakers2:e
-             } });
-              }}
-              placeholder="Please enter attakers2's Name"
-             
-              style={styles.InputTextArea}
-   
-  
-            />
-
-
-
- <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
-              attakers
-            </Text>
-
-            <TextInput
-              value={Players.attakers3}
-              name= 'attakers3'
-               onChangeText={(e) => {
-                 
-             teamInfoF({ ...teamInfo, Players : {
-                ...Players,
-                attakers3:e
-             } });
-              }}
-              placeholder="Please enter attakers3's Name"
-             
-              style={styles.InputTextArea}
-   
-  
-            />
-
-
-
- <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
-              attakers
-            </Text>
-
-            <TextInput
-              value={Players.attakers4}
-              name= 'attakers4'
-               onChangeText={(e) => {
-                 
-             teamInfoF({ ...teamInfo, Players : {
-                ...Players,
-                attakers4:e
-             } });
-              }}
-              placeholder="Please enter attakers4's Name"
-             
-              style={styles.InputTextArea}
-   
-  
-            />
-        
-
-
-
- <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
-              attakers
-            </Text>
-
-            <TextInput
-              value={Players.attakers5}
-              name= 'attakers5'
-               onChangeText={(e) => {
-                 
-             teamInfoF({ ...teamInfo, Players : {
-                ...Players,
-                attakers5:e
-             } });
-              }}
-              placeholder="Please enter attakers5's Name"
-             
-              style={styles.InputTextArea}
-   
-  
-            />
-
-
-            
-
- <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
-              benchs
-            </Text>
-
-            <TextInput
-              value={Players.benchs1}
-              name= 'benchs1'
-               onChangeText={(e) => {
-                 
-             teamInfoF({ ...teamInfo, Players : {
-                ...Players,
-                benchs1:e
-             } });
-              }}
-              placeholder="Please enter benchs1's Name"
-             
-              style={styles.InputTextArea}
-   
-  
-            />
-
-
-
- <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
-              benchs
-            </Text>
-
-            <TextInput
-              value={Players.benchs2}
-              name= 'benchs1'
-               onChangeText={(e) => {
-                 
-             teamInfoF({ ...teamInfo, Players : {
-                ...Players,
-                benchs2:e
-             } });
-              }}
-              placeholder="Please enter benchs2's Name"
-             
-              style={styles.InputTextArea}
-   
-  
-            />
-
-
-
- <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
-              benchs
-            </Text>
-
-            <TextInput
-              value={Players.benchs3}
-              name= 'benchs3'
-               onChangeText={(e) => {
-                 
-             teamInfoF({ ...teamInfo, Players : {
-                ...Players,
-                benchs3:e
-             } });
-              }}
-              placeholder="Please enter benchs3's Name"
-             
-              style={styles.InputTextArea}
-   
-  
-            />
-
-
-
- <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
-              benchs
-            </Text>
-
-            <TextInput
-              value={Players.benchs4}
-              name= 'benchs4'
-               onChangeText={(e) => {
-                 
-             teamInfoF({ ...teamInfo, Players : {
-                ...Players,
-                benchs4:e
-             } });
-              }}
-              placeholder="Please enter benchs4's Name"
-             
-              style={styles.InputTextArea}
-   
-  
-            />
-
-
-           
-          </View>
-  
-        </KeyboardAvoidingView>
-        <Text style={{ color: "red", alignSelf: "center", padding: 3,  }}>
-          {notification}
-        </Text>
-        <TouchableOpacity style={styles.btn} onPress={handleSubmit}>
-          <Text style={styles.btnTxt}>Save</Text>
-        </TouchableOpacity>
-  
-  
-      </ScrollView>
-      </View>
-
-    
-
-
-    </SafeAreaView>
-      
-    }
-    
+        </SafeAreaView>
+      )}
     </>
-
- 
-  )
+  );
 }
 
 export default AddTeams;
@@ -882,6 +667,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     backgroundColor: "edeff2",
+    paddingBottom: 20,
   },
 
   headerTitle: {

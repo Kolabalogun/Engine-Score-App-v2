@@ -211,44 +211,7 @@ loaderF(true)
           </View>
 
           <KeyboardAvoidingView style={styles.Inputs}>
-            <TouchableOpacity
-              onPress={Imagepicker}
-              style={{
-                height: 80,
-                width: 80,
-
-                alignItems: "center",
-                justifyContent: "center",
-                alignSelf: "center",
-                marginVertical: 20,
-                borderRadius: 120,
-              }}
-            >
-              {!selectedImage ? (
-                <View style={{ alignSelf: "center" }}>
-                  <Image
-                    source={require("../../../assets/photo.png")}
-                    style={{
-                      height: 100,
-                      width: 100,
-                    }}
-                  />
-                  <Text style={{ width: "100%", textAlign: "center" }}>
-                    Add Team Logo
-                  </Text>
-                </View>
-              ) : (
-                <Image
-                  source={{ uri: selectedImage }}
-                  style={{
-                    height: "100%",
-                    width: "100%",
-
-                    borderRadius: 100,
-                  }}
-                />
-              )}
-            </TouchableOpacity>
+     
 
             <View style={{ marginTop: 10 }}>
               <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
@@ -895,6 +858,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     backgroundColor: "edeff2",
+    paddingBottom: 20,
   },
 
   headerTitle: {

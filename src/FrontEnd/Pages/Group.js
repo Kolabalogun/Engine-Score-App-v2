@@ -23,7 +23,7 @@ const Group = ({navigation}) => {
 
   const points = TeamsFromDB;
   points.sort(function (a, b) {
-    return b.points - a.points;
+    return b.stat.points - a.stat.points;
   });
 
   const Group1Elements = points.map((group, index) => {
@@ -76,7 +76,7 @@ const Group = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.main}>
+      {/* <View style={styles.main}> */}
         <Header navigation={navigation} />
 
         <Nav />
@@ -124,7 +124,7 @@ const Group = ({navigation}) => {
             </View>
           </ScrollView>
         )}
-      </View>
+      {/* </View> */}
     </SafeAreaView>
   );
 };
@@ -133,28 +133,22 @@ export default Group;
 
 const styles = StyleSheet.create({
   container: {
-   flex: 1,
+    flex: 1,
     backgroundColor: "#edeff2",
-     paddingHorizontal: 15,
-      paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 40,
- 
-  },
-  main: {
+    paddingHorizontal: 15,
+    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 40,
     paddingTop: 15,
-   
   },
-    
-  
+  main: {},
+
   navMenu: {
-  marginVertical:20,
-  display: 'flex',
-  flexDirection: 'row', 
-  justifyContent: 'space-between',
-  
+    marginVertical: 20,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 
-
-   group: {
+  group: {
     padding: 0,
     marginBottom: 30,
   },
@@ -191,17 +185,19 @@ const styles = StyleSheet.create({
 
   tableHead: {
     color: "black",
-fontWeight: '500'
+    fontWeight: "500",
+    // width: 18,
+    flex: 1,
   },
   tableHeadOne: {
     color: "black",
-fontWeight: '500',
-  width: 65,
+    fontWeight: "500",
+    // width: 80,
+    flex: 4
   },
   titleText: {
     fontSize: 15,
     fontWeight: "600",
     // marginBottom: 10,
   },
-  
 });

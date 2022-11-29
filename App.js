@@ -22,16 +22,12 @@ export default function App() {
 
   return (
     <NavigationContainer style={styles.container}>
-    <AppProvider>
+      <AppProvider>
+      
 
-{
-  
-}
-   
- <Navigations/>
-  <StatusBar style="auto" />
-
-    </AppProvider>
+        <Navigations />
+        <StatusBar backgroundColor="#000000" barStyle="light-content" />
+      </AppProvider>
     </NavigationContainer>
   );
 }

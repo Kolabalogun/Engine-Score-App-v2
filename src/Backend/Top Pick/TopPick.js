@@ -137,10 +137,11 @@ loaderF(true)
                MatchSelect: MatchSelect
                 
             });
-            loaderF(false);
+          
             notificationF("Team Successfully Added");
  
     navigation.navigate("Home");
+      loaderF(false);
 loaderF(false)
         } catch (error) {
             // console.log(error);

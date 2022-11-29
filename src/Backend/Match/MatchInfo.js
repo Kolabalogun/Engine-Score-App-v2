@@ -43,6 +43,9 @@ const initialState = {
   id: "",
 };
 
+
+// notification 
+
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
@@ -51,37 +54,9 @@ Notifications.setNotificationHandler({
   }),
 });
 
+// notification 
+
 const MatchInfo = ({ route, navigation }) => {
-  // Notifications
-  const [expoPushToken, setExpoPushToken] = useState("");
-  const [notificationn, setNotification] = useState(false);
-  const notificationListener = useRef();
-  const responseListener = useRef();
-
-  useEffect(() => {
-    registerForPushNotificationsAsync().then((token) =>
-      setExpoPushToken(token)
-    );
-
-    notificationListener.current =
-      Notifications.addNotificationReceivedListener((notification) => {
-        setNotification(notification);
-      });
-
-    responseListener.current =
-      Notifications.addNotificationResponseReceivedListener((response) => {
-        console.log(response);
-      });
-
-    return () => {
-      Notifications.removeNotificationSubscription(
-        notificationListener.current
-      );
-      Notifications.removeNotificationSubscription(responseListener.current);
-    };
-  }, []);
-  // Notifications
-
   const {
     competition,
     competitionF,
@@ -129,22 +104,29 @@ const MatchInfo = ({ route, navigation }) => {
     MatchDay,
   } = matchhInfo;
 
-  const [notificationBody, notificationBodyF] = useState(null);
-  const [notificationNote, notificationNoteF] = useState("");
+    const [notificationBody, notificationBodyF] = useState(null);
+    const [notificationNote, notificationNoteF] = useState("");
 
-  const [MatchBody, MatchBodyF] = useState(null);
+
+
+  const [MatchBody, MatchBodyF] = useState(notificationBody);
 
   const [MatchNote, MatchNoteF] = useState(
     `${HomeTeamScore} - ${AwayTeamScore}`
   );
 
-  const notes = [
-    "Match Starts in few Minutes. Who will win?",
-    "Match Started",
-    `Goal ${HomeTeam} ${HomeTeamScore} - ${AwayTeamScore} ${AwayTeam}`,
-    `Halftime ${HomeTeamScore} - ${AwayTeamScore}`,
-    `Full Time ${HomeTeamScore} - ${AwayTeamScore}`,
-  ];
+      useEffect(() => {
+        if (MatchBody === "Red Card" || MatchBody === "Yellow Card") {
+            MatchNoteF(
+              `${notificationNote}`
+            );
+        } else {
+
+          MatchNoteF(`${HomeTeamScore} - ${AwayTeamScore} - ${notificationNote}`);
+        }
+      }, [notificationNote]);
+    
+
   const Matchnotes = [
     "Match Started",
     "Goal",
@@ -156,8 +138,6 @@ const MatchInfo = ({ route, navigation }) => {
   ];
 
   const formationData = ["4-4-2", "4-3-3", "4-2-3-1", "3-4-3", "3-5-2"];
-
-  // console.log(matchhInfo);
 
   const [dateId, setdateId] = useState("");
 
@@ -171,8 +151,14 @@ const MatchInfo = ({ route, navigation }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (matchhInfo) {
-      loaderF(true)
+    if (
+      matchhInfo &&
+      // MatchBody &&
+      // notificationNote &&
+      notificationBody 
+   
+    ) {
+      loaderF(true);
       try {
         await updateDoc(doc(db, "Matchs", matchId), {
           ...matchhInfo,
@@ -184,8 +170,10 @@ const MatchInfo = ({ route, navigation }) => {
         }
 
         SendNotificationToAllUsers();
-loaderF(false)
+
         navigation.navigate("MatchList");
+
+        loaderF(false);
       } catch (err) {
         console.log(err);
       }
@@ -194,36 +182,38 @@ loaderF(false)
     }
   };
 
-  const [UsersToken, UsersTokenF] = useState([""]);
-  const [UsersList, UsersListF] = useState([""]);
-
-  useEffect(() => {
-    getUserDetail();
-  }, []);
-
-  const getUserDetail = async () => {
-    const docRef = doc(db, "Users", "Vgp5x0EfVAXtx8JM7yGx");
-    const snapshot = await getDoc(docRef);
-    if (snapshot.exists()) {
-      UsersListF([...snapshot.data().expoPushTokenFB]);
-      UsersTokenF({ ...snapshot.data() });
-    }
-  };
-
-  const handleSendUserTokentoDB = async () => {
-    if (expoPushToken !== "") {
-      try {
-        await updateDoc(doc(db, "Users", "Vgp5x0EfVAXtx8JM7yGx"), {
-          ...UsersToken,
-          expoPushTokenFB: arrayUnion(expoPushToken),
-        });
-      } catch (error) {
-        console.log(error, "line 219");
-      }
-    }
-  };
+  function functions(params) {
+    navigation.goBack();
+  }
 
   // Notifications
+  const [expoPushToken, setExpoPushToken] = useState("");
+  const [notificationn, setNotification] = useState(false);
+  const notificationListener = useRef();
+  const responseListener = useRef();
+
+  useEffect(() => {
+    registerForPushNotificationsAsync().then((token) =>
+      setExpoPushToken(token)
+    );
+
+    notificationListener.current =
+      Notifications.addNotificationReceivedListener((notification) => {
+        setNotification(notification);
+      });
+
+    responseListener.current =
+      Notifications.addNotificationResponseReceivedListener((response) => {
+        console.log(response);
+      });
+
+    return () => {
+      Notifications.removeNotificationSubscription(
+        notificationListener.current
+      );
+      Notifications.removeNotificationSubscription(responseListener.current);
+    };
+  }, []);
 
   async function schedulePushNotification() {
     await Notifications.scheduleNotificationAsync({
@@ -262,7 +252,6 @@ loaderF(false)
         return;
       }
       token = (await Notifications.getExpoPushTokenAsync()).data;
-      // console.log(token, 'token:line 217');
       handleSendUserTokentoDB();
     } else {
       alert("Must use physical device for Push Notifications");
@@ -270,19 +259,49 @@ loaderF(false)
 
     return token;
   }
+  // Notifications
 
+  // sending Notification
+
+
+
+  const [UsersToken, UsersTokenF] = useState([""]);
+  const [UsersList, UsersListF] = useState([""]);
+
+  useEffect(() => {
+    getUserDetail();
+  }, []);
+
+  const getUserDetail = async () => {
+    const docRef = doc(db, "Users", "Vgp5x0EfVAXtx8JM7yGx");
+    const snapshot = await getDoc(docRef);
+    if (snapshot.exists()) {
+      UsersListF([...snapshot.data().expoPushTokenFB]);
+      UsersTokenF({ ...snapshot.data() });
+    }
+  };
+
+  const notes = [
+    "Match Starts in few Minutes. Who will win?",
+    "Match Started",
+    "Yellow Card",
+    "Red Card",
+    `Goal ${HomeTeam} ${HomeTeamScore} - ${AwayTeamScore} ${AwayTeam}`,
+    `Halftime ${HomeTeamScore} - ${AwayTeamScore}`,
+    `Full Time ${HomeTeamScore} - ${AwayTeamScore}`,
+  ];
+
+  // send notificatiion multiple user
   const msgs = UsersList.map((list, index) =>
     JSON.parse(
       JSON.stringify({
         to: list,
 
         title: `${HomeTeam} vs ${AwayTeam}`,
-        body: `${notificationBody} [${notificationNote}]`,
+        body: `${notificationBody} ${notificationNote}`,
       })
     )
   );
-
-  // console.log(msgs,'line176');
 
   const SendNotificationToAllUsers = () => {
     let res = fetch("https://exp.host/--/api/v2/push/send", {
@@ -296,13 +315,22 @@ loaderF(false)
     });
   };
 
-  //   Notification
+  // send expoToken to \db
+  const handleSendUserTokentoDB = async () => {
+    if (expoPushToken !== "") {
+      try {
+        await updateDoc(doc(db, "Users", "Vgp5x0EfVAXtx8JM7yGx"), {
+          ...UsersToken,
+          expoPushTokenFB: arrayUnion(expoPushToken),
+        });
+      } catch (error) {
+        console.log(error, "line 219");
+      }
+    }
+  };
+  // send expoToken to \db
 
-  //   Notification
-
-  function functions(params) {
-    navigation.goBack();
-  }
+  // sending Notification
 
   return (
     <SafeAreaView style={styles.container}>
@@ -328,24 +356,6 @@ loaderF(false)
               <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
                 {Competition}
               </Text>
-            </View>
-
-            <View style={{ marginTop: 10 }}>
-              <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
-                Start Match
-              </Text>
-
-              <SelectDropdown
-                data={["Yes"]}
-                defaultButtonText={
-                  MatchActive ? "Yes" : "Please select to Start Match"
-                }
-                buttonStyle={styles.dropdownStyle}
-                buttonTextStyle={styles.dropdownStyleTxt}
-                onSelect={(selectedItem, index) => {
-                  matchhInfoF((prev) => ({ ...prev, MatchActive: true }));
-                }}
-              />
             </View>
 
             <View
@@ -420,6 +430,24 @@ loaderF(false)
                   }}
                 />
               </View>
+            </View>
+
+            <View style={{ marginTop: 10 }}>
+              <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+                Start Match
+              </Text>
+
+              <SelectDropdown
+                data={["Yes"]}
+                defaultButtonText={
+                  MatchActive ? "Yes" : "Please select to Start Match"
+                }
+                buttonStyle={styles.dropdownStyle}
+                buttonTextStyle={styles.dropdownStyleTxt}
+                onSelect={(selectedItem, index) => {
+                  matchhInfoF((prev) => ({ ...prev, MatchActive: true }));
+                }}
+              />
             </View>
 
             {MatchActive ? (
@@ -516,6 +544,27 @@ loaderF(false)
                 buttonTextStyle={styles.dropdownStyleTxt}
                 onSelect={(selectedItem, index) => {
                   notificationBodyF(selectedItem);
+if (
+  selectedItem ===
+  `Goal ${HomeTeam} ${HomeTeamScore} - ${AwayTeamScore} ${AwayTeam}`
+) {
+  MatchBodyF("Goal");
+} else if (selectedItem === `Halftime ${HomeTeamScore} - ${AwayTeamScore}`) {
+  MatchBodyF("Halftime");
+} else if (selectedItem === `Full Time ${HomeTeamScore} - ${AwayTeamScore}`) {
+  MatchBodyF("Full Time");
+} else if (selectedItem === "Match Starts in few Minutes. Who will win?") {
+  MatchBodyF("Match Starts in few Minutes. Who will win?");
+} else if (selectedItem === "Match Started") {
+  MatchBodyF("Match Started");
+} else if (selectedItem === "Yellow Card") {
+  MatchBodyF("Yellow Card");
+} else if (selectedItem === "Red Card") {
+  MatchBodyF("Red Card");
+}
+
+
+                
                 }}
               />
             </View>
@@ -529,12 +578,13 @@ loaderF(false)
                 value={notificationNote}
                 onChangeText={(e) => {
                   notificationNoteF(e);
+              
                 }}
                 placeholder="Add Goal Scorer's Name"
                 style={styles.InputTextArea}
               />
             </View>
-
+{/* 
             {MatchActive && (
               <View style={{ marginTop: 10 }}>
                 <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
@@ -569,7 +619,7 @@ loaderF(false)
                   style={styles.InputTextArea}
                 />
               </View>
-            )}
+            )} */}
           </KeyboardAvoidingView>
           <Text style={{ color: "red", alignSelf: "center", padding: 3 }}>
             {notification}

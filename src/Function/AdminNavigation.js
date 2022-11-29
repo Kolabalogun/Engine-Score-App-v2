@@ -29,7 +29,7 @@ const AdminNavigation = () => {
             (size = focused ? 23 : 22),
               (color = focused ? "#ff2782" : "#cdd4dc");
           } else if (route.name === "Team List") {
-            iconName = "calendar-o";
+            iconName = "list-alt";
             (size = focused ? 23 : 22),
               (color = focused ? "#ff2782" : "#cdd4dc");
           } else if (route.name === "ListofPlayers") {
@@ -37,7 +37,7 @@ const AdminNavigation = () => {
             (size = focused ? 23 : 22),
               (color = focused ? "#ff2782" : "#cdd4dc");
           } else if (route.name === "MatchList") {
-            iconName = "list-alt";
+            iconName = "calendar-o";
             (size = focused ? 23 : 22),
               (color = focused ? "#ff2782" : "#cdd4dc");
           }

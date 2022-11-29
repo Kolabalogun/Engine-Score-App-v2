@@ -129,7 +129,7 @@ const Match = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.main}>
+      {/* <View style={styles.main}> */}
         <Header navigation={navigation} />
 
         <Nav />
@@ -150,7 +150,7 @@ const Match = ({ navigation }) => {
             </View>
           </ScrollView>
         )}
-      </View>
+      {/* </View> */}
     </SafeAreaView>
   );
 };
@@ -161,17 +161,17 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#edeff2",
-    paddingHorizontal: 10,
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 40,
-  },
-  main: {
+    paddingHorizontal: 15,
     paddingTop: 15,
+    // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 40,
   },
+
   homeHeader: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    paddingBottom: 20,
   },
 
   headerTitle: {

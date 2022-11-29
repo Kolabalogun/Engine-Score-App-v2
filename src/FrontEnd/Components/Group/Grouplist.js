@@ -40,15 +40,17 @@ const styles = StyleSheet.create({
 
   tableHead: {
     color: "black",
-    // padding: 3,
     alignItems: "center",
     fontSize: 13,
+    // width: 15,
+    flex: 1,
   },
   tableHeadone: {
     color: "black",
-    
+
     alignItems: "center",
-    width: 60,
+    // width: 90,
     fontSize: 13,
+    flex: 4,
   },
 });

@@ -153,8 +153,10 @@ async function registerForPushNotificationsAsync() {
 
       <Image source={require("../../assets/logo-no-bg.png")} />
 
-      <Text>Get every minute Engineering Live Score here. Gather</Text>
-      <Text style={{marginBottom: 10,}}>fast info and go along with others.</Text>
+      <Text>Get every minute Engineering Live Score here.</Text>
+      <Text style={{ marginBottom: 10 }}>
+        Gather fast info and go along with others.
+      </Text>
       <View style={{ flexDirection: "row" }}>
         <TouchableOpacity
           style={{
@@ -206,6 +208,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    paddingBottom: 20,
   },
 
   headerTitle: {
