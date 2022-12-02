@@ -1,12 +1,13 @@
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React from 'react'
 import { useGlobalContext } from '../../../Function/Context';
+import { styles } from '../../../Function/styles';
 
 const Nav = () => {
      const {
        competitionF,
        competition,
-       
+       currentTheme,
        
        competitionTypeF,
      } = useGlobalContext();
@@ -18,18 +19,42 @@ const Nav = () => {
           competitionTypeF("Engine 4.0");
         }}
         style={{
-          backgroundColor: competition === 4 ? "#ff2782" : "#fff",
+          backgroundColor:
+            competition === 4 && currentTheme === "Default"
+              ? "#377D71"
+              : competition === 4 && currentTheme === "Red"
+              ? "#CF0A0A"
+              : competition === 4 && currentTheme === "Pink"
+              ? "#EA047E"
+              : competition === 4 && currentTheme === "Purple"
+              ? "#EA047E"
+              : "#fff",
           paddingHorizontal: 10,
           paddingVertical: 15,
           flex: 1,
           marginHorizontal: 5,
           alignItems: "center",
-          borderRadius: 20,
+          borderRadius: 50,
         }}
       >
         <Text
           style={{
-            color: competition === 4 ? "#fff" : "#ff2782",
+            color:
+              competition === 4 && currentTheme === "Default"
+                ? "#fff"
+                : competition === 4 && currentTheme === "Pink"
+                ? "#fff"
+                : competition === 4 && currentTheme === "Red"
+                ? "#fff"
+                : competition === 4 && currentTheme === "Purple"
+                ? "#fff"
+                : competition !== 4 && currentTheme === "Pink"
+                ? "#EA047E"
+                : competition !== 4 && currentTheme === "Red"
+                ? "#CF0A0A"
+                : competition !== 4 && currentTheme === "Purple"
+                ? "#EA047E"
+                : "#377D71",
             fontWeight: "500",
             fontSize: 15,
           }}
@@ -44,18 +69,42 @@ const Nav = () => {
           competitionTypeF("Engine 3.0");
         }}
         style={{
-          backgroundColor: competition === 3 ? "#ff2782" : "#fff",
+          backgroundColor:
+            competition === 3 && currentTheme === "Default"
+              ? "#377D71"
+              : competition === 3 && currentTheme === "Red"
+              ? "#CF0A0A"
+              : competition === 3 && currentTheme === "Pink"
+              ? "#EA047E"
+              : competition === 3 && currentTheme === "Purple"
+              ? "#EA047E"
+              : "#fff",
           paddingHorizontal: 10,
           paddingVertical: 15,
           flex: 1,
           marginHorizontal: 5,
           alignItems: "center",
-          borderRadius: 20,
+          borderRadius: 50,
         }}
       >
         <Text
           style={{
-            color: competition === 3 ? "#fff" : "#ff2782",
+            color:
+              competition === 3 && currentTheme === "Default"
+                ? "#fff"
+                : competition === 3 && currentTheme === "Pink"
+                ? "#fff"
+                : competition === 3 && currentTheme === "Red"
+                ? "#fff"
+                : competition === 3 && currentTheme === "Purple"
+                ? "#fff"
+                : competition !== 3 && currentTheme === "Pink"
+                ? "#EA047E"
+                : competition !== 3 && currentTheme === "Red"
+                ? "#CF0A0A"
+                : competition !== 3 && currentTheme === "Purple"
+                ? "#EA047E"
+                : "#377D71",
             fontWeight: "500",
             fontSize: 15,
           }}
@@ -68,13 +117,3 @@ const Nav = () => {
 }
 
 export default Nav
-
-const styles = StyleSheet.create({
-  navMenu: {
-    marginVertical: 20,
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    
-  },
-});

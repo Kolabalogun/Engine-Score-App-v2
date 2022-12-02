@@ -46,14 +46,14 @@ const ChangeTheme = ({ navigation }) => {
     );
   }
 
-  const themeArray = ["Default", "Pink", "Red", "Green"];
+  const themeArray = ["Default", "Purple","Red", "Pink" ];
 
   const [selectedTheme, selectedThemeF]= useState('')
 
   function handleSubmit() {
     storeTheme(selectedTheme)
     currentThemeF(selectedTheme)
-    console.log('thme stored');
+    navigation.navigate('Home')
   }
 
   return (

@@ -1,10 +1,6 @@
 color { 
-    color: rgba(209, 225, 240, 0.782)
+    color: rgb(171, 181, 190),
+    ;
+    color: black;
+    color: #000000;
 }
-
-/* //   useEffect(() => {
-
-//   const data = TeamsFromDB.filter((team, index) => team.id === teamId)
-
-//    teamInfoF(data)
-//   }, [teamId, TeamsFromDB]) */

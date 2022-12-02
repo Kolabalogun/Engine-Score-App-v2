@@ -7,19 +7,17 @@ import {
 } from "react-native";
 import React from "react";
 import { useGlobalContext } from "../../Function/Context";
+import { styles } from "../../Function/styles";
 import Grouplist from "../Components/Group/Grouplist";
-import { StatusBar } from "expo-status-bar";
+
 import Header from "../Components/Others/Header";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Nav from "../Components/Others/Nav";
 import Loader from "../Components/Others/Loader";
 
-
-const Group = ({navigation}) => {
+const Group = ({ navigation }) => {
   const { TeamsFromDB, getTeamsFromDB, competitionType, loader } =
     useGlobalContext();
-
-
 
   const points = TeamsFromDB;
   points.sort(function (a, b) {
@@ -43,7 +41,7 @@ const Group = ({navigation}) => {
       );
     }
   });
- const Group2Elements = points.map((group, index) => {
+  const Group2Elements = points.map((group, index) => {
     if (group.TeamGroup === 2 && group.Competition === competitionType) {
       return (
         <Grouplist
@@ -61,22 +59,20 @@ const Group = ({navigation}) => {
     }
   });
 
-   const wait = (timeout) => {
-     return new Promise((resolve) => setTimeout(resolve, timeout));
-   };
+  const wait = (timeout) => {
+    return new Promise((resolve) => setTimeout(resolve, timeout));
+  };
 
-   const [refreshing, setRefreshing] = React.useState(false);
+  const [refreshing, setRefreshing] = React.useState(false);
 
-   const onRefresh = React.useCallback(() => {
-     setRefreshing(true);
-     getTeamsFromDB()
-     wait(2000).then(() => setRefreshing(false));
-   }, []);
-
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    getTeamsFromDB();
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
-    
       <Header navigation={navigation} />
 
       <Nav />
@@ -128,80 +124,10 @@ const Group = ({navigation}) => {
           </View>
         </ScrollView>
       )}
- 
     </SafeAreaView>
   );
 };
 
 export default Group;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#edeff2",
-    paddingHorizontal: 15,
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 40,
-    paddingTop: 15,
-  },
-  main: {},
 
-  navMenu: {
-    marginVertical: 20,
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-
-  group: {
-    padding: 0,
-    marginBottom: 30,
-  },
-
-  groupName: {
-    fontSize: 16,
-    fontWeight: "500",
-    paddingTop: 3,
-    paddingBottom: 3,
-    borderTopWidth: 1,
-    borderTopColor: "#aaa",
-    borderBottomWidth: 1,
-    borderBottomColor: "#aaa",
-    color: "black",
-    marginBottom: 10,
-    marginTop: 5,
-  },
-
-  table: {
-    display: "flex",
-    flexDirection: "column",
-    color: "#aaa",
-    paddingTop: 10,
-    alignItems: "center",
-  },
-  topTable: {
-    width: "100%",
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 10,
-    alignItems: "center",
-  },
-
-  tableHead: {
-    color: "black",
-    fontWeight: "500",
-    // width: 18,
-    flex: 1,
-  },
-  tableHeadOne: {
-    color: "black",
-    fontWeight: "500",
-    // width: 80,
-    flex: 4
-  },
-  titleText: {
-    fontSize: 15,
-    fontWeight: "600",
-    // marginBottom: 10,
-  },
-});

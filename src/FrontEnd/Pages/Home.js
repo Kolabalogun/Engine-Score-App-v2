@@ -192,10 +192,10 @@ const Home = ({ navigation }) => {
                       styles.dashboardBox,
                       {
                         backgroundColor:
-                          currentTheme === "Default"
+                        currentTheme === "Pink"
+                            ? "#496EEC"
+                            : currentTheme === "Purple"
                             ? "rgb(85, 3, 85)"
-                            : currentTheme === "Pink"
-                            ? "blue"
                             : "black",
                       },
                     ]}
