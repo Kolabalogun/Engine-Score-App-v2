@@ -15,6 +15,7 @@ import AdminNavigation from "./AdminNavigation";
 import AutoUpdatee from "../Backend/AutoUpdate/AutoUpdate";
 import ListofPlayers from "../Backend/Player/ListofPlayers";
 import Players from "../Backend/Player/Players";
+import AuthNavigations from "./AuthNavigation";
 
 
 
@@ -57,6 +58,7 @@ const Navigations = () => {
 
               <Stack.Screen name="MatchResult" component={MatchResult} />
               <Stack.Screen name="Players" component={Players} />
+              <Stack.Screen name="AuthNavigations" component={AuthNavigations} />
             </>
           )}
         </Stack.Navigator>

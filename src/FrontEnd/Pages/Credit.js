@@ -26,7 +26,7 @@ function functions(params) {
       <View style={styles.body}>
         <View style={styles.noth}>
           <TouchableOpacity
-            onLongPress={() => navigation.navigate("AdminNavigation")}
+            onLongPress={() => navigation.navigate("AuthNavigations")}
           >
             <Image
               resizeMode="contain"

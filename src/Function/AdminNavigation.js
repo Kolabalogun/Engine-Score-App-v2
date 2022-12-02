@@ -5,9 +5,7 @@ import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import Home from "../FrontEnd/Pages/Home";
 
 import { createMaterialBottomTabNavigator } from "@react-navigation/material-bottom-tabs";
-import Group from "../FrontEnd/Pages/Group";
-import Match from "../FrontEnd/Pages/Matches";
-import Performance from "../FrontEnd/Pages/Performance";
+
 import TopPick from "../Backend/Top Pick/TopPick";
 import ListofTeams from "../Backend/Team/ListofTeams";
 import MatchList from "../Backend/Match/MatchList";
@@ -50,8 +48,8 @@ const AdminNavigation = () => {
       })}
     >
       <Tabs.Screen name="Top Pick" component={TopPick} />
-      <Tabs.Screen name="Team List" component={ListofTeams} />
       <Tabs.Screen name="MatchList" component={MatchList} />
+      <Tabs.Screen name="Team List" component={ListofTeams} />
       <Tabs.Screen name="ListofPlayers" component={ListofPlayers} />
     </Tabs.Navigator>
   );

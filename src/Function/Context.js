@@ -211,7 +211,11 @@ const AppProvider = ({ children }) => {
     alert("You have no Internet Connection!!");
   }
 
+  const [currentAdmin, currentAdminF] = useState(null);
+
   const [currentUser, currentUserF] = useState(false);
+
+  const [currentTheme, currentThemeF] = useState('Default');
 
   const storeData = async (value) => {
     try {
@@ -221,12 +225,23 @@ const AppProvider = ({ children }) => {
     }
   };
 
+  const storeTheme = async (value) => {
+    try {
+      await AsyncStorage.setItem("@userSelectedTheme", value);
+    } catch (e) {
+      // saving error
+    }
+  };
+
   const getData = async () => {
     try {
       const value = await AsyncStorage.getItem("@checkUserSignIn");
-      // console.log(value);
+      const theme = await AsyncStorage.getItem("@userSelectedTheme");
       if (value !== null) {
         currentUserF(value);
+      }
+      if (theme !== null) {
+        currentThemeF(theme);
       }
     } catch (e) {
       // error reading value
@@ -312,6 +327,9 @@ const AppProvider = ({ children }) => {
 
         currentUser,
         currentUserF,
+        currentAdmin, currentAdminF,
+        storeTheme,
+        currentTheme, currentThemeF,
 
         loader,
         loaderF,

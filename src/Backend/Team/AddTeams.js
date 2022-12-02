@@ -47,6 +47,7 @@ benchs1:'',
 benchs2:'',
 benchs3:'',
 benchs4:'',
+benchs5:'',
 
     });
 
@@ -631,6 +632,22 @@ let image = ''
                       })
                     }
                     placeholder="Please enter benchs4's Name"
+                    style={styles.InputTextArea}
+                  />
+
+                  <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+                    benchs
+                  </Text>
+
+                  <TextInput
+                    value={Players.benchs4}
+                    name="benchs4"
+                    onChangeText={(e) =>
+                      PlayersF((prev) => {
+                        return { ...prev, benchs5: e };
+                      })
+                    }
+                    placeholder="Please enter benchs5's Name"
                     style={styles.InputTextArea}
                   />
                 </View>

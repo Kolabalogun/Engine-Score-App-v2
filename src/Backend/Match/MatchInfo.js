@@ -40,6 +40,7 @@ const initialState = {
   AwayTeamScore: "",
   MatchTimeline: [],
   MatchActive: false,
+  Matchplayed: false,
   id: "",
 };
 
@@ -102,6 +103,7 @@ const MatchInfo = ({ route, navigation }) => {
     MatchTimeline,
     MatchActive,
     MatchDay,
+    Matchplayed,
   } = matchhInfo;
 
     const [notificationBody, notificationBodyF] = useState(null);
@@ -127,15 +129,7 @@ const MatchInfo = ({ route, navigation }) => {
       }, [notificationNote]);
     
 
-  const Matchnotes = [
-    "Match Started",
-    "Goal",
-    "Yellow Card",
-    "Substitution",
-    `Red Card`,
-    "Half Time",
-    `Full Time`,
-  ];
+
 
   const formationData = ["4-4-2", "4-3-3", "4-2-3-1", "3-4-3", "3-5-2"];
 
@@ -152,10 +146,7 @@ const MatchInfo = ({ route, navigation }) => {
     e.preventDefault();
 
     if (
-      matchhInfo &&
-      // MatchBody &&
-      // notificationNote &&
-      notificationBody 
+      matchhInfo
    
     ) {
       loaderF(true);
@@ -167,10 +158,10 @@ const MatchInfo = ({ route, navigation }) => {
 
         if (notificationBody) {
           await schedulePushNotification();
+           SendNotificationToAllUsers();
         }
 
-        SendNotificationToAllUsers();
-
+       
         navigation.navigate("MatchList");
 
         loaderF(false);
@@ -544,27 +535,33 @@ const MatchInfo = ({ route, navigation }) => {
                 buttonTextStyle={styles.dropdownStyleTxt}
                 onSelect={(selectedItem, index) => {
                   notificationBodyF(selectedItem);
-if (
-  selectedItem ===
-  `Goal ${HomeTeam} ${HomeTeamScore} - ${AwayTeamScore} ${AwayTeam}`
-) {
-  MatchBodyF("Goal");
-} else if (selectedItem === `Halftime ${HomeTeamScore} - ${AwayTeamScore}`) {
-  MatchBodyF("Halftime");
-} else if (selectedItem === `Full Time ${HomeTeamScore} - ${AwayTeamScore}`) {
-  MatchBodyF("Full Time");
-} else if (selectedItem === "Match Starts in few Minutes. Who will win?") {
-  MatchBodyF("Match Starts in few Minutes. Who will win?");
-} else if (selectedItem === "Match Started") {
-  MatchBodyF("Match Started");
-} else if (selectedItem === "Yellow Card") {
-  MatchBodyF("Yellow Card");
-} else if (selectedItem === "Red Card") {
-  MatchBodyF("Red Card");
-}
-
-
-                
+                  if (
+                    selectedItem ===
+                    `Goal ${HomeTeam} ${HomeTeamScore} - ${AwayTeamScore} ${AwayTeam}`
+                  ) {
+                    MatchBodyF("Goal");
+                  } else if (
+                    selectedItem ===
+                    `Halftime ${HomeTeamScore} - ${AwayTeamScore}`
+                  ) {
+                    MatchBodyF("Halftime");
+                  } else if (
+                    selectedItem ===
+                    `Full Time ${HomeTeamScore} - ${AwayTeamScore}`
+                  ) {
+                    MatchBodyF("Full Time");
+                  } else if (
+                    selectedItem ===
+                    "Match Starts in few Minutes. Who will win?"
+                  ) {
+                    MatchBodyF("Match Starts in few Minutes. Who will win?");
+                  } else if (selectedItem === "Match Started") {
+                    MatchBodyF("Match Started");
+                  } else if (selectedItem === "Yellow Card") {
+                    MatchBodyF("Yellow Card");
+                  } else if (selectedItem === "Red Card") {
+                    MatchBodyF("Red Card");
+                  }
                 }}
               />
             </View>
@@ -578,48 +575,31 @@ if (
                 value={notificationNote}
                 onChangeText={(e) => {
                   notificationNoteF(e);
-              
                 }}
                 placeholder="Add Goal Scorer's Name"
                 style={styles.InputTextArea}
               />
             </View>
-{/* 
-            {MatchActive && (
-              <View style={{ marginTop: 10 }}>
-                <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
-                  Match Summary
-                </Text>
 
-                <SelectDropdown
-                  data={Matchnotes}
-                  defaultButtonText={"Match Summary"}
-                  buttonStyle={styles.dropdownStyle}
-                  buttonTextStyle={styles.dropdownStyleTxt}
-                  onSelect={(selectedItem, index) => {
-                    MatchBodyF(selectedItem);
-                  }}
-                />
-              </View>
-            )}
+            <View style={{ marginTop: 10, flex: 1 }}>
+              <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
+                Remove Match from Home List
+              </Text>
 
-            {MatchBody && (
-              <View style={{ marginTop: 10, flex: 1 }}>
-                <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
-                  Match Note
-                </Text>
-
-                <TextInput
-                  value={MatchNote}
-                  onChangeText={(e) => {
-                    MatchNoteF(e);
-                  }}
-                  placeholder="Enter Match Summary"
-                  multiline
-                  style={styles.InputTextArea}
-                />
-              </View>
-            )} */}
+              <SelectDropdown
+                data={['Yes']}
+                defaultValue={HomeTeamFormation}
+                defaultButtonText="Remove Match from Home List"
+                buttonStyle={styles.dropdownStyle}
+                buttonTextStyle={styles.dropdownStyleTxt}
+                onSelect={(selectedItem, index) => {
+                  matchhInfoF((prev) => ({
+                    ...prev,
+                    Matchplayed: true,
+                  }));
+                }}
+              />
+            </View>
           </KeyboardAvoidingView>
           <Text style={{ color: "red", alignSelf: "center", padding: 3 }}>
             {notification}

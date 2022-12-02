@@ -90,7 +90,7 @@ const TopPick = ({navigation}) => {
 
    useEffect(() => {
     
-    const data = MatchsFromDB.filter(match => match.Competition === CompetitionState)
+    const data = MatchsFromDB.filter(match => match.Competition === CompetitionState && !match.Matchplayed)
 
 MatchDataF(data)
 
@@ -118,7 +118,7 @@ loaderF(true)
     navigation.navigate("Home");
 loaderF(false)
         } catch (error) {
-            // console.log(error);
+
             notificationF(error);
         }
 
@@ -226,7 +226,6 @@ loaderF(false)
         <Loader />
       ) : (
         <>
-     
           <View style={{ marginTop: 10 }}>
             <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
               Competition
@@ -313,12 +312,11 @@ loaderF(false)
             {notification}
           </Text>
 
+          <TouchableOpacity style={styles.btn} onPress={handleSubmit}>
+            <Text style={styles.btnTxt}>Save</Text>
+          </TouchableOpacity>
         </>
       )}
-
-      <TouchableOpacity style={styles.btn} onPress={handleSubmit}>
-        <Text style={styles.btnTxt}>Save</Text>
-      </TouchableOpacity>
     </View>
   );
 }

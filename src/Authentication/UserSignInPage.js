@@ -180,6 +180,7 @@ async function registerForPushNotificationsAsync() {
             style={{
               color: "white",
               fontSize: 16,
+              
               textAlign: "center",
             }}
           >

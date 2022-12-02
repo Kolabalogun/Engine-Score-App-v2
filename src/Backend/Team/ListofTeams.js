@@ -18,10 +18,9 @@ const ListofTeams = ({navigation}) => {
          competition,
          competitionF,
          getTeamsFromDB,
-         notificationF,
-         currentUser,
+    
          loader,
-         loaderF,
+
          TeamsFromDB,
          handleDeleteTeam,
        } = useGlobalContext();
@@ -194,7 +193,11 @@ const ListofTeams = ({navigation}) => {
       ) : (
         <ScrollView
           refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            <RefreshControl
+              refreshing={refreshing}
+              colors={["#ff2782"]}
+              onRefresh={onRefresh}
+            />
           }
           showsVerticalScrollIndicator={false}
         >

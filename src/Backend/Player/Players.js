@@ -58,7 +58,7 @@ const Players = ({ navigation }) => {
 
       PlayerDataF(dd);
     }
-  }, [Competition, TeamNameSelect]);
+  }, [ TeamNameSelect]);
 
   const competitionData = ["Engine 4.0", "Engine 3.0"];
   const typee = ["Goal", "Assist"];

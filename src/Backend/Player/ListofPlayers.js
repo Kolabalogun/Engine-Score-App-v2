@@ -244,7 +244,11 @@ const ListofPlayers = ({ navigation }) => {
       ) : (
         <ScrollView
           refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            <RefreshControl
+              refreshing={refreshing}
+              colors={["#ff2782"]}
+              onRefresh={onRefresh}
+            />
           }
           showsVerticalScrollIndicator={false}
         >

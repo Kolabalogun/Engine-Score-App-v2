@@ -48,6 +48,7 @@ TeamDataF(data.map(d => d.TeamName))
   const [AwayTeam, AwayTeamF] = useState("");
   const [AwayTeamFormation, AwayTeamFormationF] = useState("");
   const [Matchtime, MatchtimeF] = useState("");
+  const [Matchplayed, MatchplayedF] = useState(false);
  
 
 
@@ -106,8 +107,7 @@ TeamDataF(data.map(d => d.TeamName))
 
           MatchDay: MatchDay,
 
-          // author: currentUser.email,
-          // userId: currentUser.uid,
+          Matchplayed:Matchplayed,
           dateId: dateId,
         });
     

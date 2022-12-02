@@ -72,7 +72,7 @@ loaderF(true)
     return b.Assists - a.Assists;
   });
 
-  const AssistsGroup = AssistsRanking.slice(0, 5).map((goal, index) => {
+  const AssistsGroup = AssistsRanking.slice(0, 6).map((goal, index) => {
     if (goal.Competition === competitionType) {
       return (
         <TouchableOpacity key={index} style={styles.eachMatch}>
@@ -115,7 +115,12 @@ loaderF(true)
         <ScrollView
           showsVerticalScrollIndicator={false}
           refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+            <RefreshControl
+              refreshing={refreshing}
+              colors={["#ff2782"]}
+        
+              onRefresh={onRefresh}
+            />
           }
         >
           <Nav />
@@ -147,6 +152,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#edeff2",
     paddingHorizontal: 15,
+    
     paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 40,
   },
   main: {
@@ -263,21 +269,8 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
 
-  eachMatchTeamDate: {
-    color: "#aaa",
-    fontWeight: "400",
-  },
+ 
 
-  eachMatchTeamTimeScore: {
-    color: "red",
-    fontWeight: "500",
-    fontSize: 17,
-  },
+ 
 
-  eachMatchTeamDateScore: {
-    color: "#aaa",
-    fontWeight: "400",
-    fontSize: 20,
-    paddingHorizontal: 8,
-  },
 });

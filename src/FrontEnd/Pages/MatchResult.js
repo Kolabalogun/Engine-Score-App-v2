@@ -13,6 +13,7 @@ import { useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../Utils/Firebase";
 import Loader from "../Components/Others/Loader";
+import Header from "../Components/Others/Header";
 
 const initialState = {
   Competition: "",
@@ -113,8 +114,13 @@ const MatchResult = ({ route, navigation }) => {
     <ScrollView
       style={styles.container}
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        <RefreshControl
+          refreshing={refreshing}
+          colors={["#ff2782"]}
+          onRefresh={onRefresh}
+        />
       }
+      ListHeaderComponent={Header}
       showsVerticalScrollIndicator={false}
     >
       <View style={styles.matchTopBar}>
@@ -278,7 +284,7 @@ const MatchResult = ({ route, navigation }) => {
                 <View style={styles.team}>
                   <Image
                     source={require("../../../assets/logo-02.png")}
-                    resizeMode="cover"
+                    resizeMode="contain"
                     style={{ height: 30, width: 30 }}
                   />
 
@@ -289,7 +295,7 @@ const MatchResult = ({ route, navigation }) => {
                 </View>
               </View>
 
-              <View style={{ flexDirection: "row", flex: 1,  }}>
+              <View style={{ flexDirection: "row", flex: 1 }}>
                 <Image
                   source={
                     HomeTeamFormation === "4-4-2"
@@ -303,7 +309,7 @@ const MatchResult = ({ route, navigation }) => {
                       : Home4231
                   }
                   resizeMode="contain"
-                  style={{ height: 300, flex: 1 }}
+                  style={{ flex: 1 }}
                 />
                 <Image
                   source={
@@ -318,80 +324,8 @@ const MatchResult = ({ route, navigation }) => {
                       : Away4231
                   }
                   resizeMode="contain"
-                  style={{ height: 300, flex: 1, marginTop: -8 }}
+                  style={{ flex: 1 }}
                 />
-              </View>
-
-              <Text style={styles.manager}>Manager</Text>
-
-              <View style={styles.managerSplit}>
-                {HomeTeamData.map((team, index) => (
-                  <Text key={index}>{team.TeamManager}</Text>
-                ))}
-                {AwayTeamData.map((team, index) => (
-                  <Text key={index}>{team.TeamManager}</Text>
-                ))}
-              </View>
-
-              <Text style={styles.manager}>Lineups</Text>
-
-              <View style={styles.lineups}>
-                {HomeTeamData.map((team, index) => (
-                  <View key={index}>
-                    <Text>{team.Players.goalkepper}</Text>
-
-                    <Text>{team.Players.defender1}</Text>
-                    <Text>{team.Players.defender2}</Text>
-                    <Text>{team.Players.defender3}</Text>
-                    <Text>{team.Players.defender4}</Text>
-                    <Text>{team.Players.defender5}</Text>
-
-                    <Text>{team.Players.midfielder1}</Text>
-                    <Text>{team.Players.midfielder2}</Text>
-                    <Text>{team.Players.midfielder3}</Text>
-                    <Text>{team.Players.midfielder4}</Text>
-                    <Text>{team.Players.midfielder5}</Text>
-                    <Text>{team.Players.attacker1}</Text>
-                    <Text>{team.Players.attacker2}</Text>
-                    <Text>{team.Players.attacker3}</Text>
-                    <Text>{team.Players.attacker4}</Text>
-                    <Text>{team.Players.attacker5}</Text>
-                    <Text>{team.Players.benchs1}</Text>
-                    <Text>{team.Players.benchs2}</Text>
-                    <Text>{team.Players.benchs3}</Text>
-                    <Text>{team.Players.benchs4}</Text>
-                  </View>
-                ))}
-                <View></View>
-
-                <View>
-                  {AwayTeamData.map((team, index) => (
-                    <View key={index}>
-                      <Text>{team.Players.goalkepper}</Text>
-
-                      <Text>{team.Players.defender1}</Text>
-                      <Text>{team.Players.defender2}</Text>
-                      <Text>{team.Players.defender3}</Text>
-                      <Text>{team.Players.defender4}</Text>
-                      <Text>{team.Players.defender5}</Text>
-
-                      <Text>{team.Players.midfielder1}</Text>
-                      <Text>{team.Players.midfielder2}</Text>
-                      <Text>{team.Players.midfielder3}</Text>
-                      <Text>{team.Players.midfielder4}</Text>
-                      <Text>{team.Players.midfielder5}</Text>
-                      <Text>{team.Players.attacker1}</Text>
-                      <Text>{team.Players.attacker2}</Text>
-                      <Text>{team.Players.attacker3}</Text>
-                      <Text>{team.Players.attacker4}</Text>
-                      <Text>{team.Players.attacker5}</Text>
-                      <Text>{team.Players.benchs1}</Text>
-                      <Text>{team.Players.benchs2}</Text>
-                      <Text>{team.Players.benchs3}</Text>
-                      <Text>{team.Players.benchs4}</Text>
-                    </View>
-                  ))}
-                </View>
               </View>
             </View>
           ) : (
@@ -429,6 +363,11 @@ const MatchResult = ({ route, navigation }) => {
                             ? require("../../../assets/ball.png")
                             : details.MatchBody === "Red Card"
                             ? require("../../../assets/yellow.png")
+                            : details.MatchBody ===
+                              "Match Starts in few Minutes. Who will win?"
+                            ? require("../../../assets/load.png")
+                            : details.MatchBody === "Match Started"
+                            ? require("../../../assets/matchstarts.png")
                             : require("../../../assets/ft.png")
                         }
                         resizeMode="contain"
@@ -439,6 +378,78 @@ const MatchResult = ({ route, navigation }) => {
                 ))}
             </View>
           )}
+
+          <View style={styles.formationSection}>
+            <Text style={styles.manager}>Manager</Text>
+
+            <View style={styles.managerSplit}>
+              {HomeTeamData.map((team, index) => (
+                <Text key={index}>{team.TeamManager}</Text>
+              ))}
+              {AwayTeamData.map((team, index) => (
+                <Text key={index}>{team.TeamManager}</Text>
+              ))}
+            </View>
+
+            <Text style={styles.manager}>Lineups</Text>
+
+            <View style={styles.lineups}>
+              {HomeTeamData.map((team, index) => (
+                <View key={index}>
+                  <Text>{team.Players.goalkepper}</Text>
+                  <Text>{team.Players.defender1}</Text>
+                  <Text>{team.Players.defender2}</Text>
+                  <Text>{team.Players.defender3}</Text>
+                  <Text>{team.Players.defender4}</Text>
+                  <Text>{team.Players.defender5}</Text>
+                  <Text>{team.Players.midfielders1}</Text>
+                  <Text>{team.Players.midfielders2}</Text>
+                  <Text>{team.Players.midfielders3}</Text>
+                  <Text>{team.Players.midfielders4}</Text>
+                  <Text>{team.Players.midfielders5}</Text>
+                  <Text>{team.Players.attakers1}</Text>
+                  <Text>{team.Players.attakers2}</Text>
+                  <Text>{team.Players.attakers3}</Text>
+                  <Text>{team.Players.attakers4}</Text>
+                  <Text>{team.Players.attakers5}</Text>
+                  <Text>{team.Players.benchs1}</Text>
+                  <Text>{team.Players.benchs2}</Text>
+                  <Text>{team.Players.benchs3}</Text>
+                  <Text>{team.Players.benchs4}</Text>
+                  <Text>{team.Players.benchs5}</Text>
+                </View>
+              ))}
+              <View></View>
+
+              <View>
+                {AwayTeamData.map((team, index) => (
+                  <View key={index}>
+                    <Text>{team.Players.goalkepper}</Text>
+                    <Text>{team.Players.defender1}</Text>
+                    <Text>{team.Players.defender2}</Text>
+                    <Text>{team.Players.defender3}</Text>
+                    <Text>{team.Players.defender4}</Text>
+                    <Text>{team.Players.defender5}</Text>
+                    <Text>{team.Players.midfielders1}</Text>
+                    <Text>{team.Players.midfielders2}</Text>
+                    <Text>{team.Players.midfielders3}</Text>
+                    <Text>{team.Players.midfielders4}</Text>
+                    <Text>{team.Players.midfielders5}</Text>
+                    <Text>{team.Players.attakers1}</Text>
+                    <Text>{team.Players.attakers2}</Text>
+                    <Text>{team.Players.attakers3}</Text>
+                    <Text>{team.Players.attakers4}</Text>
+                    <Text>{team.Players.attakers5}</Text>
+                    <Text>{team.Players.benchs1}</Text>
+                    <Text>{team.Players.benchs2}</Text>
+                    <Text>{team.Players.benchs3}</Text>
+                    <Text>{team.Players.benchs4}</Text>
+                    <Text>{team.Players.benchs5}</Text>
+                  </View>
+                ))}
+              </View>
+            </View>
+          </View>
         </>
       )}
     </ScrollView>

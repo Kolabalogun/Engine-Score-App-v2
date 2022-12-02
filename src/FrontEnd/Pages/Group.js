@@ -76,55 +76,59 @@ const Group = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* <View style={styles.main}> */}
-        <Header navigation={navigation} />
+    
+      <Header navigation={navigation} />
 
-        <Nav />
+      <Nav />
 
-        {loader ? (
-          <Loader />
-        ) : (
-          <ScrollView
-            refreshControl={
-              <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-            }
-            showsVerticalScrollIndicator={false}
-          >
-            <View style={styles.group}>
-              <Text style={styles.groupName}>Group One</Text>
-              <View style={styles.table}>
-                <View style={styles.topTable}>
-                  {/* <Text style={styles.tableHead}>No</Text> */}
-                  <Text style={styles.tableHeadOne}>Teams</Text>
-                  <Text style={styles.tableHead}>P</Text>
-                  <Text style={styles.tableHead}>W</Text>
-                  <Text style={styles.tableHead}>L</Text>
-                  <Text style={styles.tableHead}>D</Text>
-                  <Text style={styles.tableHead}>GD</Text>
-                  <Text style={styles.tableHead}>Pts</Text>
-                </View>
-                {Group1Elements}
+      {loader ? (
+        <Loader />
+      ) : (
+        <ScrollView
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              colors={["#ff2782"]}
+              onRefresh={onRefresh}
+            />
+          }
+          showsVerticalScrollIndicator={false}
+        >
+          <View style={styles.group}>
+            <Text style={styles.groupName}>Group One</Text>
+            <View style={styles.table}>
+              <View style={styles.topTable}>
+                {/* <Text style={styles.tableHead}>No</Text> */}
+                <Text style={styles.tableHeadOne}>Teams</Text>
+                <Text style={styles.tableHead}>P</Text>
+                <Text style={styles.tableHead}>W</Text>
+                <Text style={styles.tableHead}>L</Text>
+                <Text style={styles.tableHead}>D</Text>
+                <Text style={styles.tableHead}>GD</Text>
+                <Text style={styles.tableHead}>Pts</Text>
               </View>
+              {Group1Elements}
             </View>
-            <View style={styles.group}>
-              <Text style={styles.groupName}>Group Two</Text>
-              <View style={styles.table}>
-                <View style={styles.topTable}>
-                  {/* <Text style={styles.tableHead}>No</Text> */}
-                  <Text style={styles.tableHeadOne}>Teams</Text>
-                  <Text style={styles.tableHead}>P</Text>
-                  <Text style={styles.tableHead}>W</Text>
-                  <Text style={styles.tableHead}>L</Text>
-                  <Text style={styles.tableHead}>D</Text>
-                  <Text style={styles.tableHead}>GD</Text>
-                  <Text style={styles.tableHead}>Pts</Text>
-                </View>
-                {Group2Elements}
+          </View>
+          <View style={styles.group}>
+            <Text style={styles.groupName}>Group Two</Text>
+            <View style={styles.table}>
+              <View style={styles.topTable}>
+                {/* <Text style={styles.tableHead}>No</Text> */}
+                <Text style={styles.tableHeadOne}>Teams</Text>
+                <Text style={styles.tableHead}>P</Text>
+                <Text style={styles.tableHead}>W</Text>
+                <Text style={styles.tableHead}>L</Text>
+                <Text style={styles.tableHead}>D</Text>
+                <Text style={styles.tableHead}>GD</Text>
+                <Text style={styles.tableHead}>Pts</Text>
               </View>
+              {Group2Elements}
             </View>
-          </ScrollView>
-        )}
-      {/* </View> */}
+          </View>
+        </ScrollView>
+      )}
+ 
     </SafeAreaView>
   );
 };
