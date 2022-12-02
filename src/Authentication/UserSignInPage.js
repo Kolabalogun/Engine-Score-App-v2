@@ -1,14 +1,15 @@
 import {
-  StyleSheet,
+  ImageBackground,
   Text,
   SafeAreaView,
   TouchableOpacity,
   Image,
-  View
+  View,
 } from "react-native";
 import React, { useEffect, useRef, useState } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { useGlobalContext } from '../Function/Context'
+import { styles } from '../Function/styles'
 import { addDoc, arrayUnion, collection, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../Utils/Firebase';
 import * as Notifications from 'expo-notifications';
@@ -135,90 +136,126 @@ async function registerForPushNotificationsAsync() {
 
 
 
-    const {currentUserF, storeData, getData} = useGlobalContext()
+    const { currentUserF, storeData, getData, currentTheme } =
+      useGlobalContext();
 
     useEffect(() => {
      getData()
     }, [])
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.homeHeader}>
-        <View style={styles.headerTitleDiv}>
-          <Text style={styles.headerTitle}>
-            Engine<Text style={styles.headerTitleScore}>Scores</Text>
-          </Text>
-        </View>
-      </View>
-
-      <Image source={require("../../assets/logo-no-bg.png")} />
-
-      <Text>Get every minute Engineering Live Score here.</Text>
-      <Text style={{ marginBottom: 10 }}>
-        Gather fast info and go along with others.
-      </Text>
-      <View style={{ flexDirection: "row" }}>
-        <TouchableOpacity
-          style={{
-            paddingHorizontal: 20,
-            paddingVertical: 18,
-            backgroundColor: "#ff2782",
-            flexDirection: "row",
-            flex: 1,
-            borderRadius: 30,
-            alignItems: "center",
-            justifyContent: "center",
-            marginTop: 15,
-          }}
-          onPress={() => {
-            schedulePushNotification();
-            storeData("true");
-            currentUserF("true");
-          }}
+    <SafeAreaView style={{ flex: 1 }}>
+      <ImageBackground
+        source={require("../../assets/wall.jpg")}
+        resizeMode="cover"
+        style={{ flex: 1, justifyContent: "center" }}
+      >
+        <View
+          style={
+            {
+              alignItems: "center",
+              flex: 1,
+              backgroundColor: "#edeff2",
+              opacity: 1,
+              paddingHorizontal: 15,
+              paddingTop: 15,
+              paddingBottom: 20,
+            }
+          }
         >
-          <Text
+          <View
             style={{
-              color: "white",
-              fontSize: 16,
-              
-              textAlign: "center",
+              alignItems: "center",
+              justifyContent: "center",
+              flex: 5,
+              paddingTop: 120,
             }}
           >
-            CLICK TO CONTINUE
-          </Text>
-        </TouchableOpacity>
-      </View>
+            <View style={styles.homeHeader}>
+              <View style={styles.headerTitleDiv}>
+                <Text style={styles.headerTitle}>
+                  Engine
+                  <Text
+                    style={[
+                      styles.headerTitleScore,
+                      {
+                        color:
+                          currentTheme === "Red"
+                            ? "#CF0A0A"
+                            : currentTheme === "Pink"
+                            ? "#EA047E"
+                            : currentTheme === "Purple"
+                            ? "#EA047E"
+                            : "#377D71",
+                      },
+                    ]}
+                  >
+                    Scores
+                  </Text>
+                </Text>
+              </View>
+            </View>
+
+            <Image source={require("../../assets/balll.png")} />
+
+            <View style={{ flexDirection: "row", marginBottom: 30 }}>
+              <Text
+                style={{
+                  flexDirection: "row",
+                  textAlign: "center",
+                  paddingHorizontal: 10,
+                  fontSize: 14,
+                }}
+              >
+                Get every minute Engineering Live Score here. Gather fast info
+                and go along with others.
+              </Text>
+            </View>
+          </View>
+
+          <View
+            style={{ flexDirection: "row", alignItems: "flex-end", flex: 1 }}
+          >
+            <TouchableOpacity
+              style={{
+                paddingVertical: 15,
+                backgroundColor:
+                  currentTheme === "Red"
+                    ? "#CF0A0A"
+                    : currentTheme === "Pink"
+                    ? "#EA047E"
+                    : currentTheme === "Purple"
+                    ? "#EA047E"
+                    : "#377D71",
+                flexDirection: "row",
+                flex: 1,
+                borderRadius: 50,
+                alignItems: "center",
+                justifyContent: "center",
+                marginBottom: 40,
+              }}
+              onPress={() => {
+                schedulePushNotification();
+                storeData("true");
+                currentUserF("true");
+              }}
+            >
+              <Text
+                style={{
+                  color: "white",
+                  fontSize: 16,
+
+                  textAlign: "center",
+                }}
+              >
+                CLICK TO CONTINUE
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </ImageBackground>
     </SafeAreaView>
   );
 }
 
 export default UserSignInPage
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#edeff2",
-    paddingHorizontal: 15,
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 40,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-
-  homeHeader: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingBottom: 20,
-  },
-
-  headerTitle: {
-    fontSize: 36,
-    fontWeight: "400",
-  },
-
-  headerTitleScore: {
-    color: "#ff2782",
-    fontWeight: "500",
-  },
-});

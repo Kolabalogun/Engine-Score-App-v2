@@ -53,11 +53,23 @@ const Home = ({ navigation }) => {
           <View style={styles.eachMatchTime}>
             {match.MatchActive ? (
               <View style={{ flexDirection: "row" }}>
-                <Text style={styles.eachMatchTeamTimeScore}>
+                <Text style={[styles.eachMatchTeamTimeScore, {color: currentTheme === "Red"
+              ? "#CF0A0A"
+              : currentTheme === "Pink"
+              ? "#EA047E"
+              : currentTheme === "Purple"
+              ? "#EA047E"
+              :  "#377D71",}]}>
                   {match.HomeTeamScore}
                 </Text>
                 <Text style={styles.eachMatchTeamDateScore}>-</Text>
-                <Text style={styles.eachMatchTeamTimeScore}>
+                <Text style={[styles.eachMatchTeamTimeScore, {color: currentTheme === "Red"
+              ? "#CF0A0A"
+              : currentTheme === "Pink"
+              ? "#EA047E"
+              : currentTheme === "Purple"
+              ? "#EA047E"
+              :  "#377D71",}]}>
                   {match.AwayTeamScore}
                 </Text>
               </View>
@@ -105,11 +117,23 @@ const Home = ({ navigation }) => {
           <View style={styles.eachMatchTime}>
             {match.MatchActive ? (
               <View style={{ flexDirection: "row" }}>
-                <Text style={styles.eachMatchTeamTimeScore}>
+                <Text style={[styles.eachMatchTeamTimeScore, {color: currentTheme === "Red"
+              ? "#CF0A0A"
+              : currentTheme === "Pink"
+              ? "#EA047E"
+              : currentTheme === "Purple"
+              ? "#EA047E"
+              :  "#377D71",}]}>
                   {match.HomeTeamScore}
                 </Text>
                 <Text style={styles.eachMatchTeamDateScore}>-</Text>
-                <Text style={styles.eachMatchTeamTimeScore}>
+                <Text style={[styles.eachMatchTeamTimeScore, {color: currentTheme === "Red"
+              ? "#CF0A0A"
+              : currentTheme === "Pink"
+              ? "#EA047E"
+              : currentTheme === "Purple"
+              ? "#EA047E"
+              :  "#377D71",}]}>
                   {match.AwayTeamScore}
                 </Text>
               </View>
@@ -172,7 +196,7 @@ const Home = ({ navigation }) => {
           refreshControl={
             <RefreshControl
               refreshing={refreshing}
-              colors={["#ff2782"]}
+              colors={["#377D71"]}
               onRefresh={onRefresh}
             />
           }

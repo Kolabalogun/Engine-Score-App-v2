@@ -1,11 +1,28 @@
 import React from "react";
 import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
+import { useGlobalContext } from "../../../Function/Context";
 
-const Loader = () => (
+const Loader = () => {
+
+  const {currentTheme} = useGlobalContext()
+
+return (
   <View style={[styles.container, styles.horizontal]}>
-    <ActivityIndicator size="large" color="#ff2782" />
+    <ActivityIndicator
+      size="large"
+      color={
+        currentTheme === "Red"
+          ? "#CF0A0A"
+          : currentTheme === "Pink"
+          ? "#EA047E"
+          : currentTheme === "Purple"
+          ? "#EA047E"
+          : "#377D71"
+      }
+    />
   </View>
 );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -21,3 +38,5 @@ const styles = StyleSheet.create({
 });
 
 export default Loader;
+
+

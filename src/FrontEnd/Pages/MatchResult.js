@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import React, { useEffect } from "react";
 import { useGlobalContext } from "../../Function/Context";
+import { styles } from "../../Function/styles";
 import { useState } from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../Utils/Firebase";
@@ -31,7 +32,7 @@ const initialState = {
   MatchActive: false,
 };
 const MatchResult = ({ route, navigation }) => {
-  const { TeamsFromDB, getTeamsFromDB, loader } = useGlobalContext();
+  const { TeamsFromDB, getTeamsFromDB, loader, currentTheme } = useGlobalContext();
 
   const { matchId } = route.params;
 
@@ -112,19 +113,33 @@ const MatchResult = ({ route, navigation }) => {
 
   return (
     <ScrollView
-      style={styles.container}
+      style={{ flex: 1, backgroundColor: "#edeff2" }}
       refreshControl={
         <RefreshControl
           refreshing={refreshing}
-          colors={["#ff2782"]}
+          colors={["#377D71"]}
           onRefresh={onRefresh}
         />
       }
       ListHeaderComponent={Header}
       showsVerticalScrollIndicator={false}
     >
-      <View style={styles.matchTopBar}>
-        <View style={styles.homeHeader}>
+      <View
+        style={[
+          styles.matchTopBar,
+          {
+            backgroundColor:
+              currentTheme === "Red"
+                ? "#CF0A0A"
+                : currentTheme === "Pink"
+                ? "#EA047E"
+                : currentTheme === "Default"
+                ? "#377D71"
+                : "rgb(85, 3, 85)",
+          },
+        ]}
+      >
+        <View style={[styles.homeHeader, { backgroundColor: "none" }]}>
           <TouchableOpacity
             onPress={() => navigation.goBack()}
             style={{
@@ -140,14 +155,24 @@ const MatchResult = ({ route, navigation }) => {
             />
           </TouchableOpacity>
           <View style={styles.headerTitleDiv}>
-            <Text style={styles.headerTitle}>{Competition}</Text>
+            <Text
+              style={[
+                styles.headerTitle,
+                {
+                  fontSize: 15,
+                  color: "white",
+                },
+              ]}
+            >
+              {Competition}
+            </Text>
           </View>
           <TouchableOpacity style={{ borderRadius: 50 }}>
-            {/* <Image
-              source={require("../../../assets/refresh.png")}
+            <Image
+              // source={require("../../../assets/refresh.png")}
               resizeMode="cover"
               style={{ height: 25, width: 25 }}
-            /> */}
+            />
           </TouchableOpacity>
         </View>
       </View>
@@ -156,9 +181,11 @@ const MatchResult = ({ route, navigation }) => {
         <Loader />
       ) : (
         <>
-          <View style={styles.dashboard}>
-            <View style={styles.dashboardBox}>
-              <Text style={styles.competitionName}>Maracana Field</Text>
+          <View style={styles.resultdashboard}>
+            <View style={[styles.dashboardBox, { backgroundColor: "white" }]}>
+              <Text style={[styles.competitionName, { color: "black" }]}>
+                Maracana Field
+              </Text>
               <Text style={styles.matchDay}>Matchday {MatchDay}</Text>
 
               <View style={styles.scoreBoard}>
@@ -169,14 +196,20 @@ const MatchResult = ({ route, navigation }) => {
                     style={{ height: 90, width: 90 }}
                   />
 
-                  <Text style={styles.teamTxt}>{HomeTeam}</Text>
+                  <Text style={styles.resultTeamTxt}>{HomeTeam}</Text>
                 </View>
                 <View style={styles.score}>
                   {MatchActive ? (
                     <>
-                      <Text style={styles.scoreTxt}>{HomeTeamScore}</Text>
-                      <Text style={styles.scoreTxt}>:</Text>
-                      <Text style={styles.scoreTxt}>{AwayTeamScore}</Text>
+                      <Text style={[styles.scoreTxt, { color: "black" }]}>
+                        {HomeTeamScore}
+                      </Text>
+                      <Text style={[styles.scoreTxt, { color: "black" }]}>
+                        :
+                      </Text>
+                      <Text style={[styles.scoreTxt, { color: "black" }]}>
+                        {AwayTeamScore}
+                      </Text>
                     </>
                   ) : (
                     <View
@@ -187,7 +220,9 @@ const MatchResult = ({ route, navigation }) => {
                         flex: 1,
                       }}
                     >
-                      <Text style={styles.eachMatchTeamTime}>{Matchtime}</Text>
+                      <Text style={styles.resulteachMatchTeamTime}>
+                        {Matchtime}
+                      </Text>
                       <Text
                         style={{
                           color: "black",
@@ -208,7 +243,7 @@ const MatchResult = ({ route, navigation }) => {
                     style={{ height: 90, width: 90 }}
                   />
 
-                  <Text style={styles.teamTxt}>{AwayTeam}</Text>
+                  <Text style={styles.resultTeamTxt}>{AwayTeam}</Text>
                 </View>
               </View>
             </View>
@@ -220,7 +255,16 @@ const MatchResult = ({ route, navigation }) => {
                 activeMenuF("lineup");
               }}
               style={{
-                backgroundColor: activeMenu === "lineup" ? "#ff2782" : "#fff",
+                backgroundColor:
+                  activeMenu === "lineup" && currentTheme === "Default"
+                    ? "#377D71"
+                    : activeMenu === "lineup" && currentTheme === "Red"
+                    ? "#CF0A0A"
+                    : activeMenu === "lineup" && currentTheme === "Pink"
+                    ? "#EA047E"
+                    : activeMenu === "lineup" && currentTheme === "Purple"
+                    ? "#EA047E"
+                    : "#fff",
                 paddingHorizontal: 10,
                 paddingVertical: 10,
                 flex: 1,
@@ -231,7 +275,22 @@ const MatchResult = ({ route, navigation }) => {
             >
               <Text
                 style={{
-                  color: activeMenu === "lineup" ? "#fff" : "#ff2782",
+                  color:
+                    activeMenu === "lineup" && currentTheme === "Default"
+                      ? "#fff"
+                      : activeMenu === "lineup" && currentTheme === "Pink"
+                      ? "#fff"
+                      : activeMenu === "lineup" && currentTheme === "Red"
+                      ? "#fff"
+                      : activeMenu === "lineup" && currentTheme === "Purple"
+                      ? "#fff"
+                      : activeMenu !== "lineup" && currentTheme === "Pink"
+                      ? "#EA047E"
+                      : activeMenu !== "lineup" && currentTheme === "Red"
+                      ? "#CF0A0A"
+                      : activeMenu !== "lineup" && currentTheme === "Purple"
+                      ? "#EA047E"
+                      : "#377D71",
                   fontWeight: "500",
                   fontSize: 15,
                 }}
@@ -245,7 +304,16 @@ const MatchResult = ({ route, navigation }) => {
                 activeMenuF("timeline");
               }}
               style={{
-                backgroundColor: activeMenu === "timeline" ? "#ff2782" : "#fff",
+                backgroundColor:
+                  activeMenu === "timeline" && currentTheme === "Default"
+                    ? "#377D71"
+                    : activeMenu === "timeline" && currentTheme === "Red"
+                    ? "#CF0A0A"
+                    : activeMenu === "timeline" && currentTheme === "Pink"
+                    ? "#EA047E"
+                    : activeMenu === "timeline" && currentTheme === "Purple"
+                    ? "#EA047E"
+                    : "#fff",
                 paddingHorizontal: 10,
                 paddingVertical: 10,
                 flex: 1,
@@ -256,7 +324,22 @@ const MatchResult = ({ route, navigation }) => {
             >
               <Text
                 style={{
-                  color: activeMenu === "timeline" ? "#fff" : "#ff2782",
+                  color:
+                    activeMenu === "timeline" && currentTheme === "Default"
+                      ? "#fff"
+                      : activeMenu === "timeline" && currentTheme === "Pink"
+                      ? "#fff"
+                      : activeMenu === "timeline" && currentTheme === "Red"
+                      ? "#fff"
+                      : activeMenu === "timeline" && currentTheme === "Purple"
+                      ? "#fff"
+                      : activeMenu !== "timeline" && currentTheme === "Pink"
+                      ? "#EA047E"
+                      : activeMenu !== "timeline" && currentTheme === "Red"
+                      ? "#CF0A0A"
+                      : activeMenu !== "timeline" && currentTheme === "Purple"
+                      ? "#EA047E"
+                      : "#377D71",
                   fontWeight: "500",
                   fontSize: 15,
                 }}
@@ -458,168 +541,3 @@ const MatchResult = ({ route, navigation }) => {
 
 export default MatchResult;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#edeff2",
-    // paddingTop: 30,
-  },
-
-  homeHeader: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingBottom: 20,
-  },
-
-  headerTitle: {
-    fontSize: 15,
-    fontWeight: "500",
-    color: "white",
-  },
-
-  matchTopBar: {
-    backgroundColor: "rgb(85, 3, 85)",
-
-    paddingHorizontal: 10,
-    paddingTop: 10,
-
-    height: 230,
-    borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10,
-  },
-
-  dashboard: {
-    marginHorizontal: 20,
-    marginTop: -150,
-  },
-  dashboardTitle: {
-    fontSize: 18,
-    fontWeight: "500",
-  },
-
-  dashboardBox: {
-    marginBottom: 10,
-    marginTop: 10,
-    backgroundColor: "white",
-    alignItems: "center",
-    borderRadius: 10,
-    padding: 15,
-
-    // borderWidth: 3,
-
-    // borderColor: 'rgba(209, 225, 240, 0.782)',
-  },
-  dashboardTitle: {
-    fontSize: 18,
-    fontWeight: "500",
-  },
-
-  competitionName: {
-    color: "black",
-    fontSize: 14,
-    marginBottom: 5,
-  },
-  matchDay: {
-    fontSize: 13,
-    color: "#aaa",
-  },
-
-  scoreBoard: {
-    marginTop: 5,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  teamBoard: {
-    fontSize: 18,
-    fontWeight: "500",
-    alignItems: "center",
-  },
-
-  score: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    color: "black",
-  },
-
-  teamTxt: {
-    color: "black",
-    paddingTop: 5,
-    fontWeight: "500",
-  },
-
-  scoreTxt: {
-    color: "black",
-    fontSize: 48,
-  },
-
-  navMenu: {
-    marginVertical: 15,
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-
-  formationSection: {
-    marginHorizontal: 20,
-  },
-
-  teams: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-
-  team: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-
-  manager: {
-    fontWeight: "500",
-    textAlign: "center",
-    marginTop:10,
-  },
-
-  managerSplit: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingVertical: 5,
-  },
-
-  lineups: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginVertical: 10,
-  },
-
-
-
-  eachMatchTeamTime: {
-    color: "red",
-    fontWeight: "500",
-    fontSize: 15,
-  },
-
-  eachMatchTeamDate: {
-    color: "#aaa",
-    fontWeight: "400",
-    fontSize: 15,
-  },
-
-  eachSummary: {
-    padding: 10,
-    backgroundColor: "white",
-    borderRadius: 10,
-    marginVertical: 5,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-});

@@ -82,11 +82,13 @@ const MatchInfo = ({ route, navigation }) => {
   }, [matchhInfo]);
 
   const getBlogDetail = async () => {
+    loaderF(true)
     const docRef = doc(db, "Matchs", matchId);
     const snapshot = await getDoc(docRef);
     if (snapshot.exists()) {
       matchhInfoF({ ...snapshot.data() });
     }
+    loaderF(false);
   };
 
   const {

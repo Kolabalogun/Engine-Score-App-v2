@@ -49,11 +49,11 @@ const Header = ({navigation, functions, imgtype}) => {
         </Text>
       </View>
       <View style={styles.profilePic}>
-        {/* <Image
-            source={require("../../../../assets/pro.jpg")}
+        <Image
+            // source={require("../../../../assets/pro.jpg")}
             resizeMode="cover"
             style={{ height: 30, width: 30, borderRadius: 50 }}
-          /> */}
+          />
       </View>
     </View>
   );

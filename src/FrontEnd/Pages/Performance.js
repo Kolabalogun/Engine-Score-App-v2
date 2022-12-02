@@ -129,8 +129,8 @@ loaderF(true)
           refreshControl={
             <RefreshControl
               refreshing={refreshing}
-              colors={["#ff2782"]}
-        
+              colors={["#377D71"]}
+              
               onRefresh={onRefresh}
             />
           }

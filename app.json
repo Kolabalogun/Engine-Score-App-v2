@@ -4,10 +4,10 @@
     "slug": "ESA",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/logo-with-bg.png",
+    "icon": "./assets/balllw.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/logo-no-bg.png",
+      "image": "./assets/balll.png",
       "resizeMode": "contain",
       "backgroundColor": "#edeff2"
     },
@@ -25,7 +25,7 @@
     "android": {
       "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/logo-no-bg.png",
+        "foregroundImage": "./assets/balll.png",
         "backgroundColor": "#edeff2"
       },
       "permissions": [

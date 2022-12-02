@@ -2,7 +2,7 @@ import { Image, StyleSheet, Text, View } from "react-native";
 import React from "react";
 // import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import { FontAwesome, Ionicons } from "@expo/vector-icons";
+import { FontAwesome, FontAwesome5, Ionicons } from "@expo/vector-icons";
 import Home from "../FrontEnd/Pages/Home";
 import Notification from "../Notification/Notification";
 // import Index from "../Group/Index";

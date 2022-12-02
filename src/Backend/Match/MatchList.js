@@ -206,22 +206,17 @@ const MatchList = ({navigation}) => {
       <Headers />
       <Nav />
 
-      {loader ? (
-        <Loader />
-      ) : (
-        <ScrollView
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              colors={["#ff2782"]}
-              onRefresh={onRefresh}
-            />
-          }
-          showsVerticalScrollIndicator={false}
-        >
-          {competition === 4 ? Engine40list : Engine30list}
-        </ScrollView>
-      )}
+      
+      {loader ? <Loader/> :     <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing}    colors={["#ff2782"]} onRefresh={onRefresh} />
+        }
+        showsVerticalScrollIndicator={false}
+      >
+        {competition === 4 ? Engine40list : Engine30list}
+      </ScrollView> }
+
+ 
     </SafeAreaView>
   );
 }
@@ -288,9 +283,19 @@ const styles = StyleSheet.create({
     //   paddingHorizontal: 10
   },
 
-  
+  eachMatchTeamTxt: {
+    fontWeight: "500",
+  },
 
+  eachMatchTeamTime: {
+    color: "red",
+    fontWeight: "500",
+  },
 
+  eachMatchTeamDate: {
+    color: "#aaa",
+    fontWeight: "400",
+  },
 
   eachMatchTeamTimeScore: {
     color: "red",
@@ -298,5 +303,17 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
 
+  eachMatchTeamDateScore: {
+    color: "#aaa",
+    fontWeight: "400",
+    fontSize: 20,
+    paddingHorizontal: 8,
+  },
 
+  navMenu: {
+    marginVertical: 20,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
 });

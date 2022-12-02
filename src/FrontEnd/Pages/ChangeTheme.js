@@ -73,7 +73,7 @@ const ChangeTheme = ({ navigation }) => {
 
             <SelectDropdown
                 data={themeArray}
-              defaultButtonText={"Select Match"}
+              defaultButtonText={"Select Theme"}
               buttonStyle={styles.dropdownStyle}
               buttonTextStyle={styles.dropdownStyleTxt}
               onSelect={(selectedItem, index) => {

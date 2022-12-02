@@ -21,7 +21,7 @@ import Nav from "../Components/Others/Nav";
 import Loader from "../Components/Others/Loader";
 
 const Match = ({ navigation }) => {
-  const { MatchsFromDB, getMatchsFromDB, competition, loader } =
+  const { MatchsFromDB, getMatchsFromDB, competition, loader, currentTheme } =
     useGlobalContext();
 
   const Engine40list = MatchsFromDB.map((match, index) => {
@@ -48,17 +48,38 @@ const Match = ({ navigation }) => {
           <View style={styles.eachMatchTime}>
             {match.MatchActive ? (
               <View style={{ flexDirection: "row" }}>
-                <Text style={styles.eachMatchTeamTimeScore}>
+                <Text style={[styles.eachMatchTeamTimeScore, {color: currentTheme === "Red"
+              ? "#CF0A0A"
+              : currentTheme === "Pink"
+              ? "#EA047E"
+              : currentTheme === "Purple"
+              ? "#EA047E"
+              :  "#377D71",}]}>
                   {match.HomeTeamScore}
                 </Text>
                 <Text style={styles.eachMatchTeamDateScore}>-</Text>
-                <Text style={styles.eachMatchTeamTimeScore}>
+                <Text style={[styles.eachMatchTeamTimeScore, {color: currentTheme === "Red"
+              ? "#CF0A0A"
+              : currentTheme === "Pink"
+              ? "#EA047E"
+              : currentTheme === "Purple"
+              ? "#EA047E"
+              :  "#377D71",}]}>
                   {match.AwayTeamScore}
                 </Text>
               </View>
             ) : (
               <>
-                <Text style={styles.eachMatchTeamTime}>{match.Matchtime}</Text>
+                <Text style={[styles.eachMatchTeamTime, {color:
+                     currentTheme === "Red"
+                    ? "#CF0A0A"
+                    : currentTheme === "Pink"
+                    ? "#EA047E"
+                    : currentTheme === "Purple"
+                    ? "#EA047E"
+                    : "#377D71",
+                
+                }]}>{match.Matchtime}</Text>
                 <Text style={styles.eachMatchTeamDate}>{match.MatchDate}</Text>
               </>
             )}
@@ -98,7 +119,16 @@ const Match = ({ navigation }) => {
             />
           </View>
           <View style={styles.eachMatchTime}>
-            <Text style={styles.eachMatchTeamTime}>{match.Matchtime}</Text>
+            <Text style={[styles.eachMatchTeamTime, {color:
+                 currentTheme === "Red"
+                    ? "#CF0A0A"
+                    : currentTheme === "Pink"
+                    ? "#EA047E"
+                    : currentTheme === "Purple"
+                    ? "#EA047E"
+                    : "#377D71",
+            
+            }]}>{match.Matchtime}</Text>
             <Text style={styles.eachMatchTeamDate}>{match.MatchDate}</Text>
           </View>
           <View style={styles.eachMatchTeam}>
@@ -142,7 +172,7 @@ const Match = ({ navigation }) => {
           refreshControl={
             <RefreshControl
               refreshing={refreshing}
-              colors={["#ff2782"]}
+              colors={["#377D71"]}
               onRefresh={onRefresh}
             />
           }

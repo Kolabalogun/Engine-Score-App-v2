@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    backgroundColor: "edeff2",
+
     paddingBottom: 20,
   },
 
@@ -26,7 +26,6 @@ const styles = StyleSheet.create({
   },
 
   headerTitleScore: {
- 
     fontWeight: "500",
   },
   // Header
@@ -56,10 +55,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 10,
     padding: 15,
-  },
-  dashboardTitle: {
-    fontSize: 18,
-    fontWeight: "500",
   },
 
   competitionName: {
@@ -145,7 +140,6 @@ const styles = StyleSheet.create({
   },
 
   eachMatchTeamTimeScore: {
-    color: "#377D71",
     fontWeight: "500",
     fontSize: 20,
   },
@@ -231,6 +225,96 @@ const styles = StyleSheet.create({
   },
 
   //Performance
+
+  //Match Result
+
+
+
+  matchTopBar: {
+    
+    paddingHorizontal: 10,
+    paddingTop: 10,
+    height: 230,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+  },
+
+  resultdashboard: {
+    marginHorizontal: 20,
+    marginTop: -150,
+  },
+
+  resultTeamTxt: {
+    color: "black",
+    paddingTop: 5,
+    fontWeight: "500",
+  },
+
+  navMenu: {
+    marginVertical: 15,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+
+  formationSection: {
+    marginHorizontal: 20,
+  },
+
+  teams: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+
+  team: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+
+  manager: {
+    fontWeight: "500",
+    textAlign: "center",
+    marginTop: 10,
+  },
+
+  managerSplit: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingVertical: 5,
+  },
+
+  lineups: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginVertical: 10,
+  },
+
+  resulteachMatchTeamTime: {
+    color: "red",
+    fontWeight: "500",
+    fontSize: 15,
+  },
+
+  eachMatchTeamDate: {
+    color: "#aaa",
+    fontWeight: "400",
+    fontSize: 15,
+  },
+
+  eachSummary: {
+    padding: 10,
+    backgroundColor: "white",
+    borderRadius: 10,
+    marginVertical: 5,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
 });
 
 export { styles };
