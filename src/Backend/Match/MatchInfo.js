@@ -143,7 +143,7 @@ const MatchInfo = ({ route, navigation }) => {
     const dateId = new Date().getTime();
 
     setdateId(dateId);
-  });
+  },[notificationBody]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
