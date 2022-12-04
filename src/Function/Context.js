@@ -271,7 +271,7 @@ const AppProvider = ({ children }) => {
   // AutoUpdate 
 
 
-  let projectVersion = '1.1'
+  let projectVersion = '1.2'
 
     const [AutoUpdateState, AutoUpdateStateF] = useState({
       isthereUpdate: false,
