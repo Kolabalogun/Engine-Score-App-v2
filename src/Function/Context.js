@@ -1,7 +1,6 @@
 import { StyleSheet, Text, LogBox } from "react-native";
 import React, { useState, useContext, useEffect } from "react";
 
-import { MatchArray } from "../FrontEnd/Components/Match/MatchArray";
 
 import { useNavigation } from "@react-navigation/native";
 
@@ -98,18 +97,18 @@ const AppProvider = ({ children }) => {
 
   // to delete Teams
   const handleDeleteTeam = async (id) => {
-    // console.warn('sdhgghds');
-    // if (window.confirm("Are you sure you want to delete this blog?")) {
-    try {
+ try {
       loaderF(true);
       await deleteDoc(doc(db, "Teams", id));
       loaderF(false);
-      // toast.error("Blog successfully deleted");
+    
     } catch (error) {
       console.log(error);
     }
-    // }
+
   };
+  // to delete Teams
+
 
   // get list of teams from firebase
 
@@ -272,7 +271,7 @@ const AppProvider = ({ children }) => {
   // AutoUpdate 
 
 
-  let projectVersion = '1.0'
+  let projectVersion = '1.1'
 
     const [AutoUpdateState, AutoUpdateStateF] = useState({
       isthereUpdate: false,
@@ -340,6 +339,7 @@ const AppProvider = ({ children }) => {
         competitionF,
 
         handleDeleteTeam,
+        
 
         MatchsFromDB,
 

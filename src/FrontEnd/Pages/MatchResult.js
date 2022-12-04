@@ -11,7 +11,7 @@ import React, { useEffect } from "react";
 import { useGlobalContext } from "../../Function/Context";
 import { styles } from "../../Function/styles";
 import { useState } from "react";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../../Utils/Firebase";
 import Loader from "../Components/Others/Loader";
 import Header from "../Components/Others/Header";
@@ -32,7 +32,14 @@ const initialState = {
   MatchActive: false,
 };
 const MatchResult = ({ route, navigation }) => {
-  const { TeamsFromDB, getTeamsFromDB, loader, currentTheme } = useGlobalContext();
+  const {
+    TeamsFromDB,
+    getTeamsFromDB,
+    loader,
+    currentTheme,
+    currentAdmin,
+    loaderF,
+  } = useGlobalContext();
 
   const { matchId } = route.params;
 
@@ -43,11 +50,13 @@ const MatchResult = ({ route, navigation }) => {
   }, [matchId]);
 
   const getBlogDetail = async () => {
+    loaderF(true)
     const docRef = doc(db, "Matchs", matchId);
     const snapshot = await getDoc(docRef);
     if (snapshot.exists()) {
       matchhInfoF({ ...snapshot.data() });
     }
+      loaderF(false);
   };
 
   const {
@@ -110,6 +119,24 @@ const MatchResult = ({ route, navigation }) => {
   const Away343 = require("../../../assets/formations/3-4-3away.png");
   const Away352 = require("../../../assets/formations/3-5-2away.png");
   const Away4231 = require("../../../assets/formations/4-3-2-1away.png");
+
+
+   const handleDeleteMatchSummary = async (id) => {
+     const data = MatchTimeline?.filter((dad, index) => dad.dateId !== id);
+
+
+
+      try {
+        await updateDoc(doc(db, "Matchs", matchId), {
+          ...matchhInfo,
+
+          MatchTimeline: [...data],
+        });
+      } catch (error) {
+        console.log(error, "line 219");
+      }
+     getBlogDetail();
+   };
 
   return (
     <ScrollView
@@ -413,52 +440,76 @@ const MatchResult = ({ route, navigation }) => {
             </View>
           ) : (
             <View style={styles.formationSection}>
-              {MatchTimeline?.slice(0)
-                .reverse()
-                .map((details, index) => (
-                  <View style={styles.eachSummary} key={index}>
-                    <View>
-                      <Text
-                        style={{
-                          borderBottomWidth: 1,
-                          borderBottomColor: "#aaa",
-                        }}
-                      >
-                        {details.MatchBody}
-                      </Text>
-                      <Text
-                        style={{
-                          fontSize: 17,
-                          fontWeight: "500",
-                          paddingTop: 10,
-                        }}
-                      >
-                        {details.MatchNote}
-                      </Text>
-                    </View>
+              {MatchTimeline?.slice(0).reverse().map((details, index) => {
+                  if (details.MatchBody !== null && details.MatchBody !== "") {
+                    return (
+                      <View style={{ flexDirection: "column" }} key={index}>
+                        <View style={styles.eachSummary}>
+                          <View>
+                            <Text
+                              style={{
+                                borderBottomWidth: 1,
+                                borderBottomColor: "#aaa",
+                              }}
+                            >
+                              {details.MatchBody}
+                            </Text>
+                            <Text
+                              style={{
+                                fontSize: 17,
+                                fontWeight: "500",
+                                paddingTop: 10,
+                              }}
+                            >
+                              {details.MatchNote}
+                            </Text>
+                          </View>
 
-                    <View>
-                      <Image
-                        source={
-                          details.MatchBody === "Yellow Card"
-                            ? require("../../../assets/red.png")
-                            : details.MatchBody === "Goal"
-                            ? require("../../../assets/ball.png")
-                            : details.MatchBody === "Red Card"
-                            ? require("../../../assets/yellow.png")
-                            : details.MatchBody ===
-                              "Match Starts in few Minutes. Who will win?"
-                            ? require("../../../assets/load.png")
-                            : details.MatchBody === "Match Started"
-                            ? require("../../../assets/matchstarts.png")
-                            : require("../../../assets/ft.png")
-                        }
-                        resizeMode="contain"
-                        style={{ height: 35 }}
-                      />
-                    </View>
-                  </View>
-                ))}
+                          <View>
+                            <Image
+                              source={
+                                details.MatchBody === "Yellow Card"
+                                  ? require("../../../assets/red.png")
+                                  : details.MatchBody === "Goal"
+                                  ? require("../../../assets/ball.png")
+                                  : details.MatchBody === "Red Card"
+                                  ? require("../../../assets/yellow.png")
+                                  : details.MatchBody ===
+                                    "Match Starts in few Minutes. Who will win?"
+                                  ? require("../../../assets/load.png")
+                                  : details.MatchBody === "Match Started"
+                                  ? require("../../../assets/matchstarts.png")
+                                  : require("../../../assets/ft.png")
+                              }
+                              resizeMode="contain"
+                              style={{ height: 35 }}
+                            />
+                          </View>
+                        </View>
+                        {currentAdmin && (
+                          <TouchableOpacity
+                            onPress={() =>
+                              handleDeleteMatchSummary(details.dateId)
+                            }
+                          >
+                            <Text
+                              style={{
+                                textAlign: "center",
+                                backgroundColor: "red",
+                                color: "white",
+                                borderRadius: 5,
+                                marginBottom: 10,
+                                paddingVertical: 5,
+                              }}
+                            >
+                              Delete
+                            </Text>
+                          </TouchableOpacity>
+                        )}
+                      </View>
+                    );
+                  }
+                })}
             </View>
           )}
 

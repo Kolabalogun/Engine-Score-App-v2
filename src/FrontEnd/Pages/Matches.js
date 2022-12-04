@@ -119,17 +119,66 @@ const Match = ({ navigation }) => {
             />
           </View>
           <View style={styles.eachMatchTime}>
-            <Text style={[styles.eachMatchTeamTime, {color:
-                 currentTheme === "Red"
-                    ? "#CF0A0A"
-                    : currentTheme === "Pink"
-                    ? "#EA047E"
-                    : currentTheme === "Purple"
-                    ? "#EA047E"
-                    : "#377D71",
-            
-            }]}>{match.Matchtime}</Text>
-            <Text style={styles.eachMatchTeamDate}>{match.MatchDate}</Text>
+            {match.MatchActive ? (
+              <View style={{ flexDirection: "row" }}>
+                <Text
+                  style={[
+                    styles.eachMatchTeamTimeScore,
+                    {
+                      color:
+                        currentTheme === "Red"
+                          ? "#CF0A0A"
+                          : currentTheme === "Pink"
+                          ? "#EA047E"
+                          : currentTheme === "Purple"
+                          ? "#EA047E"
+                          : "#377D71",
+                    },
+                  ]}
+                >
+                  {match.HomeTeamScore}
+                </Text>
+                <Text style={styles.eachMatchTeamDateScore}>-</Text>
+                <Text
+                  style={[
+                    styles.eachMatchTeamTimeScore,
+                    {
+                      color:
+                        currentTheme === "Red"
+                          ? "#CF0A0A"
+                          : currentTheme === "Pink"
+                          ? "#EA047E"
+                          : currentTheme === "Purple"
+                          ? "#EA047E"
+                          : "#377D71",
+                    },
+                  ]}
+                >
+                  {match.AwayTeamScore}
+                </Text>
+              </View>
+            ) : (
+              <>
+                <Text
+                  style={[
+                    styles.eachMatchTeamTime,
+                    {
+                      color:
+                        currentTheme === "Red"
+                          ? "#CF0A0A"
+                          : currentTheme === "Pink"
+                          ? "#EA047E"
+                          : currentTheme === "Purple"
+                          ? "#EA047E"
+                          : "#377D71",
+                    },
+                  ]}
+                >
+                  {match.Matchtime}
+                </Text>
+                <Text style={styles.eachMatchTeamDate}>{match.MatchDate}</Text>
+              </>
+            )}
           </View>
           <View style={styles.eachMatchTeam}>
             <Image

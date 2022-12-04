@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
 } from "react-native";
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 
 import { useGlobalContext } from '../../Function/Context';
 import { styles } from '../../Function/styles';
@@ -18,7 +18,7 @@ const AutoUpdatee = () => {
 
 
 
-    const { currentUserF, AutoUpdateState, getData, currentTheme } =
+    const {  AutoUpdateState, getData, currentTheme } =
       useGlobalContext();
 
     useEffect(() => {

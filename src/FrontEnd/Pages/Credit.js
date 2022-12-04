@@ -13,12 +13,16 @@ import React from "react";
 import Header from "../Components/Others/Header";
 
 
+import { styles } from "../../Function/styles";
+import { useGlobalContext } from "../../Function/Context";
+
+
 
 const Credits = ({navigation}) => {
-
+const {currentTheme} = useGlobalContext()
     
 function functions(params) {
-  navigation.goBack();
+  navigation.toggleDrawer();
 }
   return (
     <ScrollView style={styles.container}>
@@ -36,12 +40,67 @@ function functions(params) {
           </TouchableOpacity>
           <Text style={styles.nothTxt}>This app is developed by Ibrahim.</Text>
           <TouchableOpacity
-            style={styles.optionBtn}
+            style={[
+              styles.optionBtn,
+              {
+                borderColor:
+                  currentTheme === "Red"
+                    ? "#CF0A0A"
+                    : currentTheme === "Pink"
+                    ? "#EA047E"
+                    : currentTheme === "Purple"
+                    ? "#EA047E"
+                    : "#000",
+
+                backgroundColor:
+                  currentTheme === "Red"
+                    ? "black"
+                    : currentTheme === "Pink"
+                    ? "#496EEC"
+                    : currentTheme === "Purple"
+                    ? "rgb(85, 3, 85)"
+                    : "#377D71",
+              },
+            ]}
             onPress={() => {
               Linking.openURL("https://ibrahimkolabalogun.web.app/");
             }}
           >
-            <Text style={styles.option}>See Portfolio</Text>
+            <Text style={[styles.option, { color: "white" }]}>
+              See Portfolio
+            </Text>
+          </TouchableOpacity>
+          <Text style={styles.nothTxt}>This app is designed by Mirabel.</Text>
+          <TouchableOpacity
+            style={[
+              styles.optionBtn,
+              {
+                backgroundColor:
+                  currentTheme === "Red"
+                    ? "#CF0A0A"
+                    : currentTheme === "Pink"
+                    ? "#EA047E"
+                    : currentTheme === "Purple"
+                    ? "#EA047E"
+                    : "#000",
+
+                borderColor:
+                  currentTheme === "Red"
+                    ? "black"
+                    : currentTheme === "Pink"
+                    ? "#496EEC"
+                    : currentTheme === "Purple"
+                    ? "rgb(85, 3, 85)"
+                    : "#377D71",
+              },
+            ]}
+            onPress={() => {
+              Linking.openURL("https://www.behance.net/SheIsMeerah");
+            }}
+          >
+            <Text style={[styles.option, { color: "white" }]}>
+              See Portfolio
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -51,48 +110,4 @@ function functions(params) {
 
 export default Credits;
 
-const styles = StyleSheet.create({
-  container: {
-    paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
 
-    height: "100%",
-    backgroundColor: "aliceblue",
-    paddingHorizontal: 10,
-  },
-  body: {
-    paddingHorizontal: 20,
-
-    marginVertical: 30,
-    flex: 1,
-  },
-  optionBtn: {
-    padding: 10,
-    marginVertical: 15,
-    justifyContent: "space-between",
-
-    borderColor: "rgb(235, 148, 129)",
-    borderWidth: 2,
-    borderRadius: 12,
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  option: {
-    fontSize: 20,
-    fontWeight: "500",
-    color: "black",
-    paddingHorizontal: 10,
-  },
-
-  noth: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  nothTxt: {
-    fontSize: 19,
-    fontWeight: "500",
-    textAlign: "center",
-    fontStyle: "italic",
-    marginVertical: 20,
-  },
-});

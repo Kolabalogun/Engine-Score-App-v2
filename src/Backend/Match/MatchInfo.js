@@ -25,7 +25,8 @@ import { db } from "../../Utils/Firebase";
 import * as Notifications from "expo-notifications";
 import * as Device from "expo-device";
 import Loader from "../../FrontEnd/Components/Others/Loader";
-
+import { styles } from "../../Function/styles";
+import Button from "../../FrontEnd/Components/Others/Button";
 const initialState = {
   Competition: "",
 
@@ -142,7 +143,7 @@ const MatchInfo = ({ route, navigation }) => {
     const dateId = new Date().getTime();
 
     setdateId(dateId);
-  }, []);
+  });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -155,7 +156,8 @@ const MatchInfo = ({ route, navigation }) => {
       try {
         await updateDoc(doc(db, "Matchs", matchId), {
           ...matchhInfo,
-          MatchTimeline: [...MatchTimeline, { MatchBody, MatchNote }],
+          
+          MatchTimeline: [...MatchTimeline, { MatchBody, MatchNote, dateId }],
         });
 
         if (notificationBody) {
@@ -567,7 +569,7 @@ const MatchInfo = ({ route, navigation }) => {
                 }}
               />
             </View>
-
+{notificationBody &&
             <View style={{ marginTop: 10, flex: 1 }}>
               <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
                 Notification Note
@@ -581,7 +583,7 @@ const MatchInfo = ({ route, navigation }) => {
                 placeholder="Add Goal Scorer's Name"
                 style={styles.InputTextArea}
               />
-            </View>
+            </View>}
 
             <View style={{ marginTop: 10, flex: 1 }}>
               <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
@@ -589,7 +591,7 @@ const MatchInfo = ({ route, navigation }) => {
               </Text>
 
               <SelectDropdown
-                data={['Yes']}
+                data={["Yes"]}
                 defaultValue={HomeTeamFormation}
                 defaultButtonText="Remove Match from Home List"
                 buttonStyle={styles.dropdownStyle}
@@ -606,17 +608,17 @@ const MatchInfo = ({ route, navigation }) => {
           <Text style={{ color: "red", alignSelf: "center", padding: 3 }}>
             {notification}
           </Text>
-          <TouchableOpacity style={styles.btn} onPress={handleSubmit}>
-            <Text style={styles.btnTxt}>Save</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.btnDelete}
-            onPress={() => {
+          <Button
+         
+            handleSubmit={handleSubmit}
+          />
+          <Button 
+            txt={"Delete Match"}
+            color={"red"}
+            handleSubmit={() => {
               handleDeleteMatch(matchId);
             }}
-          >
-            <Text style={styles.btnTxt}>Delete Match</Text>
-          </TouchableOpacity>
+          />
         </ScrollView>
       )}
     </SafeAreaView>
@@ -625,91 +627,4 @@ const MatchInfo = ({ route, navigation }) => {
 
 export default MatchInfo;
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
 
-    backgroundColor: "aliceblue",
-    // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-    paddingHorizontal: 10,
-    paddingTop: 10,
-  },
-
-  topSection: {
-    paddingTop: 15,
-  },
-  topText: {
-    fontWeight: "700",
-    fontSize: 25,
-
-    color: "rgb(7, 1, 57)",
-    // marginTop: 10,
-  },
-  capText: {
-    color: "rgb(100, 100, 100)",
-    marginTop: 10,
-  },
-
-  Inputs: {
-    marginTop: 10,
-    flex: 1,
-    justifyContent: "center",
-  },
-  Input: {
-    padding: 5,
-    borderRadius: 5,
-    borderWidth: 1,
-    fontSize: 15,
-    borderColor: "#aaa",
-  },
-  InputTextArea: {
-    padding: 5,
-    borderRadius: 5,
-    borderWidth: 1,
-    fontSize: 15,
-    borderColor: "#aaa",
-
-    // height: 170,
-    alignItems: "baseline",
-    justifyContent: "flex-start",
-
-    // textAlignVertical: 'top'
-  },
-  btn: {
-    paddingVertical: 12,
-    backgroundColor: "#ff2782",
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 10,
-    width: "100%",
-    marginVertical: 20,
-  },
-  btnDelete: {
-    paddingVertical: 12,
-    backgroundColor: "red",
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 10,
-    width: "100%",
-    marginVertical: 20,
-  },
-  btnTxt: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "500",
-  },
-
-  dropdownStyle: {
-    width: "100%",
-    padding: 5,
-    borderRadius: 5,
-    borderWidth: 1,
-    fontSize: 13,
-    borderColor: "#aaa",
-    backgroundColor: "white",
-    height: 40,
-  },
-  dropdownStyleTxt: {
-    fontSize: 14,
-  },
-});

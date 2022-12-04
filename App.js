@@ -1,13 +1,11 @@
-import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import { useEffect, useState } from "react";
+import { NavigationContainer } from "@react-navigation/native";
+
+
 
 import { Platform, StatusBar, StyleSheet} from "react-native";
-import Loader from "./src/FrontEnd/Components/Others/Loader";
 
-import Modal from "./src/FrontEnd/Home/Modal";
+
 
 import { AppProvider } from "./src/Function/Context";
 import Navigations from "./src/Function/Navigation";
@@ -16,7 +14,7 @@ import Navigations from "./src/Function/Navigation";
 
 
 export default function App() {
-  const { loader } = useState(true);
+ 
 
 
 

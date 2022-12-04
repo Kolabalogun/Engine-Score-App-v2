@@ -75,7 +75,13 @@ const Home = ({ navigation }) => {
               </View>
             ) : (
               <>
-                <Text style={styles.eachMatchTeamTime}>{match.Matchtime}</Text>
+                <Text style={[styles.eachMatchTeamTime , {color: currentTheme === "Red"
+              ? "#CF0A0A"
+              : currentTheme === "Pink"
+              ? "#EA047E"
+              : currentTheme === "Purple"
+              ? "#EA047E"
+              :  "#377D71",}]}>{match.Matchtime}</Text>
                 <Text style={styles.eachMatchTeamDate}>{match.MatchDate}</Text>
               </>
             )}
@@ -139,7 +145,13 @@ const Home = ({ navigation }) => {
               </View>
             ) : (
               <>
-                <Text style={styles.eachMatchTeamTime}>{match.Matchtime}</Text>
+                <Text style={[styles.eachMatchTeamTime , {color: currentTheme === "Red"
+              ? "#CF0A0A"
+              : currentTheme === "Pink"
+              ? "#EA047E"
+              : currentTheme === "Purple"
+              ? "#EA047E"
+              :  "#377D71",}]}>{match.Matchtime}</Text>
                 <Text style={styles.eachMatchTeamDate}>{match.MatchDate}</Text>
               </>
             )}

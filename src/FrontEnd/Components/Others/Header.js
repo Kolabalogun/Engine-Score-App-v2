@@ -6,7 +6,7 @@ import { useGlobalContext } from "../../../Function/Context";
 
 
 
-const Header = ({navigation, functions, imgtype}) => {
+const Header = ({navigation, functions, imgtype, functions2, imgtype2}) => {
   const {currentTheme} = useGlobalContext()
   return (
     <View style={styles.homeHeader}>
@@ -23,7 +23,7 @@ const Header = ({navigation, functions, imgtype}) => {
         <Image
           source={imgtype ? imgtype : require("../../../../assets/menu.png")}
           resizeMode="cover"
-          style={{ height: 20, width: 20 }}
+          style={{ height: imgtype? 28: 20, width: imgtype? 28: 20 }}
         />
       </TouchableOpacity>
       <View style={styles.headerTitleDiv}>
@@ -48,13 +48,20 @@ const Header = ({navigation, functions, imgtype}) => {
           </Text>
         </Text>
       </View>
-      <View style={styles.profilePic}>
+      <TouchableOpacity
+        onPress={
+          functions2
+            && functions2
+         
+        }
+        style={styles.profilePic}
+      >
         <Image
-            // source={require("../../../../assets/pro.jpg")}
-            resizeMode="cover"
-            style={{ height: 30, width: 30, borderRadius: 50 }}
-          />
-      </View>
+          source={imgtype2}
+          resizeMode="cover"
+          style={{ height: 30, width: 30,  }}
+        />
+      </TouchableOpacity>
     </View>
   );
 };

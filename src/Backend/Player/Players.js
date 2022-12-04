@@ -16,6 +16,9 @@ import { useGlobalContext } from "../../Function/Context";
 import { db } from "../../Utils/Firebase";
 import Loader from "../../FrontEnd/Components/Others/Loader";
 import SelectDropdown from "react-native-select-dropdown";
+import { styles } from "../../Function/styles";
+import Button from "../../FrontEnd/Components/Others/Button";
+import Header from "../../FrontEnd/Components/Others/Header";
 
 const Players = ({ navigation }) => {
   const {
@@ -203,36 +206,7 @@ console.log(FilteredPlayerDataFromDBForGoalData);
 
  
 
-  function Headers({ functions, imgtype }) {
-    return (
-      <View style={styles.homeHeader}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate("Home");
-          }}
-          style={styles.profilePic}
-        >
-          <Image
-            source={require("../../../assets/home.png")}
-            resizeMode="cover"
-            style={{ height: 28, width: 28 }}
-          />
-        </TouchableOpacity>
-        <View style={styles.headerTitleDiv}>
-          <Text style={styles.headerTitle}>
-            Engine <Text style={styles.headerTitleScore}>Scores</Text>
-          </Text>
-        </View>
-        <TouchableOpacity onPress={functions} style={styles.profilePic}>
-          {/* <Image
-            source={imgtype}
-            resizeMode="cover"
-            style={{ height: 30, width: 30,  }}
-          /> */}
-        </TouchableOpacity>
-      </View>
-    );
-  }
+
 
   return (
     <>
@@ -241,7 +215,9 @@ console.log(FilteredPlayerDataFromDBForGoalData);
       ) : (
         <SafeAreaView style={styles.container}>
           <View>
-            <Headers
+            <Header
+              functions={() => navigation.goBack()}
+              imgtype={require("../../../assets/ba.png")}
             />
 
             <ScrollView showsVerticalScrollIndicator={false}>
@@ -298,7 +274,6 @@ console.log(FilteredPlayerDataFromDBForGoalData);
                     }}
                   />
                 </View>
-              
 
                 <View style={{ marginTop: 10 }}>
                   <Text style={{ paddingVertical: 3, fontWeight: "600" }}>
@@ -335,9 +310,7 @@ console.log(FilteredPlayerDataFromDBForGoalData);
               <Text style={{ color: "red", alignSelf: "center", padding: 3 }}>
                 {notification}
               </Text>
-              <TouchableOpacity style={styles.btn} onPress={handleSubmit}>
-                <Text style={styles.btnTxt}>Save</Text>
-              </TouchableOpacity>
+              <Button handleSubmit={handleSubmit} />
             </ScrollView>
           </View>
         </SafeAreaView>
@@ -347,140 +320,3 @@ console.log(FilteredPlayerDataFromDBForGoalData);
 };
 
 export default Players;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-
-    backgroundColor: "aliceblue",
-    // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-    paddingHorizontal: 10,
-    paddingTop: 10,
-  },
-
-  homeHeader: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingBottom: 20,
-  },
-
-  headerTitle: {
-    fontSize: 26,
-    fontWeight: "400",
-  },
-
-  headerTitleScore: {
-    color: "#ff2782",
-    fontWeight: "500",
-  },
-
-  topSection: {
-    paddingTop: 15,
-  },
-  topText: {
-    fontWeight: "700",
-    fontSize: 25,
-
-    color: "rgb(7, 1, 57)",
-    // marginTop: 10,
-  },
-  capText: {
-    color: "rgb(100, 100, 100)",
-    marginTop: 10,
-  },
-
-  Inputs: {
-    marginTop: 10,
-    flex: 1,
-    justifyContent: "center",
-  },
-  Input: {
-    padding: 5,
-    borderRadius: 5,
-    borderWidth: 1,
-    fontSize: 15,
-    borderColor: "#aaa",
-  },
-  InputTextArea: {
-    padding: 5,
-    borderRadius: 5,
-    borderWidth: 1,
-    fontSize: 15,
-    borderColor: "#aaa",
-
-    // height: 170,
-    alignItems: "baseline",
-    justifyContent: "flex-start",
-  },
-  btn: {
-    paddingVertical: 12,
-    backgroundColor: "#ff2782",
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 10,
-    width: "100%",
-    marginVertical: 20,
-  },
-  btnTxt: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "500",
-  },
-
-  dropdownStyle: {
-    width: "100%",
-    padding: 5,
-    borderRadius: 5,
-    borderWidth: 1,
-    fontSize: 13,
-    borderColor: "#aaa",
-    backgroundColor: "white",
-    height: 40,
-  },
-  dropdownStyleTxt: {
-    fontSize: 14,
-  },
-
-  navMenu: {
-    marginVertical: 20,
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-
-  eachMatch: {
-    borderRadius: 10,
-    backgroundColor: "white",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: 10,
-    paddingVertical: 10,
-    marginVertical: 5,
-    borderWidth: 3,
-
-    alignItems: "center",
-
-    borderColor: "rgba(209, 225, 240, 0.782)",
-  },
-
-  eachMatchTeam: {
-    //    flex:1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    color: "white",
-    alignItems: "center",
-  },
-
-  eachMatchTime: {
-    flex: 1,
-    alignItems: "center",
-  },
-
-  eachMatchTeamTxt: {
-    fontWeight: "500",
-    fontSize: 15,
-  },
-});

@@ -11,33 +11,90 @@ import ListofTeams from "../Backend/Team/ListofTeams";
 import MatchList from "../Backend/Match/MatchList";
 import Players from "../Backend/Player/Players";
 import ListofPlayers from "../Backend/Player/ListofPlayers";
+import { useGlobalContext } from "./Context";
 
 const Tabs = createMaterialBottomTabNavigator();
 
 const AdminNavigation = () => {
+const {currentTheme} = useGlobalContext()
+
   return (
     <Tabs.Navigator
-      barStyle={{ backgroundColor: "#fff" }}
-      initialRouteName="Home"
+     
+      barStyle={{
+        backgroundColor:
+          currentTheme === "Red"
+            ? "#CF0A0A"
+            : currentTheme === "Pink"
+            ? "#EA047E"
+            : currentTheme === "Purple"
+            ? "#fff"
+            : "#377D71",
+      }}
+      initialRouteName="Top Pick"
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, size, color }) => {
           let iconName;
           if (route.name === "Top Pick") {
             iconName = "home";
-            (size = focused ? 23 : 22),
-              (color = focused ? "#ff2782" : "#cdd4dc");
-          } else if (route.name === "Team List") {
-            iconName = "list-alt";
-            (size = focused ? 23 : 22),
-              (color = focused ? "#ff2782" : "#cdd4dc");
+            (size = focused ? 26 : 26),
+              (color =
+                focused && currentTheme === "Red"
+                  ? "#000"
+                  : !focused && currentTheme === "Purple"
+                  ? "rgb(171, 181, 190)"
+                  : focused && currentTheme === "Pink"
+                  ? "#496EEC"
+                  : focused && currentTheme === "Purple"
+                  ? "#EA047E"
+                  : focused && currentTheme === "Default"
+                  ? "#000"
+                  : "#fff");
+          } else if (route.name === "MatchList") {
+            iconName = "soccer-ball-o";
+            (size = focused ? 23 : 23),
+              (color =
+                focused && currentTheme === "Red"
+                  ? "#000"
+                  : !focused && currentTheme === "Purple"
+                  ? "rgb(171, 181, 190)"
+                  : focused && currentTheme === "Pink"
+                  ? "#496EEC"
+                  : focused && currentTheme === "Purple"
+                  ? "#EA047E"
+                  : focused && currentTheme === "Default"
+                  ? "#000"
+                  : "#fff");
           } else if (route.name === "ListofPlayers") {
             iconName = "group";
-            (size = focused ? 23 : 22),
-              (color = focused ? "#ff2782" : "#cdd4dc");
-          } else if (route.name === "MatchList") {
-            iconName = "calendar-o";
-            (size = focused ? 23 : 22),
-              (color = focused ? "#ff2782" : "#cdd4dc");
+            (size = focused ? 23 : 23),
+              (color =
+                focused && currentTheme === "Red"
+                  ? "#000"
+                  : !focused && currentTheme === "Purple"
+                  ? "rgb(171, 181, 190)"
+                  : focused && currentTheme === "Pink"
+                  ? "#496EEC"
+                  : focused && currentTheme === "Purple"
+                  ? "#EA047E"
+                  : focused && currentTheme === "Default"
+                  ? "#000"
+                  : "#fff");
+          } else if (route.name === "Team List") {
+            iconName = "list-alt";
+            (size = focused ? 23 : 23),
+              (color =
+                focused && currentTheme === "Red"
+                  ? "#000"
+                  : !focused && currentTheme === "Purple"
+                  ? "rgb(171, 181, 190)"
+                  : focused && currentTheme === "Pink"
+                  ? "#496EEC"
+                  : focused && currentTheme === "Purple"
+                  ? "#EA047E"
+                  : focused && currentTheme === "Default"
+                  ? "#000"
+                  : "#fff");
           }
 
           return <FontAwesome name={iconName} size={size} color={color} />;

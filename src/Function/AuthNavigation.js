@@ -7,10 +7,10 @@ import AdminNavigation from "./AdminNavigation";
 
 import Login from "../Backend/Authentication/Auth";
 
-const AuthNavigations = () => {
-  const { currentAdmin, currentAdminF } = useGlobalContext();
+const AuthNavigations = ({navigation}) => {
+  const { currentAdmin } = useGlobalContext();
 
-  return <>{!currentAdmin ? <Login /> : <AdminNavigation />}</>;
+  return <>{!currentAdmin ? <Login navigation={navigation}/> : <AdminNavigation />}</>;
 };
 
 export default AuthNavigations;

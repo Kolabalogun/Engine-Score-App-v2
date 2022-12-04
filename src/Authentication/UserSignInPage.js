@@ -5,9 +5,9 @@ import {
   TouchableOpacity,
   Image,
   View,
+  Linking,
 } from "react-native";
 import React, { useEffect, useRef, useState } from 'react'
-import { StatusBar } from 'expo-status-bar'
 import { useGlobalContext } from '../Function/Context'
 import { styles } from '../Function/styles'
 import { addDoc, arrayUnion, collection, doc, getDoc, updateDoc } from 'firebase/firestore';
@@ -151,17 +151,15 @@ async function registerForPushNotificationsAsync() {
         style={{ flex: 1, justifyContent: "center" }}
       >
         <View
-          style={
-            {
-              alignItems: "center",
-              flex: 1,
-              backgroundColor: "#edeff2",
-              opacity: 1,
-              paddingHorizontal: 15,
-              paddingTop: 15,
-              paddingBottom: 20,
-            }
-          }
+          style={{
+            alignItems: "center",
+            flex: 1,
+            backgroundColor: "#edeff2",
+            opacity: 1,
+            paddingHorizontal: 15,
+            paddingTop: 15,
+            paddingBottom: 20,
+          }}
         >
           <View
             style={{
@@ -249,6 +247,42 @@ async function registerForPushNotificationsAsync() {
                 }}
               >
                 CLICK TO CONTINUE
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View style={{flexDirection: 'row',}}>
+            <Text
+              style={{
+         
+                fontSize: 11,
+              
+                textAlign: "center",
+              }}
+            >
+              By clicking continue you agree to the  
+            </Text><Text>{' '}</Text>
+            <TouchableOpacity
+              onPress={() => {
+                Linking.openURL(
+                  "https://docs.google.com/document/d/15EI55EwKMagzsrdlWCgOkvQHabm0S6YXoqwWvN_RmEU/edit?usp=sharing"
+                );
+              }}
+            >
+              <Text
+                style={{
+           
+                  fontSize: 11,
+                  color: currentTheme === "Red"
+              ? "#CF0A0A"
+              : currentTheme === "Pink"
+              ? "#EA047E"
+              : currentTheme === "Purple"
+              ? "#EA047E"
+              :  "#377D71",
+                  textAlign: "center",
+                }}
+              >
+                   terms and conditions
               </Text>
             </TouchableOpacity>
           </View>

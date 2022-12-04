@@ -203,13 +203,15 @@ const styles = StyleSheet.create({
   },
   //Group
 
+  //GroupList
+
   //Performance
 
   performanceGroup: {
     display: "flex",
     flexDirection: "column",
     color: "#aaa",
-    paddingTop: 10,
+  
     paddingBottom: 30,
   },
 
@@ -228,10 +230,7 @@ const styles = StyleSheet.create({
 
   //Match Result
 
-
-
   matchTopBar: {
-    
     paddingHorizontal: 10,
     paddingTop: 10,
     height: 230,
@@ -314,6 +313,107 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+  },
+
+  //Change Theme
+  dropdownStyle: {
+    width: "100%",
+    padding: 5,
+    borderRadius: 5,
+    borderWidth: 1,
+    fontSize: 13,
+    borderColor: "#aaa",
+    backgroundColor: "white",
+    height: 40,
+  },
+  dropdownStyleTxt: {
+    fontSize: 14,
+  },
+
+  //Button
+
+  btn: {
+    paddingVertical: 12,
+    backgroundColor: "#ff2782",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 10,
+    width: "100%",
+    marginVertical: 20,
+    marginBottom: 50,
+  },
+  btnTxt: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "500",
+  },
+
+  // Credits
+  body: {
+    paddingHorizontal: 20,
+
+    marginVertical: 30,
+    flex: 1,
+  },
+  optionBtn: {
+    padding: 10,
+    marginVertical: 5,
+    justifyContent: "space-between",
+
+    
+    // borderWidth: 1,
+    borderRadius: 12,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  option: {
+    fontSize: 17,
+    fontWeight: "500",
+    
+    paddingHorizontal: 10,
+  },
+
+  noth: {
+    alignItems: "center",
+  },
+  nothTxt: {
+    fontSize: 19,
+    fontWeight: "500",
+    textAlign: "center",
+    fontStyle: "italic",
+    marginVertical: 20,
+  },
+
+  // Match Info
+
+  topSection: {
+    paddingTop: 15,
+  },
+  topText: {
+    fontWeight: "700",
+    fontSize: 25,
+    color: "rgb(7, 1, 57)",
+  },
+  capText: {
+    color: "rgb(100, 100, 100)",
+    marginTop: 10,
+  },
+
+  Inputs: {
+    marginTop: 10,
+    flex: 1,
+    justifyContent: "center",
+  },
+
+  InputTextArea: {
+    padding: 5,
+    borderRadius: 5,
+    borderWidth: 1,
+    fontSize: 15,
+    borderColor: "#aaa",
+
+    alignItems: "baseline",
+    justifyContent: "flex-start",
   },
 });
 

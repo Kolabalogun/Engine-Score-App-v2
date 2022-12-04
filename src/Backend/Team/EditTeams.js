@@ -6,6 +6,8 @@ import SelectDropdown from 'react-native-select-dropdown';
 import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../../Utils/Firebase';
 import Loader from '../../FrontEnd/Components/Others/Loader';
+import { styles } from '../../Function/styles';
+import Button from '../../FrontEnd/Components/Others/Button';
 
 
 
@@ -161,43 +163,16 @@ loaderF(true)
 
  
   function functions() {
-          navigation.navigate("TeamStat", {
-             teamId: teamInfo.id
-          });
-  }
+     navigation.goBack()  }
 
-    function Headers({functions, imgtype}) {
-    return(
-       <View style={styles.homeHeader}>
-        <TouchableOpacity onPress={() =>{
-          navigation.goBack()
-        }} style={styles.profilePic}>
-        <Image
-            source={require("../../../assets/ba.png")}
-            resizeMode="cover"
-            style={{ height: 20, width: 20,  }}
-          />
-        </TouchableOpacity>
-        <View style={styles.headerTitleDiv}>
-       <Text style={styles.headerTitle}>Engine <Text style={styles.headerTitleScore} >Scores</Text></Text>
-        </View>
-        <TouchableOpacity onPress={functions} style={styles.profilePic}>
-        {/* <Image
-            source={imgtype}
-            resizeMode="cover"
-            style={{ height: 30, width: 30,  }}
-          /> */}
-        </TouchableOpacity>
-      </View>
-      )
-  }
+  
 
 
   return (
     <SafeAreaView style={styles.container}>
-      <Headers
+      <Header
         functions={functions}
-        // imgtype={require("../../../assets/s.png")}
+        imgtype={require("../../../assets/ba.png")}
       />
 
       {loader ? (
@@ -226,7 +201,7 @@ loaderF(true)
                 buttonStyle={styles.dropdownStyle}
                 buttonTextStyle={styles.dropdownStyleTxt}
                 onSelect={(selectedItem, index) => {
-                  // CompetitionF(selectedItem)
+                 
 
                   teamInfoF((prev) => ({ ...prev, Competition: selectedItem }));
                 }}
@@ -243,7 +218,7 @@ loaderF(true)
                   teamInfoF({ ...teamInfo, TeamName: e });
                 }}
                 placeholder="Enter the Team Name"
-                style={styles.Input}
+                style={styles.InputTextArea}
               />
             </View>
 
@@ -257,7 +232,7 @@ loaderF(true)
                   teamInfoF({ ...teamInfo, TeamManager: e });
                 }}
                 placeholder="Enter the Manager of the Team"
-                style={styles.Input}
+                style={styles.InputTextArea}
               />
             </View>
             <View style={{ marginTop: 10 }}>
@@ -305,7 +280,7 @@ loaderF(true)
                       });
                     }}
                     placeholder="Match Won"
-                    style={styles.Input}
+                    style={styles.InputTextArea}
                   />
                 </View>
                 <View style={{ marginTop: 10, flex: 1 }}>
@@ -326,7 +301,7 @@ loaderF(true)
                       });
                     }}
                     placeholder="Match Draws"
-                    style={styles.Input}
+                    style={styles.InputTextArea}
                   />
                 </View>
                 <View style={{ marginTop: 10, flex: 1 }}>
@@ -347,7 +322,7 @@ loaderF(true)
                       });
                     }}
                     placeholder="Match Lost"
-                    style={styles.Input}
+                    style={styles.InputTextArea}
                   />
                 </View>
               </View>
@@ -375,7 +350,7 @@ loaderF(true)
                       });
                     }}
                     placeholder="Match Played"
-                    style={styles.Input}
+                    style={styles.InputTextArea}
                   />
                 </View>
                 <View style={{ marginTop: 10, flex: 1 }}>
@@ -396,7 +371,7 @@ loaderF(true)
                       });
                     }}
                     placeholder="Goal Difference"
-                    style={styles.Input}
+                    style={styles.InputTextArea}
                   />
                 </View>
                 <View style={{ marginTop: 10, flex: 1 }}>
@@ -417,7 +392,7 @@ loaderF(true)
                       });
                     }}
                     placeholder="Match Points"
-                    style={styles.Input}
+                    style={styles.InputTextArea}
                   />
                 </View>
               </View>
@@ -851,9 +826,7 @@ loaderF(true)
           <Text style={{ color: "red", alignSelf: "center", padding: 3 }}>
             {notification}
           </Text>
-          <TouchableOpacity style={styles.btn} onPress={handleSubmit}>
-            <Text style={styles.btnTxt}>Save</Text>
-          </TouchableOpacity>
+          <Button handleSubmit={handleSubmit} />
         </ScrollView>
       )}
     </SafeAreaView>
@@ -862,101 +835,3 @@ loaderF(true)
 
 export default EditTeams
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-
-    backgroundColor: "aliceblue",
-    // paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
-    paddingHorizontal: 10,
-    paddingTop: 10,
-  },
-
-  homeHeader: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    backgroundColor: "edeff2",
-    paddingBottom: 20,
-  },
-
-  headerTitle: {
-    fontSize: 26,
-    fontWeight: "400",
-  },
-
-  headerTitleScore: {
-    color: "#ff2782",
-    fontWeight: "500",
-  },
-
-  topSection: {
-    paddingTop: 15,
-  },
-  topText: {
-    fontWeight: "700",
-    fontSize: 25,
-
-    color: "rgb(7, 1, 57)",
-    // marginTop: 10,
-  },
-  capText: {
-    color: "rgb(100, 100, 100)",
-    marginTop: 10,
-  },
-
-  Inputs: {
-    marginTop: 10,
-    flex: 1,
-    justifyContent: "center",
-  },
-  Input: {
-    padding: 5,
-    borderRadius: 5,
-    borderWidth: 1,
-    fontSize: 15,
-    borderColor: "#aaa",
-  },
-  InputTextArea: {
-    padding: 5,
-    borderRadius: 5,
-    borderWidth: 1,
-    fontSize: 15,
-    borderColor: "#aaa",
-
-    // height: 170,
-    alignItems: "baseline",
-    justifyContent: "flex-start",
-
-    textAlignVertical: "top",
-  },
-  btn: {
-    paddingVertical: 12,
-    backgroundColor: "#ff2782",
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: 10,
-    width: "100%",
-    marginVertical: 20,
-  },
-  btnTxt: {
-    color: "white",
-    fontSize: 16,
-    fontWeight: "500",
-  },
-
-  dropdownStyle: {
-    width: "100%",
-    padding: 5,
-    borderRadius: 5,
-    borderWidth: 1,
-    fontSize: 13,
-    borderColor: "#aaa",
-    backgroundColor: "white",
-    height: 40,
-  },
-  dropdownStyleTxt: {
-    fontSize: 14,
-  },
-});

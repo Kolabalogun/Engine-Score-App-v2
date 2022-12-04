@@ -58,6 +58,7 @@ const Navigations = () => {
 
               <Stack.Screen name="MatchResult" component={MatchResult} />
               <Stack.Screen name="Players" component={Players} />
+            
               <Stack.Screen name="AuthNavigations" component={AuthNavigations} />
             </>
           )}

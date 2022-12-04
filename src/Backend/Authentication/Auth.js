@@ -25,7 +25,7 @@ const Login = ({ navigation }) => {
     notificationF,
     loader,
     loaderF,
-    currentAdmin,
+    
     currentAdminF,
   } = useGlobalContext();
 

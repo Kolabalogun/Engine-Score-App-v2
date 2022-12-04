@@ -21,8 +21,19 @@ const Group = ({ navigation }) => {
 
   const points = TeamsFromDB;
   points.sort(function (a, b) {
-    return b.stat.points - a.stat.points;
+    if (b.stat.points === a.stat.points){
+     return b.stat.gd - a.stat.gd;
+    } else return  (b.stat.points - a.stat.points) 
   });
+
+  // sort(function (a, b) {
+  //   if (a.point == b.point) return 0;
+  //   if (a.point > b.point) return -1;
+  //   return 1;
+  // });
+
+
+
 
   const Group1Elements = points.map((group, index) => {
     if (group.TeamGroup === 1 && group.Competition === competitionType) {
